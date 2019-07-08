@@ -2,6 +2,7 @@ import { Component } from "@angular/core"
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
 import { Observable } from "rxjs"
 import { map } from "rxjs/operators"
+import { NavCategory } from "./app.interfaces"
 
 @Component({
   selector: "app-root",
@@ -10,6 +11,53 @@ import { map } from "rxjs/operators"
 })
 export class AppComponent {
   public title = "MXroute-panel"
+  public navCategories: NavCategory[] = [
+    {
+      title: "General",
+      items: [
+        {
+          name: "Dashboard",
+          icon: "dashboard",
+          link: "/"
+        }
+      ]
+    },
+    {
+      title: "Address management",
+      items: [
+        {
+          name: "Domains",
+          icon: "domain",
+          link: "/domains"
+        },
+        {
+          name: "E-mail Accounts",
+          icon: "email",
+          link: "/addresses"
+        },
+        {
+          name: "Filters",
+          icon: "filter_list",
+          link: "/filters"
+        }
+      ]
+    },
+    {
+      title: "DNS",
+      items: [
+        {
+          name: "MX & SPF",
+          icon: "dns",
+          link: "/dns"
+        },
+        {
+          name: "DKIM",
+          icon: "vpn_key",
+          link: "/dns"
+        }
+      ]
+    }
+  ]
 
   public constructor(private breakpointObserver: BreakpointObserver) {}
 
