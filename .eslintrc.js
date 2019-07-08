@@ -11,14 +11,15 @@ module.exports = {
     sourceType: "module" // Allows for the use of imports
   },
   rules: {
-    "@typescript-eslint/indent": ["error", 2]
+    "@typescript-eslint/indent": ["error", 2],
+    "@typescript-eslint/no-parameter-properties": "off"
   },
   overrides: [
     {
       files: ["*.js"],
       rules: {
-        "@typescript-eslint/no-var-requires": "off"
+        "@typescript-eslint/no-var-requires": "off",
       }
     }
-]
+  ]
 }
