@@ -12,7 +12,7 @@
       <div *ngFor="let navCategory of navCategories; first as isFirst">
         <!-- Only add divider if not the first category in the list -->
         <mat-divider *ngIf="!isFirst"></mat-divider>
-        <h3 mat-subheader>{{navCategory.title}}</h3>
+        <h3 mat-subheader>{{ navCategory.title }}</h3>
 
         <a mat-list-item *ngFor="let navItem of navCategory.items" [routerLink]="navItem.link">
           <mat-icon mat-list-icon>{{ navItem.icon }}</mat-icon>
@@ -20,7 +20,6 @@
         </a>
       </div>
     </mat-nav-list>
-
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
