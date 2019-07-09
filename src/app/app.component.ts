@@ -10,7 +10,7 @@ import { NavCategory } from "./app.interfaces"
   styleUrls: ["./app.component.scss"]
 })
 export class AppComponent {
-  public title = "MXroute-panel"
+  public title = "DuckyPanel"
   public navCategories: NavCategory[] = [
     {
       title: "General",

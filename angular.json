@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "MXroute-panel": {
+    "DuckyPanel": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/MXroute-panel",
+            "outputPath": "dist/DuckyPanel",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -63,18 +63,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "MXroute-panel:build"
+            "browserTarget": "DuckyPanel:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "MXroute-panel:build:production"
+              "browserTarget": "DuckyPanel:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "MXroute-panel:build"
+            "browserTarget": "DuckyPanel:build"
           }
         },
         "test": {
@@ -112,16 +112,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "MXroute-panel:serve"
+            "devServerTarget": "DuckyPanel:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "MXroute-panel:serve:production"
+              "devServerTarget": "DuckyPanel:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "MXroute-panel"
+  "defaultProject": "DuckyPanel"
 }

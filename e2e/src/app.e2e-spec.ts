@@ -10,7 +10,7 @@ describe("workspace-project App", (): void => {
 
   it("should display welcome message", (): void => {
     page.navigateTo()
-    expect(page.getTitleText()).toEqual("Welcome to MXroute-panel!")
+    expect(page.getTitleText()).toEqual("Welcome to DuckyPanel!")
   })
 
   afterEach(
