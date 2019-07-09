@@ -6,5 +6,6 @@
     "typescriptreact"
   ],
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "prettier.eslintIntegration": true
+  "prettier.eslintIntegration": true,
+  "editor.tabSize": 2
 }

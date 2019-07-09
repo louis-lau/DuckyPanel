@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "mikael.angular-beastcode",
+    "msjsdiag.debugger-for-chrome",
+    "dbaeumer.vscode-eslint",
+    "eg2.vscode-npm-script",
+    "esbenp.prettier-vscode"
+  ]
+}
