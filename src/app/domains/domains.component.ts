@@ -1,5 +1,8 @@
 import { Component, OnInit, ViewChild, Inject } from "@angular/core"
 import { MatTableDataSource, MatPaginator, MatSort, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material"
+import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
+import { Observable } from "rxjs"
+import { map } from "rxjs/operators"
 
 @Component({
   selector: "remove-confirm-dialog",
@@ -19,12 +22,15 @@ export class RemoveConfirmDialog {
   styleUrls: ["./domains.component.scss"]
 })
 export class DomainsComponent implements OnInit {
-  public displayedColumns = ["domain", "remove"]
+  public displayedColumns = ["domain", "actions"]
   public dataSource: MatTableDataSource<UserData>
   @ViewChild(MatPaginator, { static: true }) public paginator: MatPaginator
   @ViewChild(MatSort, { static: true }) public sort: MatSort
+  public isHandset$: Observable<boolean> = this.breakpointObserver
+    .observe(Breakpoints.Handset)
+    .pipe(map(result => result.matches))
 
-  public constructor(public dialog: MatDialog) {
+  public constructor(private breakpointObserver: BreakpointObserver, public dialog: MatDialog) {
     // Create 100 domains
     var domains = []
     for (let i = 1; i <= 100; i++) {

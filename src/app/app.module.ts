@@ -1,5 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser"
 import { NgModule } from "@angular/core"
+import { FlexLayoutModule } from "@angular/flex-layout"
 
 import { AppRoutingModule } from "./app-routing.module"
 import { AppComponent } from "./app.component"
@@ -14,7 +15,8 @@ import {
   MatTableModule,
   MatPaginatorModule,
   MatCardModule,
-  MatDialogModule
+  MatDialogModule,
+  MatGridListModule
 } from "@angular/material"
 import { HomeComponent } from "./home/home.component"
 import { DomainsComponent, RemoveConfirmDialog } from "./domains/domains.component"
@@ -46,7 +48,9 @@ import { DnsComponent } from "./dns/dns.component"
     MatTableModule,
     MatPaginatorModule,
     MatCardModule,
-    MatDialogModule
+    MatDialogModule,
+    MatGridListModule,
+    FlexLayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]
