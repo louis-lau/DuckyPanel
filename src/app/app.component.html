@@ -22,7 +22,7 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-toolbar color="primary">
+    <mat-toolbar color="primary" [ngStyle]="{'z-index': 100}">
       <button
         type="button"
         aria-label="Toggle sidenav"
@@ -34,6 +34,9 @@
       </button>
       <span>{{ title }}</span>
     </mat-toolbar>
-    <router-outlet></router-outlet>
+    <!-- This is where the router will add a component based on the url -->
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -5,15 +5,34 @@ import { AppRoutingModule } from "./app-routing.module"
 import { AppComponent } from "./app.component"
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
 import { LayoutModule } from "@angular/cdk/layout"
-import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule } from "@angular/material"
+import {
+  MatToolbarModule,
+  MatButtonModule,
+  MatSidenavModule,
+  MatIconModule,
+  MatListModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatCardModule,
+  MatDialogModule
+} from "@angular/material"
 import { HomeComponent } from "./home/home.component"
-import { DomainsComponent } from "./domains/domains.component"
+import { DomainsComponent, RemoveConfirmDialog } from "./domains/domains.component"
 import { AdressesComponent } from "./adresses/adresses.component"
 import { FiltersComponent } from "./filters/filters.component"
 import { DnsComponent } from "./dns/dns.component"
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, DomainsComponent, AdressesComponent, FiltersComponent, DnsComponent],
+  entryComponents: [RemoveConfirmDialog],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    DomainsComponent,
+    AdressesComponent,
+    FiltersComponent,
+    DnsComponent,
+    RemoveConfirmDialog
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -23,7 +42,11 @@ import { DnsComponent } from "./dns/dns.component"
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatCardModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]
