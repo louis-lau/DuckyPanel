@@ -5,24 +5,32 @@
     <mat-card-content>This is an explanation about fucking domains. Who thought that would be needed.</mat-card-content>
   </mat-card>
   <mat-card fxFlex="70%">
+    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100, 250]"></mat-paginator>
     <mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="domain">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Domain </mat-header-cell>
         <mat-cell *matCellDef="let row" data-label="domain"> {{ row.domain }} </mat-cell>
       </ng-container>
-  
+
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Actions </mat-header-cell>
         <mat-cell *matCellDef="let row" data-label="actions">
-          <button (click)="removeConfirm(row.domain)" mat-icon-button color="warn" aria-label="Remove this domain">
+          <button
+            (click)="removeConfirm(row.domain)"
+            matTooltip="Remove this domain"
+            matTooltipPosition="left"
+            matTooltipShowDelay="500"
+            mat-icon-button
+            color="warn"
+            aria-label="Remove this domain"
+          >
             <mat-icon>delete</mat-icon>
           </button>
         </mat-cell>
       </ng-container>
-  
+
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns"> </mat-row>
     </mat-table>
-    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100, 250]"></mat-paginator>
   </mat-card>
 </div>

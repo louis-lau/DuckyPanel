@@ -16,7 +16,8 @@ import {
   MatPaginatorModule,
   MatCardModule,
   MatDialogModule,
-  MatGridListModule
+  MatGridListModule,
+  MatTooltipModule
 } from "@angular/material"
 import { HomeComponent } from "./home/home.component"
 import { DomainsComponent, RemoveConfirmDialog } from "./domains/domains.component"
@@ -50,7 +51,8 @@ import { DnsComponent } from "./dns/dns.component"
     MatCardModule,
     MatDialogModule,
     MatGridListModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatTooltipModule
   ],
   providers: [],
   bootstrap: [AppComponent]

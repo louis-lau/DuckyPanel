@@ -9,7 +9,7 @@
   >
     <!-- Create all navigation items -->
     <mat-nav-list>
-      <div *ngFor="let navCategory of navCategories; first as isFirst">
+      <ng-container *ngFor="let navCategory of navCategories; first as isFirst">
         <!-- Only add divider if not the first category in the list -->
         <mat-divider *ngIf="!isFirst"></mat-divider>
         <h3 mat-subheader>{{ navCategory.title }}</h3>
@@ -18,9 +18,10 @@
           <mat-icon mat-list-icon>{{ navItem.icon }}</mat-icon>
           <h4 mat-line>{{ navItem.name }}</h4>
         </a>
-      </div>
+      </ng-container>
     </mat-nav-list>
   </mat-sidenav>
+
   <mat-sidenav-content>
     <mat-toolbar color="primary" [ngStyle]="{'z-index': 100}">
       <button
@@ -34,9 +35,9 @@
       </button>
       <span>{{ title }}</span>
     </mat-toolbar>
-    <!-- This is where the router will add a component based on the url -->
     <div class="content">
       <router-outlet></router-outlet>
+      <!-- This is where the router will add a component based on the url -->
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
