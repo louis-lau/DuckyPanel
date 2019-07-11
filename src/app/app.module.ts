@@ -19,23 +19,11 @@ import {
   MatGridListModule,
   MatTooltipModule
 } from "@angular/material"
-import { HomeComponent } from "./home/home.component"
-import { DomainsComponent, RemoveConfirmDialog } from "./domains/domains.component"
-import { AdressesComponent } from "./adresses/adresses.component"
-import { FiltersComponent } from "./filters/filters.component"
-import { DnsComponent } from "./dns/dns.component"
+import { DomainsComponent, RemoveConfirmDialog } from "./pages/domains/domains.component"
 
 @NgModule({
   entryComponents: [RemoveConfirmDialog],
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    DomainsComponent,
-    AdressesComponent,
-    FiltersComponent,
-    DnsComponent,
-    RemoveConfirmDialog
-  ],
+  declarations: [AppComponent, DomainsComponent, RemoveConfirmDialog],
   imports: [
     BrowserModule,
     AppRoutingModule,
