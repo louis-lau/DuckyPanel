@@ -1,20 +1,9 @@
-import { Component, OnInit, ViewChild, Inject } from "@angular/core"
-import { MatTableDataSource, MatPaginator, MatSort, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material"
+import { Component, OnInit, ViewChild } from "@angular/core"
+import { MatTableDataSource, MatPaginator, MatSort, MatDialog, MatSnackBar } from "@angular/material"
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
 import { Observable } from "rxjs"
 import { map } from "rxjs/operators"
-
-@Component({
-  selector: "remove-confirm-dialog",
-  templateUrl: "remove-confirm-dialog.html"
-})
-export class RemoveConfirmDialog {
-  public constructor(public dialogRef: MatDialogRef<RemoveConfirmDialog>, @Inject(MAT_DIALOG_DATA) public data) {}
-
-  public onNoClick(): void {
-    this.dialogRef.close()
-  }
-}
+import { ConfirmDialogComponent, ConfirmDialogConfig } from "src/app/components/confirm-dialog/confirm-dialog.component"
 
 @Component({
   selector: "app-domains",
@@ -30,7 +19,11 @@ export class DomainsComponent implements OnInit {
     .observe(Breakpoints.Handset)
     .pipe(map(result => result.matches))
 
-  public constructor(private breakpointObserver: BreakpointObserver, public dialog: MatDialog) {
+  public constructor(
+    private breakpointObserver: BreakpointObserver,
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar
+  ) {
     // Create 100 domains
     var domains = []
     for (let i = 1; i <= 100; i++) {
@@ -51,7 +44,29 @@ export class DomainsComponent implements OnInit {
   public ngOnInit(): void {}
 
   public removeConfirm(domain: string): void {
-    this.dialog.open(RemoveConfirmDialog, { data: { domain: domain } })
+    let dialogConfig: ConfirmDialogConfig = {
+      data: {
+        title: `Remove ${domain}`,
+        text: "Are you sure? This will also remove accounts associated with this domain.",
+        buttons: [
+          {
+            text: "No",
+            color: "primary"
+          },
+          {
+            text: "Yes",
+            color: "warn",
+            result: true
+          }
+        ]
+      }
+    }
+    let dialog = this.dialog.open(ConfirmDialogComponent, dialogConfig)
+    dialog.afterClosed().subscribe((result): void => {
+      if (result) {
+        this.snackBar.open(`${domain} has been removed`, undefined, { duration: 3000 })
+      }
+    })
   }
 }
 

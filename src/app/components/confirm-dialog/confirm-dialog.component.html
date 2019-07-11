@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<mat-dialog-content>
+  {{ data.text }}
+</mat-dialog-content>
+<mat-dialog-actions>
+  <ng-container *ngFor="let button of data.buttons">
+    <button mat-button [color]="button.color" [mat-dialog-close]="button.result">{{ button.text }}</button>
+  </ng-container>
+
+  <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
+</mat-dialog-actions>

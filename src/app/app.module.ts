@@ -17,13 +17,15 @@ import {
   MatCardModule,
   MatDialogModule,
   MatGridListModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatSnackBarModule
 } from "@angular/material"
-import { DomainsComponent, RemoveConfirmDialog } from "./pages/domains/domains.component"
+import { DomainsComponent } from "./pages/domains/domains.component"
+import { ConfirmDialogComponent } from "./components/confirm-dialog/confirm-dialog.component"
 
 @NgModule({
-  entryComponents: [RemoveConfirmDialog],
-  declarations: [AppComponent, DomainsComponent, RemoveConfirmDialog],
+  entryComponents: [ConfirmDialogComponent],
+  declarations: [AppComponent, DomainsComponent, ConfirmDialogComponent, ConfirmDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -40,7 +42,8 @@ import { DomainsComponent, RemoveConfirmDialog } from "./pages/domains/domains.c
     MatDialogModule,
     MatGridListModule,
     FlexLayoutModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

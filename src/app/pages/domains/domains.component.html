@@ -1,6 +1,6 @@
 <!-- Switch to row or column mode depending on mobile or not -->
 <div [fxLayout]="(isHandset$ | async) ? 'column' : 'row'" fxLayoutGap="10px">
-  <mat-card fxFlex="30%" [fxFlexAlign]="(isHandset$ | async) ? '' : 'start'">
+  <mat-card fxFlex="30%" [fxFlexAlign]="(isHandset$ | async) ? null : 'start'">
     <mat-card-title>Your domains</mat-card-title>
     <mat-card-content>This is an explanation about fucking domains. Who thought that would be needed.</mat-card-content>
   </mat-card>
