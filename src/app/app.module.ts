@@ -18,14 +18,18 @@ import {
   MatDialogModule,
   MatGridListModule,
   MatTooltipModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSortModule
 } from "@angular/material"
 import { DomainsComponent } from "./pages/domains/domains.component"
 import { ConfirmDialogComponent } from "./components/confirm-dialog/confirm-dialog.component"
+import { AddressesComponent } from "./pages/addresses/addresses.component"
 
 @NgModule({
   entryComponents: [ConfirmDialogComponent],
-  declarations: [AppComponent, DomainsComponent, ConfirmDialogComponent, ConfirmDialogComponent],
+  declarations: [AppComponent, DomainsComponent, ConfirmDialogComponent, ConfirmDialogComponent, AddressesComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -43,7 +47,10 @@ import { ConfirmDialogComponent } from "./components/confirm-dialog/confirm-dial
     MatGridListModule,
     FlexLayoutModule,
     MatTooltipModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatSortModule
   ],
   providers: [],
   bootstrap: [AppComponent]

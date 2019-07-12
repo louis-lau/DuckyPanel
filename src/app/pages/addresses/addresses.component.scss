@@ -1,0 +1,31 @@
+// Align actions column to the right
+.mat-column-actions {
+  flex: 0 0 120px;
+}
+
+// Align actions column center
+.mat-column-actions.mat-header-cell {
+  justify-content: center;
+}
+
+// Align used column to be right next to quota column
+.mat-column-quotaUsed {
+  flex-direction: row-reverse;
+  padding-right: 15px;
+}
+
+// Don't let the table get too narrow and hide scrollbar
+mat-table {
+  min-width: 650px;
+}
+
+.address-table-card {
+  overflow-x: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.address-table-card::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}

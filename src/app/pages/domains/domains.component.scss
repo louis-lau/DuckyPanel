@@ -1,7 +1,4 @@
-// Align remove collumn to the right
+// Align actions collumn to the right
 .mat-column-actions {
-  flex-direction: row-reverse;
-}
-.mat-card {
-  margin: 0 0 20px 0;
+  flex: 0 0 40px
 }

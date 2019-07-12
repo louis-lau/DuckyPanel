@@ -5,6 +5,10 @@ import { Observable } from "rxjs"
 import { map } from "rxjs/operators"
 import { ConfirmDialogComponent, ConfirmDialogConfig } from "src/app/components/confirm-dialog/confirm-dialog.component"
 
+interface DomainData {
+  domain: string
+}
+
 @Component({
   selector: "app-domains",
   templateUrl: "./domains.component.html",
@@ -12,7 +16,7 @@ import { ConfirmDialogComponent, ConfirmDialogConfig } from "src/app/components/
 })
 export class DomainsComponent implements OnInit {
   public displayedColumns = ["domain", "actions"]
-  public dataSource: MatTableDataSource<UserData>
+  public dataSource: MatTableDataSource<DomainData>
   @ViewChild(MatPaginator, { static: true }) public paginator: MatPaginator
   @ViewChild(MatSort, { static: true }) public sort: MatSort
   public isHandset$: Observable<boolean> = this.breakpointObserver
@@ -23,13 +27,15 @@ export class DomainsComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     public dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) {
+  ) {}
+
+  public ngOnInit(): void {
     // Create 100 domains
     var domains = []
     for (let i = 1; i <= 100; i++) {
       /*users.push(createNewUser(i));*/
 
-      domains.push({ domain: `domain${i}.com`, actions: "remove" })
+      domains.push({ domain: `domain${i}.com` })
     }
 
     // Assign the data to the data source for the table to render
@@ -40,8 +46,6 @@ export class DomainsComponent implements OnInit {
     this.dataSource.paginator = this.paginator
     this.dataSource.sort = this.sort
   }
-
-  public ngOnInit(): void {}
 
   public removeConfirm(domain: string): void {
     let dialogConfig: ConfirmDialogConfig = {
@@ -68,8 +72,4 @@ export class DomainsComponent implements OnInit {
       }
     })
   }
-}
-
-interface UserData {
-  domain: string
 }

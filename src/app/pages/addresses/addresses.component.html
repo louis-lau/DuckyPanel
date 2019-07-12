@@ -1,0 +1,74 @@
+<div fxLayout="column" fxLayoutGap="10px">
+  <mat-card>
+    <mat-card-title>Your Addresses</mat-card-title>
+    <mat-card-content
+      >Cat ipsum dolor sit amet, spot something, big eyes, big eyes, crouch, shake butt, prepare to pounce leave fur on
+      owners clothes fooled again thinking the dog likes me yet swat at dog. Meow go back to sleep owner brings food and
+      water tries to pet on head.</mat-card-content
+    >
+  </mat-card>
+  <mat-card class="address-table-card">
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter" />
+    </mat-form-field>
+    <mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+        <mat-cell *matCellDef="let row" data-label="name"> {{ row.name }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="address">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Address </mat-header-cell>
+        <mat-cell *matCellDef="let row" data-label="address"> {{ row.address }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="quotaUsed">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Used </mat-header-cell>
+        <mat-cell *matCellDef="let row" data-label="quotaUsed"> {{ row.quotaUsed }} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="quotaAllowed">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Quota </mat-header-cell>
+        <mat-cell *matCellDef="let row" data-label="quotaAllowed"> {{ row.quotaAllowed }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+        <mat-cell *matCellDef="let row" data-label="actions">
+          <button
+            (click)="removeConfirm(row.domain)"
+            matTooltip="Modify account"
+            matTooltipPosition="left"
+            matTooltipShowDelay="500"
+            mat-icon-button
+            aria-label="Modify account"
+          >
+            <mat-icon>settings</mat-icon>
+          </button>
+          <button
+            (click)="removeConfirm(row.domain)"
+            matTooltip="Account filters"
+            matTooltipPosition="left"
+            matTooltipShowDelay="500"
+            mat-icon-button
+            aria-label="Account filters"
+          >
+            <mat-icon>filter_list</mat-icon>
+          </button>
+          <button
+            (click)="removeConfirm(row.domain)"
+            matTooltip="Remove this account"
+            matTooltipPosition="left"
+            matTooltipShowDelay="500"
+            mat-icon-button
+            aria-label="Remove this account"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"> </mat-row>
+    </mat-table>
+  </mat-card>
+</div>
