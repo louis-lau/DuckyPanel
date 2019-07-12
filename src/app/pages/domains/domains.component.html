@@ -15,7 +15,7 @@
         <mat-header-cell *matHeaderCellDef mat-sort-header> Actions </mat-header-cell>
         <mat-cell *matCellDef="let row" data-label="actions">
           <button
-            (click)="removeConfirm(row.domain)"
+            (click)="removeConfirmDialog(row.domain)"
             matTooltip="Remove this domain"
             matTooltipPosition="left"
             matTooltipShowDelay="500"
@@ -33,3 +33,4 @@
     <mat-paginator [pageSizeOptions]="[10, 25, 50, 100, 250]"></mat-paginator>
   </mat-card>
 </div>
+<app-fab-button icon="add"></app-fab-button>

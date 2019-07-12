@@ -47,7 +47,7 @@ export class DomainsComponent implements OnInit {
     this.dataSource.sort = this.sort
   }
 
-  public removeConfirm(domain: string): void {
+  public removeConfirmDialog(domain: string): void {
     let dialogConfig: ConfirmDialogConfig = {
       data: {
         title: `Remove ${domain}`,

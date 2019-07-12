@@ -26,10 +26,18 @@ import {
 import { DomainsComponent } from "./pages/domains/domains.component"
 import { ConfirmDialogComponent } from "./components/confirm-dialog/confirm-dialog.component"
 import { AddressesComponent } from "./pages/addresses/addresses.component"
+import { FabButtonComponent } from "./components/fab-button/fab-button.component"
 
 @NgModule({
   entryComponents: [ConfirmDialogComponent],
-  declarations: [AppComponent, DomainsComponent, ConfirmDialogComponent, ConfirmDialogComponent, AddressesComponent],
+  declarations: [
+    AppComponent,
+    DomainsComponent,
+    ConfirmDialogComponent,
+    ConfirmDialogComponent,
+    AddressesComponent,
+    FabButtonComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
