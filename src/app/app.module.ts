@@ -21,22 +21,26 @@ import {
   MatSnackBarModule,
   MatFormFieldModule,
   MatInputModule,
-  MatSortModule
+  MatSortModule,
+  MatOptionModule,
+  MatSelectModule
 } from "@angular/material"
 import { DomainsComponent } from "./pages/domains/domains.component"
 import { ConfirmDialogComponent } from "./components/confirm-dialog/confirm-dialog.component"
 import { AddressesComponent } from "./pages/addresses/addresses.component"
 import { FabButtonComponent } from "./components/fab-button/fab-button.component"
+import { AddressDialogComponent } from "./pages/addresses/components/address-dialog/address-dialog.component"
 
 @NgModule({
-  entryComponents: [ConfirmDialogComponent],
+  entryComponents: [ConfirmDialogComponent, AddressDialogComponent],
   declarations: [
     AppComponent,
     DomainsComponent,
     ConfirmDialogComponent,
     ConfirmDialogComponent,
     AddressesComponent,
-    FabButtonComponent
+    FabButtonComponent,
+    AddressDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -57,6 +61,8 @@ import { FabButtonComponent } from "./components/fab-button/fab-button.component
     MatTooltipModule,
     MatSnackBarModule,
     MatInputModule,
+    MatOptionModule,
+    MatSelectModule,
     MatFormFieldModule,
     MatSortModule
   ],

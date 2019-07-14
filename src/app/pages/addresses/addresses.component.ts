@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from "@angular/core"
-import { MatTableDataSource, MatSort } from "@angular/material"
+import { MatTableDataSource, MatSort, MatDialog } from "@angular/material"
+import { AddressDialogComponent } from "./components/address-dialog/address-dialog.component"
 
 interface AddressData {
   id: string
@@ -20,12 +21,12 @@ export class AddressesComponent implements OnInit {
   public dataSource: MatTableDataSource<AddressData>
   @ViewChild(MatSort, { static: true }) public sort: MatSort
 
-  public constructor() {}
+  public constructor(public dialog: MatDialog) {}
 
   public ngOnInit(): void {
     // Create 100 addresses
     var addresses: AddressData[] = []
-    for (let i = 1; i <= 100; i++) {
+    for (let i = 1; i <= 25; i++) {
       /*users.push(createNewUser(i));*/
 
       let randomAllowed = Math.floor(Math.random() * Math.floor(10)) * 1073741824
@@ -65,5 +66,13 @@ export class AddressesComponent implements OnInit {
       sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
       i = Math.floor(Math.log(bytes) / Math.log(k))
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i]
+  }
+
+  public addressDialog(id?: string): void {
+    let dialogConfig = {}
+    if (id) {
+      dialogConfig = { data: { id: id } }
+    }
+    this.dialog.open(AddressDialogComponent, dialogConfig)
   }
 }

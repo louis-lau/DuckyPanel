@@ -8,8 +8,9 @@
     >
   </mat-card>
   <mat-card class="address-table-card">
-    <mat-form-field>
-      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter" />
+    <mat-form-field appearance="fill">
+        <mat-label>Filter</mat-label>
+      <input matInput type="search" (keyup)="applyFilter($event.target.value)"/>
     </mat-form-field>
     <mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="name">
@@ -35,32 +36,32 @@
         <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
         <mat-cell *matCellDef="let row" data-label="actions">
           <button
-            (click)="removeConfirm(row.domain)"
-            matTooltip="Modify account"
+            (click)="addressDialog(row.id)"
+            matTooltip="Modify address"
             matTooltipPosition="left"
             matTooltipShowDelay="500"
             mat-icon-button
-            aria-label="Modify account"
+            aria-label="Modify address"
           >
             <mat-icon>settings</mat-icon>
           </button>
           <button
             (click)="removeConfirm(row.domain)"
-            matTooltip="Account filters"
+            matTooltip="Address filters"
             matTooltipPosition="left"
             matTooltipShowDelay="500"
             mat-icon-button
-            aria-label="Account filters"
+            aria-label="Address filters"
           >
             <mat-icon>filter_list</mat-icon>
           </button>
           <button
             (click)="removeConfirm(row.domain)"
-            matTooltip="Remove this account"
+            matTooltip="Remove this address"
             matTooltipPosition="left"
             matTooltipShowDelay="500"
             mat-icon-button
-            aria-label="Remove this account"
+            aria-label="Remove this address"
           >
             <mat-icon>delete</mat-icon>
           </button>
@@ -72,4 +73,4 @@
     </mat-table>
   </mat-card>
 </div>
-<app-fab-button icon="add"></app-fab-button>
+<app-fab-button (click)="addressDialog()" icon="add"></app-fab-button>

@@ -2,7 +2,7 @@
 <mat-dialog-content>
   {{ data.text }}
 </mat-dialog-content>
-<mat-dialog-actions>
+<mat-dialog-actions align="end">
   <ng-container *ngFor="let button of data.buttons">
     <button mat-button [color]="button.color" [mat-dialog-close]="button.result">{{ button.text }}</button>
   </ng-container>

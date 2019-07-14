@@ -3,7 +3,8 @@ import { MatTableDataSource, MatPaginator, MatSort, MatDialog, MatSnackBar } fro
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
 import { Observable } from "rxjs"
 import { map } from "rxjs/operators"
-import { ConfirmDialogComponent, ConfirmDialogConfig } from "src/app/components/confirm-dialog/confirm-dialog.component"
+import { ConfirmDialogComponent } from "src/app/components/confirm-dialog/confirm-dialog.component"
+import { ConfirmDialogConfig } from "src/app/components/confirm-dialog/confirm-dialog.interfaces"
 
 interface DomainData {
   domain: string
@@ -54,11 +55,11 @@ export class DomainsComponent implements OnInit {
         text: "Are you sure? This will also remove accounts associated with this domain.",
         buttons: [
           {
-            text: "No",
+            text: "NO",
             color: "primary"
           },
           {
-            text: "Yes",
+            text: "YES",
             color: "warn",
             result: true
           }
