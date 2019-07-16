@@ -23,7 +23,8 @@ import {
   MatInputModule,
   MatSortModule,
   MatOptionModule,
-  MatSelectModule
+  MatSelectModule,
+  MatCheckboxModule
 } from "@angular/material"
 import { DomainsComponent } from "./pages/domains/domains.component"
 import { ConfirmDialogComponent } from "./components/confirm-dialog/confirm-dialog.component"
@@ -64,7 +65,8 @@ import { AddressDialogComponent } from "./pages/addresses/components/address-dia
     MatOptionModule,
     MatSelectModule,
     MatFormFieldModule,
-    MatSortModule
+    MatSortModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]
