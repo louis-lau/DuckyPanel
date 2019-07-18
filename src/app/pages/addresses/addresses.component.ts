@@ -14,7 +14,7 @@ import { HttpErrorResponse } from "@angular/common/http"
 export class AddressesComponent implements OnInit {
   private displayedColumns = ["name", "address", "quotaUsed", "quotaAllowed", "actions"]
   private dataSource: MatTableDataSource<Addresses>
-  private addressSubscription: Subscription
+  public addressSubscription: Subscription
 
   @ViewChild(MatSort, { static: true })
   private sort: MatSort

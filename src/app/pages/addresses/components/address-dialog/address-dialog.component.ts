@@ -7,10 +7,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material"
   styleUrls: ["./address-dialog.component.scss"]
 })
 export class AddressDialogComponent implements OnInit {
-  private isModifyDialog: boolean
-  private addressName: string
-  private domains: string[]
-  private addressDetails: AddressDetails
+  public isModifyDialog: boolean
+  public addressName: string
+  public domains: string[]
+  public addressDetails: AddressDetails
   public constructor(public dialogRef: MatDialogRef<AddressDialogComponent>, @Inject(MAT_DIALOG_DATA) public data) {}
 
   public ngOnInit(): void {
