@@ -1,15 +1,10 @@
 import { Component, OnInit, ViewChild } from "@angular/core"
 import { MatTableDataSource, MatSort, MatDialog } from "@angular/material"
 import { AddressDialogComponent } from "./components/address-dialog/address-dialog.component"
-
-interface AddressData {
-  id: string
-  name: string
-  address: string
-  quotaAllowed: number | string
-  quotaUsed: number | string
-  disabled: boolean
-}
+import { AddressesService } from "./addresses.service"
+import { Addresses } from "./addresses.interfaces"
+import { Subscription } from "rxjs"
+import { HttpErrorResponse } from "@angular/common/http"
 
 @Component({
   selector: "app-addresses",
@@ -17,42 +12,36 @@ interface AddressData {
   styleUrls: ["./addresses.component.scss"]
 })
 export class AddressesComponent implements OnInit {
-  public displayedColumns = ["name", "address", "quotaUsed", "quotaAllowed", "actions"]
-  public dataSource: MatTableDataSource<AddressData>
-  @ViewChild(MatSort, { static: true }) public sort: MatSort
+  private displayedColumns = ["name", "address", "quotaUsed", "quotaAllowed", "actions"]
+  private dataSource: MatTableDataSource<Addresses>
+  private addressSubscription: Subscription
 
-  public constructor(public dialog: MatDialog) {}
+  @ViewChild(MatSort, { static: true })
+  private sort: MatSort
+
+  public constructor(public dialog: MatDialog, private addressesService: AddressesService) {}
 
   public ngOnInit(): void {
-    // Create 100 addresses
-    var addresses: AddressData[] = []
-    for (let i = 1; i <= 25; i++) {
-      /*users.push(createNewUser(i));*/
+    this.getAddresses()
+  }
 
-      let randomAllowed = Math.floor(Math.random() * Math.floor(10)) * 1073741824
-      let randomUsed = Math.floor(Math.random() * Math.floor(randomAllowed))
+  public getAddresses(): void {
+    this.addressSubscription = this.addressesService.getAddresses().subscribe(
+      (addresses: Addresses[]): void => {
+        // Convert quota bytes to human readable
+        for (const address of addresses) {
+          address.quotaAllowed = this.formatBytes(address.quotaAllowed)
+          address.quotaUsed = this.formatBytes(address.quotaUsed)
+        }
 
-      let user: AddressData = {
-        id: `59cb948ad80a820b68f0523${i}`,
-        name: `John Doe ${i}`,
-        address: `john${i}@domain.com`,
-        quotaAllowed: randomAllowed,
-        quotaUsed: randomUsed,
-        disabled: false
+        // Assign the data to the data source for the table to render
+        this.dataSource = new MatTableDataSource(addresses)
+        this.dataSource.sort = this.sort
+      },
+      (error: HttpErrorResponse): void => {
+        alert(error.message)
       }
-      addresses.push(user)
-    }
-
-    // Convert quota bytes to human readable
-    for (const address of addresses) {
-      address.quotaAllowed = this.formatBytes(address.quotaAllowed)
-      address.quotaUsed = this.formatBytes(address.quotaUsed)
-    }
-
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(addresses)
-    console.log(this.dataSource)
-    this.dataSource.sort = this.sort
+    )
   }
 
   public applyFilter(filterValue: string): void {

@@ -24,13 +24,15 @@ import {
   MatSortModule,
   MatOptionModule,
   MatSelectModule,
-  MatCheckboxModule
+  MatCheckboxModule,
+  MatProgressSpinnerModule
 } from "@angular/material"
 import { DomainsComponent } from "./pages/domains/domains.component"
 import { ConfirmDialogComponent } from "./components/confirm-dialog/confirm-dialog.component"
 import { AddressesComponent } from "./pages/addresses/addresses.component"
 import { FabButtonComponent } from "./components/fab-button/fab-button.component"
 import { AddressDialogComponent } from "./pages/addresses/components/address-dialog/address-dialog.component"
+import { HttpClientModule } from "@angular/common/http"
 
 @NgModule({
   entryComponents: [ConfirmDialogComponent, AddressDialogComponent],
@@ -46,8 +48,10 @@ import { AddressDialogComponent } from "./pages/addresses/components/address-dia
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     LayoutModule,
+    FlexLayoutModule,
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
@@ -58,7 +62,6 @@ import { AddressDialogComponent } from "./pages/addresses/components/address-dia
     MatCardModule,
     MatDialogModule,
     MatGridListModule,
-    FlexLayoutModule,
     MatTooltipModule,
     MatSnackBarModule,
     MatInputModule,
@@ -66,7 +69,8 @@ import { AddressDialogComponent } from "./pages/addresses/components/address-dia
     MatSelectModule,
     MatFormFieldModule,
     MatSortModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

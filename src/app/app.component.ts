@@ -63,5 +63,5 @@ export class AppComponent {
 
   public isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
-    .pipe(map(result => result.matches))
+    .pipe(map((result): boolean => result.matches))
 }

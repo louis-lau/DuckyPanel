@@ -22,7 +22,7 @@ export class DomainsComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) public sort: MatSort
   public isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
-    .pipe(map(result => result.matches))
+    .pipe(map((result): boolean => result.matches))
 
   public constructor(
     private breakpointObserver: BreakpointObserver,
