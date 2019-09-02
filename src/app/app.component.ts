@@ -23,7 +23,7 @@ export class AppComponent {
       ]
     },
     {
-      title: "Address management",
+      title: "Email account management",
       items: [
         {
           name: "Domains",
@@ -31,9 +31,9 @@ export class AppComponent {
           link: "/domains"
         },
         {
-          name: "E-mail Accounts",
+          name: "Email Accounts",
           icon: "email",
-          link: "/addresses"
+          link: "/accounts"
         },
         {
           name: "Filters",

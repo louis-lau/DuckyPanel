@@ -1,4 +1,4 @@
-interface AddressDetails {
+interface AccountDetails {
   id: string
   name: string
   address: string

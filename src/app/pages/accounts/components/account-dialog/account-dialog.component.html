@@ -1,9 +1,9 @@
-<h2 mat-dialog-title>{{ isModifyDialog ? "Modify" : "New" }} address</h2>
+<h2 mat-dialog-title>{{ isModifyDialog ? "Modify" : "New" }} email account</h2>
 <mat-dialog-content>
   <form fxLayout="column" fxLayoutGap="10px">
     <mat-form-field appearance="fill">
       <mat-label>Name</mat-label>
-      <input matInput [value]="isModifyDialog ? addressDetails.name : null" />
+      <input matInput [value]="isModifyDialog ? accountDetails.name : null" />
     </mat-form-field>
     <div fxLayout="row" class="row-container" fxLayoutGap="10px">
       <mat-form-field appearance="fill" class="user-input">
@@ -30,18 +30,18 @@
     <div fxLayout="row" fxLayoutGap="10px" class="row-container">
       <mat-form-field appearance="fill">
         <mat-label>Spam Treshold</mat-label>
-        <input matInput type="number" [value]="isModifyDialog ? addressDetails.spamLevel : 50" />
+        <input matInput type="number" [value]="isModifyDialog ? accountDetails.spamLevel : 50" />
         <mat-hint>0-100</mat-hint>
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Quota</mat-label>
-        <input matInput type="number" [value]="isModifyDialog ? addressDetails.quota.allowed : 0" />
+        <input matInput type="number" [value]="isModifyDialog ? accountDetails.quota.allowed : 0" />
         <span matSuffix>MB</span>
         <mat-hint *ngIf="isModifyDialog">Currently using 500MB</mat-hint>
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Disabled services</mat-label>
-        <mat-select multiple [value]="isModifyDialog ? addressDetails.disabledScopes : null">
+        <mat-select multiple [value]="isModifyDialog ? accountDetails.disabledScopes : null">
           <mat-option value="smtp">SMTP</mat-option>
           <mat-option value="imap">IMAP</mat-option>
           <mat-option value="pop3">POP3</mat-option>
@@ -52,5 +52,5 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>CANCEL</button>
-  <button mat-raised-button color="primary" (click)="updateAddress()">SAVE</button>
+  <button mat-raised-button color="primary" (click)="updateAccount()">SAVE</button>
 </mat-dialog-actions>

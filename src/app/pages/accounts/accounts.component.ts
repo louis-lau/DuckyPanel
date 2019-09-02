@@ -1,41 +1,41 @@
 import { Component, OnInit, ViewChild } from "@angular/core"
 import { MatTableDataSource, MatSort, MatDialog } from "@angular/material"
-import { AddressDialogComponent } from "./components/address-dialog/address-dialog.component"
-import { AddressesService } from "./addresses.service"
-import { Addresses } from "./addresses.interfaces"
+import { AccountDialogComponent } from "./components/account-dialog/account-dialog.component"
+import { AccountsService } from "./accounts.service"
+import { Accounts } from "./accounts.interfaces"
 import { Subscription } from "rxjs"
 import { HttpErrorResponse } from "@angular/common/http"
 
 @Component({
-  selector: "app-addresses",
-  templateUrl: "./addresses.component.html",
-  styleUrls: ["./addresses.component.scss"]
+  selector: "app-accounts",
+  templateUrl: "./accounts.component.html",
+  styleUrls: ["./accounts.component.scss"]
 })
-export class AddressesComponent implements OnInit {
+export class AccountsComponent implements OnInit {
   private displayedColumns = ["name", "address", "quotaUsed", "quotaAllowed", "actions"]
-  private dataSource: MatTableDataSource<Addresses>
-  public addressSubscription: Subscription
+  private dataSource: MatTableDataSource<Accounts>
+  public accountSubscription: Subscription
 
   @ViewChild(MatSort, { static: true })
   private sort: MatSort
 
-  public constructor(public dialog: MatDialog, private addressesService: AddressesService) {}
+  public constructor(public dialog: MatDialog, private accountsService: AccountsService) {}
 
   public ngOnInit(): void {
-    this.getAddresses()
+    this.getAccounts()
   }
 
-  public getAddresses(): void {
-    this.addressSubscription = this.addressesService.getAddresses().subscribe(
-      (addresses: Addresses[]): void => {
+  public getAccounts(): void {
+    this.accountSubscription = this.accountsService.getAccounts().subscribe(
+      (accounts: Accounts[]): void => {
         // Convert quota bytes to human readable
-        for (const address of addresses) {
-          address.quotaAllowed = this.formatBytes(address.quotaAllowed)
-          address.quotaUsed = this.formatBytes(address.quotaUsed)
+        for (const account of accounts) {
+          account.quotaAllowed = this.formatBytes(account.quotaAllowed)
+          account.quotaUsed = this.formatBytes(account.quotaUsed)
         }
 
         // Assign the data to the data source for the table to render
-        this.dataSource = new MatTableDataSource(addresses)
+        this.dataSource = new MatTableDataSource(accounts)
         this.dataSource.sort = this.sort
       },
       (error: HttpErrorResponse): void => {
@@ -57,11 +57,11 @@ export class AddressesComponent implements OnInit {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i]
   }
 
-  public addressDialog(id?: string): void {
+  public accountDialog(id?: string): void {
     let dialogConfig = {}
     if (id) {
       dialogConfig = { data: { id: id } }
     }
-    this.dialog.open(AddressDialogComponent, dialogConfig)
+    this.dialog.open(AccountDialogComponent, dialogConfig)
   }
 }

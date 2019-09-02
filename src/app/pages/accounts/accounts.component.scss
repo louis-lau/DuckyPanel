@@ -19,13 +19,13 @@ mat-table {
   min-width: 650px;
 }
 
-.address-table-card {
+.account-table-card {
   overflow-x: scroll;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
-.address-table-card::-webkit-scrollbar {
+.account-table-card::-webkit-scrollbar {
   width: 0;
   height: 0;
 }

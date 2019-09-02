@@ -29,21 +29,21 @@ import {
 } from "@angular/material"
 import { DomainsComponent } from "./pages/domains/domains.component"
 import { ConfirmDialogComponent } from "./components/confirm-dialog/confirm-dialog.component"
-import { AddressesComponent } from "./pages/addresses/addresses.component"
+import { AccountsComponent } from "./pages/accounts/accounts.component"
 import { FabButtonComponent } from "./components/fab-button/fab-button.component"
-import { AddressDialogComponent } from "./pages/addresses/components/address-dialog/address-dialog.component"
+import { AccountDialogComponent } from "./pages/accounts/components/account-dialog/account-dialog.component"
 import { HttpClientModule } from "@angular/common/http"
 
 @NgModule({
-  entryComponents: [ConfirmDialogComponent, AddressDialogComponent],
+  entryComponents: [ConfirmDialogComponent, AccountDialogComponent],
   declarations: [
     AppComponent,
     DomainsComponent,
     ConfirmDialogComponent,
     ConfirmDialogComponent,
-    AddressesComponent,
+    AccountsComponent,
     FabButtonComponent,
-    AddressDialogComponent
+    AccountDialogComponent
   ],
   imports: [
     BrowserModule,

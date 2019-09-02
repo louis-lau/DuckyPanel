@@ -1,12 +1,12 @@
 import { TestBed, TestBedStatic } from "@angular/core/testing"
 
-import { AddressesService } from "./addresses.service"
+import { AccountsService } from "./accounts.service"
 
-describe("AddressesService", (): void => {
+describe("AccountsService", (): void => {
   beforeEach((): TestBedStatic => TestBed.configureTestingModule({}))
 
   it("should be created", (): void => {
-    const service: AddressesService = TestBed.get(AddressesService)
+    const service: AccountsService = TestBed.get(AccountsService)
     expect(service).toBeTruthy()
   })
 })
