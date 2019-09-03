@@ -13,7 +13,6 @@ import {
   MatIconModule,
   MatListModule,
   MatTableModule,
-  MatPaginatorModule,
   MatCardModule,
   MatDialogModule,
   MatGridListModule,
@@ -33,6 +32,19 @@ import { AccountsComponent } from "./pages/accounts/accounts.component"
 import { FabButtonComponent } from "./components/fab-button/fab-button.component"
 import { AccountDialogComponent } from "./pages/accounts/components/account-dialog/account-dialog.component"
 import { HttpClientModule } from "@angular/common/http"
+import { ApiModule, Configuration, ConfigurationParameters } from "ducky-api-client-angular"
+
+// TODO: take these values from a config file or envvar
+export function apiConfigFactory(): Configuration {
+  const params: ConfigurationParameters = {
+    basePath: "http://localhost:3000",
+    apiKeys: {
+      Authorization:
+        "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZDRkZTYwMTllZGI5YjM1NTA0ZDYxZDgiLCJpYXQiOjE1Njc1MTI2NTYsImV4cCI6MTU2ODExNzQ1Nn0.XWmpIkEaTW1KX4-tiXpSN1C39y5oia4mi1guc1UkuJ4"
+    }
+  }
+  return new Configuration(params)
+}
 
 @NgModule({
   entryComponents: [ConfirmDialogComponent, AccountDialogComponent],
@@ -58,7 +70,6 @@ import { HttpClientModule } from "@angular/common/http"
     MatIconModule,
     MatListModule,
     MatTableModule,
-    MatPaginatorModule,
     MatCardModule,
     MatDialogModule,
     MatGridListModule,
@@ -70,7 +81,8 @@ import { HttpClientModule } from "@angular/common/http"
     MatFormFieldModule,
     MatSortModule,
     MatCheckboxModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    ApiModule.forRoot(apiConfigFactory)
   ],
   providers: [],
   bootstrap: [AppComponent]

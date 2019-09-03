@@ -1,8 +1,6 @@
-export interface Accounts {
-  id: string
-  name: string
-  address: string
-  quotaAllowed: number | string
-  quotaUsed: number | string
-  disabled: boolean
+import { AccountListItem } from "ducky-api-client-angular"
+
+export interface AccountListItemFormatted extends AccountListItem {
+  quotaAllowedFormatted: string
+  quotaUsedFormatted: string
 }

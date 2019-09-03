@@ -28,13 +28,14 @@
           <mat-cell *matCellDef="let row" data-label="address"> {{ row.address }} </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="quotaUsed">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> Used </mat-header-cell>
-          <mat-cell *matCellDef="let row" data-label="quotaUsed"> {{ row.quotaUsed }} </mat-cell>
+        <ng-container matColumnDef="quotaUsedFormatted">
+          <mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Used </mat-header-cell>
+          <mat-cell *matCellDef="let row" data-label="quotaUsedFormatted"> {{ row.quotaUsedFormatted }} </mat-cell>
         </ng-container>
-        <ng-container matColumnDef="quotaAllowed">
+        
+        <ng-container matColumnDef="quotaAllowedFormatted">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Quota </mat-header-cell>
-          <mat-cell *matCellDef="let row" data-label="quotaAllowed"> {{ row.quotaAllowed }} </mat-cell>
+          <mat-cell *matCellDef="let row" data-label="quotaAllowedFormatted"> {{ row.quotaAllowedFormatted }} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="actions">

@@ -2,16 +2,17 @@
   "eslint.validate": [
     "javascript",
     "javascriptreact",
-    "typescript",
-    "typescriptreact"
+    { "language": "typescript", "autoFix": true },
+    { "language": "typescriptreact", "autoFix": true }
   ],
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "prettier.eslintIntegration": true,
   "editor.tabSize": 2,
   "workbench.colorCustomizations": {
     "titleBar.activeBackground": "#b52e31",
     "titleBar.inactiveBackground": "#b52e3199",
     "titleBar.activeForeground": "#e7e7e7",
     "titleBar.inactiveForeground": "#e7e7e799"
-  }
+  },
+  "eslint.autoFixOnSave": true,
+  "liveServer.settings.root": "/dist/DuckyPanel"
 }

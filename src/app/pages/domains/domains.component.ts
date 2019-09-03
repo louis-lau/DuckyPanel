@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild } from "@angular/core"
 import { MatTableDataSource, MatPaginator, MatSort, MatDialog, MatSnackBar } from "@angular/material"
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
-import { Observable } from "rxjs"
+import { Observable, Subscription } from "rxjs"
 import { map } from "rxjs/operators"
 import { ConfirmDialogComponent } from "src/app/components/confirm-dialog/confirm-dialog.component"
 import { ConfirmDialogConfig } from "src/app/components/confirm-dialog/confirm-dialog.interfaces"
+import { DomainsService, Domain } from "ducky-api-client-angular"
+import { HttpErrorResponse } from "@angular/common/http"
 
 interface DomainData {
   domain: string
@@ -18,34 +20,39 @@ interface DomainData {
 export class DomainsComponent implements OnInit {
   public displayedColumns = ["domain", "actions"]
   public dataSource: MatTableDataSource<DomainData>
-  @ViewChild(MatPaginator, { static: true }) public paginator: MatPaginator
-  @ViewChild(MatSort, { static: true }) public sort: MatSort
+  public domainSubscription: Subscription
   public isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(map((result): boolean => result.matches))
 
+  @ViewChild(MatSort, { static: false })
+  private set content(sort: MatSort) {
+    // Needed because of the ngif wrapper around the table
+    if (this.dataSource) {
+      this.dataSource.sort = sort
+    }
+  }
+
   public constructor(
     private breakpointObserver: BreakpointObserver,
     public dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private readonly domainsService: DomainsService
   ) {}
 
   public ngOnInit(): void {
-    // Create 100 domains
-    var domains = []
-    for (let i = 1; i <= 100; i++) {
-      /*users.push(createNewUser(i));*/
-
-      domains.push({ domain: `domain${i}.com` })
-    }
-
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(domains)
+    this.getDomains()
   }
 
-  public ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator
-    this.dataSource.sort = this.sort
+  public getDomains(): void {
+    this.domainSubscription = this.domainsService.domainsGet().subscribe(
+      (domains: Domain[]): void => {
+        this.dataSource = new MatTableDataSource(domains)
+      },
+      (error: HttpErrorResponse): void => {
+        alert(error.message)
+      }
+    )
   }
 
   public removeConfirmDialog(domain: string): void {

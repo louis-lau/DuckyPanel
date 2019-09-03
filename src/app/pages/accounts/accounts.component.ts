@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from "@angular/core"
 import { MatTableDataSource, MatSort, MatDialog } from "@angular/material"
 import { AccountDialogComponent } from "./components/account-dialog/account-dialog.component"
-import { AccountsService } from "./accounts.service"
-import { Accounts } from "./accounts.interfaces"
 import { Subscription } from "rxjs"
 import { HttpErrorResponse } from "@angular/common/http"
+import { EmailAccountsService, AccountListItem } from "ducky-api-client-angular"
+import { AccountListItemFormatted } from "./accounts.interfaces"
 
 @Component({
   selector: "app-accounts",
@@ -12,31 +12,47 @@ import { HttpErrorResponse } from "@angular/common/http"
   styleUrls: ["./accounts.component.scss"]
 })
 export class AccountsComponent implements OnInit {
-  private displayedColumns = ["name", "address", "quotaUsed", "quotaAllowed", "actions"]
-  private dataSource: MatTableDataSource<Accounts>
+  private displayedColumns = ["name", "address", "quotaUsedFormatted", "quotaAllowedFormatted", "actions"]
+  private dataSource: MatTableDataSource<AccountListItemFormatted>
   public accountSubscription: Subscription
 
-  @ViewChild(MatSort, { static: true })
-  private sort: MatSort
+  @ViewChild(MatSort, { static: false })
+  private set content(sort: MatSort) {
+    // Needed because of the ngif wrapper around the table
+    if (this.dataSource) {
+      this.dataSource.sort = sort
+    }
+  }
 
-  public constructor(public dialog: MatDialog, private accountsService: AccountsService) {}
+  public constructor(public dialog: MatDialog, private readonly accountsService: EmailAccountsService) {}
 
   public ngOnInit(): void {
     this.getAccounts()
   }
 
   public getAccounts(): void {
-    this.accountSubscription = this.accountsService.getAccounts().subscribe(
-      (accounts: Accounts[]): void => {
+    this.accountSubscription = this.accountsService.accountsGet().subscribe(
+      (accounts: AccountListItem[]): void => {
+        let accountsFormatted = accounts as AccountListItemFormatted[]
+
         // Convert quota bytes to human readable
-        for (const account of accounts) {
-          account.quotaAllowed = this.formatBytes(account.quotaAllowed)
-          account.quotaUsed = this.formatBytes(account.quotaUsed)
+        for (const accountFormatted of accountsFormatted) {
+          accountFormatted.quotaAllowedFormatted = this.formatBytes(accountFormatted.quota.allowed)
+          accountFormatted.quotaUsedFormatted = this.formatBytes(accountFormatted.quota.used)
         }
 
-        // Assign the data to the data source for the table to render
-        this.dataSource = new MatTableDataSource(accounts)
-        this.dataSource.sort = this.sort
+        this.dataSource = new MatTableDataSource(accountsFormatted)
+        this.dataSource.sortingDataAccessor = (item, property): string | number => {
+          // Sort the number of bytes instead of the formatted string
+          switch (property) {
+            case "quotaUsedFormatted":
+              return item.quota.used
+            case "quotaAllowedFormatted":
+              return item.quota.allowed
+            default:
+              return item[property]
+          }
+        }
       },
       (error: HttpErrorResponse): void => {
         alert(error.message)

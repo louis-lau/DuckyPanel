@@ -23,7 +23,7 @@ export class AppComponent {
       ]
     },
     {
-      title: "Email account management",
+      title: "Account management",
       items: [
         {
           name: "Domains",
