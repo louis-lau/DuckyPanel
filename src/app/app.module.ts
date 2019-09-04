@@ -1,38 +1,38 @@
-import { BrowserModule } from "@angular/platform-browser"
+import { LayoutModule } from "@angular/cdk/layout"
+import { HttpClientModule } from "@angular/common/http"
 import { NgModule } from "@angular/core"
 import { FlexLayoutModule } from "@angular/flex-layout"
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatDialogModule,
+  MatFormFieldModule,
+  MatGridListModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatOptionModule,
+  MatProgressSpinnerModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatSnackBarModule,
+  MatSortModule,
+  MatTableModule,
+  MatToolbarModule,
+  MatTooltipModule
+} from "@angular/material"
+import { BrowserModule } from "@angular/platform-browser"
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
+import { ApiModule, Configuration, ConfigurationParameters } from "ducky-api-client-angular"
 
 import { AppRoutingModule } from "./app-routing.module"
 import { AppComponent } from "./app.component"
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
-import { LayoutModule } from "@angular/cdk/layout"
-import {
-  MatToolbarModule,
-  MatButtonModule,
-  MatSidenavModule,
-  MatIconModule,
-  MatListModule,
-  MatTableModule,
-  MatCardModule,
-  MatDialogModule,
-  MatGridListModule,
-  MatTooltipModule,
-  MatSnackBarModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatSortModule,
-  MatOptionModule,
-  MatSelectModule,
-  MatCheckboxModule,
-  MatProgressSpinnerModule
-} from "@angular/material"
-import { DomainsComponent } from "./pages/domains/domains.component"
 import { ConfirmDialogComponent } from "./components/confirm-dialog/confirm-dialog.component"
-import { AccountsComponent } from "./pages/accounts/accounts.component"
 import { FabButtonComponent } from "./components/fab-button/fab-button.component"
+import { AccountsComponent } from "./pages/accounts/accounts.component"
 import { AccountDialogComponent } from "./pages/accounts/components/account-dialog/account-dialog.component"
-import { HttpClientModule } from "@angular/common/http"
-import { ApiModule, Configuration, ConfigurationParameters } from "ducky-api-client-angular"
+import { DomainsComponent } from "./pages/domains/domains.component"
 
 // TODO: take these values from a config file or envvar
 export function apiConfigFactory(): Configuration {

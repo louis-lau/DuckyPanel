@@ -1,7 +1,8 @@
 import { NgModule } from "@angular/core"
-import { Routes, RouterModule } from "@angular/router"
-import { DomainsComponent } from "./pages/domains/domains.component"
+import { RouterModule, Routes } from "@angular/router"
+
 import { AccountsComponent } from "./pages/accounts/accounts.component"
+import { DomainsComponent } from "./pages/domains/domains.component"
 
 const routes: Routes = [
   {

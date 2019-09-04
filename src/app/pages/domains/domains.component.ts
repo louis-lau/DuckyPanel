@@ -1,12 +1,12 @@
-import { Component, OnInit, ViewChild } from "@angular/core"
-import { MatTableDataSource, MatPaginator, MatSort, MatDialog, MatSnackBar } from "@angular/material"
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
+import { HttpErrorResponse } from "@angular/common/http"
+import { Component, OnInit, ViewChild } from "@angular/core"
+import { MatDialog, MatSnackBar, MatSort, MatTableDataSource } from "@angular/material"
+import { Domain, DomainsService } from "ducky-api-client-angular"
 import { Observable, Subscription } from "rxjs"
 import { map } from "rxjs/operators"
 import { ConfirmDialogComponent } from "src/app/components/confirm-dialog/confirm-dialog.component"
 import { ConfirmDialogConfig } from "src/app/components/confirm-dialog/confirm-dialog.interfaces"
-import { DomainsService, Domain } from "ducky-api-client-angular"
-import { HttpErrorResponse } from "@angular/common/http"
 
 interface DomainData {
   domain: string
@@ -56,7 +56,7 @@ export class DomainsComponent implements OnInit {
   }
 
   public removeConfirmDialog(domain: string): void {
-    let dialogConfig: ConfirmDialogConfig = {
+    const dialogConfig: ConfirmDialogConfig = {
       data: {
         title: `Remove ${domain}`,
         text: "Are you sure? This will also remove accounts associated with this domain.",
@@ -73,7 +73,7 @@ export class DomainsComponent implements OnInit {
         ]
       }
     }
-    let dialog = this.dialog.open(ConfirmDialogComponent, dialogConfig)
+    const dialog = this.dialog.open(ConfirmDialogComponent, dialogConfig)
     dialog.afterClosed().subscribe((result): void => {
       if (result) {
         this.snackBar.open(`${domain} has been removed`, undefined, { duration: 3000 })

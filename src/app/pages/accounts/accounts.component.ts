@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from "@angular/core"
-import { MatTableDataSource, MatSort, MatDialog } from "@angular/material"
-import { AccountDialogComponent } from "./components/account-dialog/account-dialog.component"
-import { Subscription } from "rxjs"
 import { HttpErrorResponse } from "@angular/common/http"
-import { EmailAccountsService, AccountListItem } from "ducky-api-client-angular"
+import { Component, OnInit, ViewChild } from "@angular/core"
+import { MatDialog, MatSort, MatTableDataSource } from "@angular/material"
+import { AccountListItem, EmailAccountsService } from "ducky-api-client-angular"
+import { Subscription } from "rxjs"
+
 import { AccountListItemFormatted } from "./accounts.interfaces"
+import { AccountDialogComponent } from "./components/account-dialog/account-dialog.component"
 
 @Component({
   selector: "app-accounts",
@@ -33,7 +34,7 @@ export class AccountsComponent implements OnInit {
   public getAccounts(): void {
     this.accountSubscription = this.accountsService.accountsGet().subscribe(
       (accounts: AccountListItem[]): void => {
-        let accountsFormatted = accounts as AccountListItemFormatted[]
+        const accountsFormatted = accounts as AccountListItemFormatted[]
 
         // Convert quota bytes to human readable
         for (const accountFormatted of accountsFormatted) {
@@ -66,7 +67,7 @@ export class AccountsComponent implements OnInit {
 
   public formatBytes(bytes, decimals?): string {
     if (bytes == 0) return "0 Bytes"
-    var k = 1024,
+    const k = 1024,
       dm = decimals || 2,
       sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
       i = Math.floor(Math.log(bytes) / Math.log(k))
