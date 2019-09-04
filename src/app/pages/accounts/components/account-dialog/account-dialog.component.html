@@ -1,56 +1,103 @@
-<h2 mat-dialog-title>{{ isModifyDialog ? "Modify" : "New" }} email account</h2>
-<mat-dialog-content>
-  <form fxLayout="column" fxLayoutGap="10px">
-    <mat-form-field appearance="fill">
-      <mat-label>Name</mat-label>
-      <input matInput [value]="isModifyDialog ? accountDetails.name : null" />
-    </mat-form-field>
-    <div fxLayout="row" class="row-container" fxLayoutGap="10px">
-      <mat-form-field appearance="fill" class="user-input">
-        <mat-label>User</mat-label>
-        <input matInput [disabled]="isModifyDialog ? 'disabled' : null" [value]="isModifyDialog ? addressName : null" />
+<ng-template #loading>
+  <mat-spinner diameter="50"></mat-spinner>
+</ng-template>
+<ng-container
+  *ngIf="
+    (domainsSubscription && domainsSubscription.closed) ||
+      (accountDetailsSubscription && accountDetailsSubscription.closed);
+    else loading
+  "
+>
+  <h2 mat-dialog-title>{{ isModifyDialog ? "Modify" : "New" }} email account</h2>
+  <mat-dialog-content>
+    <form fxLayout="column" fxLayoutGap="10px">
+      <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput [value]="isModifyDialog ? accountDetails.name : null" />
       </mat-form-field>
-      <div class="at-symbol" fxLayout="column" fxLayoutAlign="center">
-        @
+
+      <div [fxLayout]="(isHandset$ | async) ? 'column' : 'row'" class="row-container" fxLayoutGap="10px">
+        <mat-form-field appearance="fill" [class.user-input-right]="!(isHandset$ | async)">
+          <mat-label>User</mat-label>
+          <input
+            matInput
+            [disabled]="isModifyDialog ? 'disabled' : null"
+            [value]="isModifyDialog ? addressName : null"
+            [required]="isModifyDialog ? null : 'required'"
+          />
+        </mat-form-field>
+
+        <div *ngIf="!(isHandset$ | async)" class="at-symbol" fxLayout="column" fxLayoutAlign="center">
+          @
+        </div>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Domain</mat-label>
+          <span *ngIf="isHandset$ | async" matPrefix>@</span>
+          <mat-select
+            [disabled]="isModifyDialog ? 'disabled' : null"
+            [value]="domains[0]"
+            [required]="isModifyDialog ? null : 'required'"
+          >
+            <ng-container *ngFor="let domain of domains; let i = index">
+              <mat-option [value]="domain">{{ domain }}</mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
       </div>
+
       <mat-form-field appearance="fill">
-        <mat-label>Domain</mat-label>
-        <mat-select [disabled]="isModifyDialog ? 'disabled' : null" [value]="domains[0]">
-          <ng-container *ngFor="let domain of domains; let i = index">
-            <mat-option [value]="domain">{{ domain }}</mat-option>
-          </ng-container>
-        </mat-select>
+        <mat-label>Password</mat-label>
+        <input matInput type="password" [required]="isModifyDialog ? null : 'required'" />
       </mat-form-field>
-    </div>
-    <mat-form-field appearance="fill">
-      <mat-label>Password</mat-label>
-      <input matInput type="password" />
-      <mat-hint *ngIf="isModifyDialog">Leave empty to leave password as is</mat-hint>
-    </mat-form-field>
-    <div fxLayout="row" fxLayoutGap="10px" class="row-container">
-      <mat-form-field appearance="fill">
-        <mat-label>Spam Treshold</mat-label>
-        <input matInput type="number" [value]="isModifyDialog ? accountDetails.spamLevel : 50" />
-        <mat-hint>0-100</mat-hint>
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Quota</mat-label>
-        <input matInput type="number" [value]="isModifyDialog ? accountDetails.quota.allowed : 0" />
-        <span matSuffix>MB</span>
-        <mat-hint *ngIf="isModifyDialog">Currently using 500MB</mat-hint>
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Disabled services</mat-label>
-        <mat-select multiple [value]="isModifyDialog ? accountDetails.disabledScopes : null">
-          <mat-option value="smtp">SMTP</mat-option>
-          <mat-option value="imap">IMAP</mat-option>
-          <mat-option value="pop3">POP3</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-  </form>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>CANCEL</button>
-  <button mat-raised-button color="primary" (click)="updateAccount()">SAVE</button>
-</mat-dialog-actions>
+
+      <div [fxLayout]="(isHandset$ | async) ? 'column' : 'row'" fxLayoutGap="10px" class="row-container">
+        <mat-form-field appearance="fill">
+          <mat-label>Spam treshold</mat-label>
+          <input matInput type="number" [value]="isModifyDialog ? accountDetails.spamLevel : 50" />
+          <mat-hint>0-100</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Quota</mat-label>
+          <input matInput type="number" [value]="isModifyDialog ? accountDetails.limits.quota.allowed : null" />
+          <span matSuffix>MB</span>
+          <mat-hint *ngIf="isModifyDialog">Current usage: {{ accountDetails.limits.quota.used }}</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Disabled services</mat-label>
+          <mat-select multiple [value]="isModifyDialog ? accountDetails.disabledScopes : null">
+            <mat-option value="smtp">SMTP</mat-option>
+            <mat-option value="imap">IMAP</mat-option>
+            <mat-option value="pop3">POP3</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div [fxLayout]="(isHandset$ | async) ? 'column' : 'row'" fxLayoutGap="10px" class="row-container">
+        <mat-form-field appearance="fill">
+          <mat-label>Send limit</mat-label>
+          <input matInput type="number" [value]="isModifyDialog ? accountDetails.limits.send.allowed : null" />
+          <mat-hint *ngIf="isModifyDialog">Current usage: {{ accountDetails.limits.send.used }}</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Receive limit</mat-label>
+          <input matInput type="number" [value]="isModifyDialog ? accountDetails.limits.receive.allowed : null" />
+          <mat-hint *ngIf="isModifyDialog">Current usage: {{ accountDetails.limits.receive.used }}</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Forward limit</mat-label>
+          <input matInput type="number" [value]="isModifyDialog ? accountDetails.limits.forward.allowed : null" />
+          <mat-hint *ngIf="isModifyDialog">Current usage: {{ accountDetails.limits.forward.used }}</mat-hint>
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>CANCEL</button>
+    <button mat-raised-button color="primary" (click)="updateAccount()">SAVE</button>
+  </mat-dialog-actions>
+</ng-container>

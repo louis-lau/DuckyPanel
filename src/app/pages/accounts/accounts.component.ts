@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from "@angular/common/http"
 import { Component, OnInit, ViewChild } from "@angular/core"
-import { MatDialog, MatSort, MatTableDataSource } from "@angular/material"
+import { MatDialog, MatDialogConfig, MatSort, MatTableDataSource } from "@angular/material"
 import { AccountListItem, EmailAccountsService } from "ducky-api-client-angular"
 import { Subscription } from "rxjs"
 
@@ -75,9 +75,9 @@ export class AccountsComponent implements OnInit {
   }
 
   public accountDialog(id?: string): void {
-    let dialogConfig = {}
+    const dialogConfig: MatDialogConfig = {}
     if (id) {
-      dialogConfig = { data: { id: id } }
+      dialogConfig.data = { id: id }
     }
     this.dialog.open(AccountDialogComponent, dialogConfig)
   }

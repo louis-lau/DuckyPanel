@@ -4,8 +4,9 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <ng-container *ngFor="let button of data.buttons">
-    <button mat-button [color]="button.color" [mat-dialog-close]="button.result">{{ button.text }}</button>
+    <mat-spinner-button
+      (btnClick)="button.callback ? button.callback(dialogRef) : dialogRef.close()"
+      [options]="button.options"
+    ></mat-spinner-button>
   </ng-container>
-
-  <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
 </mat-dialog-actions>

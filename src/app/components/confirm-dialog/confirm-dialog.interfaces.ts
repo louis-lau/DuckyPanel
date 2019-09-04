@@ -1,11 +1,12 @@
+import { MatProgressButtonOptions } from "mat-progress-buttons"
+
 export interface ConfirmDialogConfig {
   data: {
     title: string
     text: string
     buttons: {
-      text: string
-      color: "primary" | "accent" | "warn" | ""
-      result?: boolean | string
+      options: MatProgressButtonOptions
+      callback?: Function
     }[]
   }
 }

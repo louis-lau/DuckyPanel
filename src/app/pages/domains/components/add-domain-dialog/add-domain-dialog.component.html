@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Add Domain</h2>
+<mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>Domain</mat-label>
+    <input type="text" matInput required [formControl]="domainInput" />
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <mat-spinner-button (btnClick)="dialogRef.close()" [options]="cancelButtonConfig"></mat-spinner-button>
+  <mat-spinner-button (btnClick)="addDomain()" [options]="addButtonConfig"></mat-spinner-button>
+</mat-dialog-actions>

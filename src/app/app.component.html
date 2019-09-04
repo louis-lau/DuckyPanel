@@ -14,7 +14,7 @@
         <mat-divider *ngIf="!isFirst"></mat-divider>
         <h3 mat-subheader>{{ navCategory.title }}</h3>
 
-        <a mat-list-item *ngFor="let navItem of navCategory.items" [routerLink]="navItem.link">
+        <a mat-list-item *ngFor="let navItem of navCategory.items" (click)="closeDrawerConditional(drawer)" [routerLink]="navItem.link">
           <mat-icon mat-list-icon>{{ navItem.icon }}</mat-icon>
           <h4 mat-line>{{ navItem.name }}</h4>
         </a>

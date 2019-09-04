@@ -1,5 +1,9 @@
+import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
 import { Component, Inject, OnInit } from "@angular/core"
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material"
+import { AccountDetails, DomainsService, EmailAccountsService } from "ducky-api-client-angular"
+import { Observable, Subscription } from "rxjs"
+import { map } from "rxjs/operators"
 
 @Component({
   selector: "app-account-dialog",
@@ -8,44 +12,48 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material"
 })
 export class AccountDialogComponent implements OnInit {
   public isModifyDialog: boolean
+  public isHandset$: Observable<boolean> = this.breakpointObserver
+    .observe(Breakpoints.Handset)
+    .pipe(map((result): boolean => result.matches))
   public addressName: string
   public domains: string[]
+  public domainsSubscription: Subscription
   public accountDetails: AccountDetails
-  public constructor(public dialogRef: MatDialogRef<AccountDialogComponent>, @Inject(MAT_DIALOG_DATA) public data) {}
+  public accountDetailsSubscription: Subscription
+  public constructor(
+    public dialogRef: MatDialogRef<AccountDialogComponent>,
+    private breakpointObserver: BreakpointObserver,
+    private readonly domainsService: DomainsService,
+    private readonly emailAccountsService: EmailAccountsService,
+    @Inject(MAT_DIALOG_DATA) public data
+  ) {}
 
   public ngOnInit(): void {
     // If id was passed this is a modify dialog, otherwise it is a create dialog
     if (this.data) {
-      this.isModifyDialog = true
-      // Get account details from api
-      this.accountDetails = {
-        id: this.data.id,
-        name: "John Doe 1",
-        address: "john1@domain1.com",
-        spamLevel: 50,
-        quota: {
-          allowed: 1000000,
-          used: 10000
-        },
-        disabledScopes: ["imap", "pop3"],
-        disabled: false
-      }
-      // Split address to name and domain for split input
-      this.addressName = this.accountDetails.address.substring(0, this.accountDetails.address.lastIndexOf("@"))
-      this.domains = [this.accountDetails.address.substring(this.accountDetails.address.lastIndexOf("@") + 1)]
+      this.getAccount()
     } else {
-      // Get domains for this user from api
-      this.domains = [
-        "domain1.com",
-        "domain2.com",
-        "domain3.com",
-        "domain4.com",
-        "domain5.com",
-        "domain6.com",
-        "domain7.com",
-        "domain8.com"
-      ]
+      this.getDomains()
     }
+  }
+
+  public getAccount(): void {
+    this.isModifyDialog = true
+
+    this.accountDetailsSubscription = this.emailAccountsService
+      .accountsAccountIdGet(this.data.id)
+      .subscribe((account): void => {
+        this.accountDetails = account
+        // Split address to name and domain for split input
+        this.addressName = this.accountDetails.address.substring(0, this.accountDetails.address.lastIndexOf("@"))
+        this.domains = [this.accountDetails.address.substring(this.accountDetails.address.lastIndexOf("@") + 1)]
+      })
+  }
+
+  public getDomains(): void {
+    this.domainsSubscription = this.domainsService.domainsGet().subscribe((domains): void => {
+      this.domains = domains.map((value): string => value.domain)
+    })
   }
 
   public updateAccount(): void {

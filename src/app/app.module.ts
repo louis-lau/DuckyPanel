@@ -2,6 +2,7 @@ import { LayoutModule } from "@angular/cdk/layout"
 import { HttpClientModule } from "@angular/common/http"
 import { NgModule } from "@angular/core"
 import { FlexLayoutModule } from "@angular/flex-layout"
+import { FormsModule, ReactiveFormsModule } from "@angular/forms"
 import {
   MatButtonModule,
   MatCardModule,
@@ -25,6 +26,7 @@ import {
 import { BrowserModule } from "@angular/platform-browser"
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
 import { ApiModule, Configuration, ConfigurationParameters } from "ducky-api-client-angular"
+import { MatProgressButtonsModule } from "mat-progress-buttons"
 
 import { AppRoutingModule } from "./app-routing.module"
 import { AppComponent } from "./app.component"
@@ -32,6 +34,7 @@ import { ConfirmDialogComponent } from "./components/confirm-dialog/confirm-dial
 import { FabButtonComponent } from "./components/fab-button/fab-button.component"
 import { AccountsComponent } from "./pages/accounts/accounts.component"
 import { AccountDialogComponent } from "./pages/accounts/components/account-dialog/account-dialog.component"
+import { AddDomainDialogComponent } from "./pages/domains/components/add-domain-dialog/add-domain-dialog.component"
 import { DomainsComponent } from "./pages/domains/domains.component"
 
 // TODO: take these values from a config file or envvar
@@ -47,7 +50,7 @@ export function apiConfigFactory(): Configuration {
 }
 
 @NgModule({
-  entryComponents: [ConfirmDialogComponent, AccountDialogComponent],
+  entryComponents: [ConfirmDialogComponent, AccountDialogComponent, AddDomainDialogComponent],
   declarations: [
     AppComponent,
     DomainsComponent,
@@ -55,7 +58,8 @@ export function apiConfigFactory(): Configuration {
     ConfirmDialogComponent,
     AccountsComponent,
     FabButtonComponent,
-    AccountDialogComponent
+    AccountDialogComponent,
+    AddDomainDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -82,7 +86,10 @@ export function apiConfigFactory(): Configuration {
     MatSortModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
-    ApiModule.forRoot(apiConfigFactory)
+    ApiModule.forRoot(apiConfigFactory),
+    MatProgressButtonsModule.forRoot(),
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

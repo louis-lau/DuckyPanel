@@ -1,12 +1,14 @@
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
 import { HttpErrorResponse } from "@angular/common/http"
 import { Component, OnInit, ViewChild } from "@angular/core"
-import { MatDialog, MatSnackBar, MatSort, MatTableDataSource } from "@angular/material"
+import { MatDialog, MatDialogRef, MatSnackBar, MatSort, MatTableDataSource } from "@angular/material"
 import { Domain, DomainsService } from "ducky-api-client-angular"
 import { Observable, Subscription } from "rxjs"
 import { map } from "rxjs/operators"
 import { ConfirmDialogComponent } from "src/app/components/confirm-dialog/confirm-dialog.component"
 import { ConfirmDialogConfig } from "src/app/components/confirm-dialog/confirm-dialog.interfaces"
+
+import { AddDomainDialogComponent } from "./components/add-domain-dialog/add-domain-dialog.component"
 
 interface DomainData {
   domain: string
@@ -55,6 +57,15 @@ export class DomainsComponent implements OnInit {
     )
   }
 
+  public addDialog(): void {
+    const dialog = this.dialog.open(AddDomainDialogComponent)
+    dialog.afterClosed().subscribe((result): void => {
+      if (result) {
+        this.getDomains()
+      }
+    })
+  }
+
   public removeConfirmDialog(domain: string): void {
     const dialogConfig: ConfirmDialogConfig = {
       data: {
@@ -62,22 +73,34 @@ export class DomainsComponent implements OnInit {
         text: "Are you sure? This will also remove accounts associated with this domain.",
         buttons: [
           {
-            text: "NO",
-            color: "primary"
+            options: {
+              active: false,
+              text: "NO",
+              buttonColor: "primary"
+            }
           },
           {
-            text: "YES",
-            color: "warn",
-            result: true
+            options: {
+              active: false,
+              text: "YES",
+              buttonColor: "warn",
+              spinnerSize: 18,
+              mode: "indeterminate"
+            },
+            callback: (dialogRef: MatDialogRef<ConfirmDialogComponent>): void => {
+              dialogRef.disableClose = true
+              dialogConfig.data.buttons[0].options.disabled = true
+              dialogConfig.data.buttons[1].options.active = true
+              this.domainsService.domainsDomainDelete(domain).subscribe((): void => {
+                dialogRef.close()
+                this.snackBar.open(`${domain} has been removed`, undefined, { duration: 3000 })
+                this.getDomains()
+              })
+            }
           }
         ]
       }
     }
-    const dialog = this.dialog.open(ConfirmDialogComponent, dialogConfig)
-    dialog.afterClosed().subscribe((result): void => {
-      if (result) {
-        this.snackBar.open(`${domain} has been removed`, undefined, { duration: 3000 })
-      }
-    })
+    this.dialog.open(ConfirmDialogComponent, dialogConfig)
   }
 }

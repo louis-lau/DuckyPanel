@@ -1,5 +1,6 @@
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
 import { Component } from "@angular/core"
+import { MatSidenav } from "@angular/material"
 import { Observable } from "rxjs"
 import { map } from "rxjs/operators"
 
@@ -65,4 +66,12 @@ export class AppComponent {
   public isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(map((result): boolean => result.matches))
+
+  public closeDrawerConditional(drawer: MatSidenav): void {
+    this.isHandset$.subscribe((isHandset$): void => {
+      if (isHandset$) {
+        drawer.close()
+      }
+    })
+  }
 }
