@@ -36,15 +36,12 @@ import { AccountsComponent } from "./pages/accounts/accounts.component"
 import { AccountDialogComponent } from "./pages/accounts/components/account-dialog/account-dialog.component"
 import { AddDomainDialogComponent } from "./pages/domains/components/add-domain-dialog/add-domain-dialog.component"
 import { DomainsComponent } from "./pages/domains/domains.component"
+import { LoginComponent } from "./pages/login/login.component"
 
 // TODO: take these values from a config file or envvar
 export function apiConfigFactory(): Configuration {
   const params: ConfigurationParameters = {
-    basePath: "http://localhost:3000",
-    apiKeys: {
-      Authorization:
-        "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZDRkZTYwMTllZGI5YjM1NTA0ZDYxZDgiLCJpYXQiOjE1Njc1MTI2NTYsImV4cCI6MTU2ODExNzQ1Nn0.XWmpIkEaTW1KX4-tiXpSN1C39y5oia4mi1guc1UkuJ4"
-    }
+    basePath: "http://localhost:3000"
   }
   return new Configuration(params)
 }
@@ -59,7 +56,8 @@ export function apiConfigFactory(): Configuration {
     AccountsComponent,
     FabButtonComponent,
     AccountDialogComponent,
-    AddDomainDialogComponent
+    AddDomainDialogComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

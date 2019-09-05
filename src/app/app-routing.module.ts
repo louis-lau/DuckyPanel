@@ -3,15 +3,33 @@ import { RouterModule, Routes } from "@angular/router"
 
 import { AccountsComponent } from "./pages/accounts/accounts.component"
 import { DomainsComponent } from "./pages/domains/domains.component"
+import { LoginComponent } from "./pages/login/login.component"
 
 const routes: Routes = [
   {
+    path: "login",
+    component: LoginComponent,
+    data: {
+      isFullscreen: true
+    }
+  },
+  {
     path: "domains",
-    component: DomainsComponent
+    component: DomainsComponent,
+    data: {
+      isFullscreen: false
+    }
   },
   {
     path: "accounts",
-    component: AccountsComponent
+    component: AccountsComponent,
+    data: {
+      isFullscreen: false
+    }
+  },
+  {
+    path: "**",
+    redirectTo: "accounts"
   }
 ]
 

@@ -5,7 +5,7 @@
     fixedInViewport
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
-    [opened]="(isHandset$ | async) === false"
+    [opened]="(isHandset$ | async) === false && isFullscreen === false"
   >
     <!-- Create all navigation items -->
     <mat-nav-list>
@@ -14,7 +14,7 @@
         <mat-divider *ngIf="!isFirst"></mat-divider>
         <h3 mat-subheader>{{ navCategory.title }}</h3>
 
-        <a mat-list-item *ngFor="let navItem of navCategory.items" (click)="closeDrawerConditional(drawer)" [routerLink]="navItem.link">
+        <a mat-list-item *ngFor="let navItem of navCategory.items" (click)="closeDrawerConditional()" [routerLink]="navItem.link">
           <mat-icon mat-list-icon>{{ navItem.icon }}</mat-icon>
           <h4 mat-line>{{ navItem.name }}</h4>
         </a>
@@ -23,7 +23,7 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <mat-toolbar color="primary" [ngStyle]="{'z-index': 100}">
+    <mat-toolbar *ngIf="isFullscreen === false" color="primary" [ngStyle]="{'z-index': 100}">
       <button
         type="button"
         aria-label="Toggle sidenav"
@@ -35,7 +35,7 @@
       </button>
       <span>{{ title }}</span>
     </mat-toolbar>
-    <div class="content">
+    <div [class.content]="isFullscreen === false">
       <router-outlet></router-outlet>
       <!-- This is where the router will add a component based on the url -->
     </div>

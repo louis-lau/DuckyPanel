@@ -1,6 +1,7 @@
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
-import { Component } from "@angular/core"
+import { Component, OnInit, ViewChild } from "@angular/core"
 import { MatSidenav } from "@angular/material"
+import { Router, RoutesRecognized } from "@angular/router"
 import { Observable } from "rxjs"
 import { map } from "rxjs/operators"
 
@@ -11,7 +12,7 @@ import { NavCategory } from "./app.interfaces"
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   public title = "DuckyPanel"
   public navCategories: NavCategory[] = [
     {
@@ -61,16 +62,28 @@ export class AppComponent {
     }
   ]
 
-  public constructor(private breakpointObserver: BreakpointObserver) {}
+  @ViewChild("drawer", { static: true })
+  private drawer: MatSidenav
+  public isFullscreen: boolean
+
+  public constructor(private breakpointObserver: BreakpointObserver, private router: Router) {}
+
+  public ngOnInit(): void {
+    this.router.events.subscribe((event): void => {
+      if (event instanceof RoutesRecognized && event.state.root.firstChild) {
+        this.isFullscreen = event.state.root.firstChild.data.isFullscreen
+      }
+    })
+  }
 
   public isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(map((result): boolean => result.matches))
 
-  public closeDrawerConditional(drawer: MatSidenav): void {
+  public closeDrawerConditional(): void {
     this.isHandset$.subscribe((isHandset$): void => {
       if (isHandset$) {
-        drawer.close()
+        this.drawer.close()
       }
     })
   }

@@ -1,0 +1,20 @@
+.layout-center {
+  background-color: #00BCD4;
+  height: 100vh;
+}
+
+mat-card {
+  box-sizing: border-box;
+  width: 400px;
+  padding: 30px;
+
+  &.is-handset {
+    width: 100vw;
+    height: 100vh;
+  }
+}
+
+mat-card-title {
+  text-align: center;
+  margin-bottom: 30px;
+}

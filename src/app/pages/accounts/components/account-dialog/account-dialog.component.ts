@@ -1,6 +1,8 @@
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
+import { HttpErrorResponse } from "@angular/common/http"
 import { Component, Inject, OnInit } from "@angular/core"
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material"
+import { Router } from "@angular/router"
 import { AccountDetails, DomainsService, EmailAccountsService } from "ducky-api-client-angular"
 import { Observable, Subscription } from "rxjs"
 import { map } from "rxjs/operators"
@@ -20,11 +22,13 @@ export class AccountDialogComponent implements OnInit {
   public domainsSubscription: Subscription
   public accountDetails: AccountDetails
   public accountDetailsSubscription: Subscription
+
   public constructor(
     public dialogRef: MatDialogRef<AccountDialogComponent>,
     private breakpointObserver: BreakpointObserver,
     private readonly domainsService: DomainsService,
     private readonly emailAccountsService: EmailAccountsService,
+    private router: Router,
     @Inject(MAT_DIALOG_DATA) public data
   ) {}
 
@@ -40,20 +44,38 @@ export class AccountDialogComponent implements OnInit {
   public getAccount(): void {
     this.isModifyDialog = true
 
-    this.accountDetailsSubscription = this.emailAccountsService
-      .accountsAccountIdGet(this.data.id)
-      .subscribe((account): void => {
+    const accessToken = localStorage.getItem("access_token")
+    this.emailAccountsService.configuration.apiKeys = { Authorization: `bearer ${accessToken}` }
+    this.accountDetailsSubscription = this.emailAccountsService.accountsAccountIdGet(this.data.id).subscribe(
+      (account): void => {
         this.accountDetails = account
         // Split address to name and domain for split input
         this.addressName = this.accountDetails.address.substring(0, this.accountDetails.address.lastIndexOf("@"))
         this.domains = [this.accountDetails.address.substring(this.accountDetails.address.lastIndexOf("@") + 1)]
-      })
+      },
+      (error: HttpErrorResponse): void => {
+        if ((error.error.error = "Unauthorized")) {
+          this.dialogRef.close()
+          this.router.navigateByUrl("/login")
+        }
+      }
+    )
   }
 
   public getDomains(): void {
-    this.domainsSubscription = this.domainsService.domainsGet().subscribe((domains): void => {
-      this.domains = domains.map((value): string => value.domain)
-    })
+    const accessToken = localStorage.getItem("access_token")
+    this.domainsService.configuration.apiKeys = { Authorization: `bearer ${accessToken}` }
+    this.domainsSubscription = this.domainsService.domainsGet().subscribe(
+      (domains): void => {
+        this.domains = domains.map((value): string => value.domain)
+      },
+      (error: HttpErrorResponse): void => {
+        if ((error.error.error = "Unauthorized")) {
+          this.dialogRef.close()
+          this.router.navigateByUrl("/login")
+        }
+      }
+    )
   }
 
   public updateAccount(): void {

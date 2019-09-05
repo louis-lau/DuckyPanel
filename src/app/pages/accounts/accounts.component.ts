@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from "@angular/common/http"
 import { Component, OnInit, ViewChild } from "@angular/core"
 import { MatDialog, MatDialogConfig, MatSort, MatTableDataSource } from "@angular/material"
+import { Router } from "@angular/router"
 import { AccountListItem, EmailAccountsService } from "ducky-api-client-angular"
 import { Subscription } from "rxjs"
 
@@ -25,13 +26,19 @@ export class AccountsComponent implements OnInit {
     }
   }
 
-  public constructor(public dialog: MatDialog, private readonly accountsService: EmailAccountsService) {}
+  public constructor(
+    public dialog: MatDialog,
+    private readonly accountsService: EmailAccountsService,
+    private router: Router
+  ) {}
 
   public ngOnInit(): void {
     this.getAccounts()
   }
 
   public getAccounts(): void {
+    const accessToken = localStorage.getItem("access_token")
+    this.accountsService.configuration.apiKeys = { Authorization: `bearer ${accessToken}` }
     this.accountSubscription = this.accountsService.accountsGet().subscribe(
       (accounts: AccountListItem[]): void => {
         const accountsFormatted = accounts as AccountListItemFormatted[]
@@ -56,7 +63,9 @@ export class AccountsComponent implements OnInit {
         }
       },
       (error: HttpErrorResponse): void => {
-        alert(error.message)
+        if ((error.error.error = "Unauthorized")) {
+          this.router.navigateByUrl("/login")
+        }
       }
     )
   }

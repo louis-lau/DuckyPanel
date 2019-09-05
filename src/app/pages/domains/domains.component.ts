@@ -2,6 +2,7 @@ import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
 import { HttpErrorResponse } from "@angular/common/http"
 import { Component, OnInit, ViewChild } from "@angular/core"
 import { MatDialog, MatDialogRef, MatSnackBar, MatSort, MatTableDataSource } from "@angular/material"
+import { Router } from "@angular/router"
 import { Domain, DomainsService } from "ducky-api-client-angular"
 import { Observable, Subscription } from "rxjs"
 import { map } from "rxjs/operators"
@@ -39,7 +40,8 @@ export class DomainsComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private readonly domainsService: DomainsService
+    private readonly domainsService: DomainsService,
+    private router: Router
   ) {}
 
   public ngOnInit(): void {
@@ -47,12 +49,16 @@ export class DomainsComponent implements OnInit {
   }
 
   public getDomains(): void {
+    const accessToken = localStorage.getItem("access_token")
+    this.domainsService.configuration.apiKeys = { Authorization: `bearer ${accessToken}` }
     this.domainSubscription = this.domainsService.domainsGet().subscribe(
       (domains: Domain[]): void => {
         this.dataSource = new MatTableDataSource(domains)
       },
       (error: HttpErrorResponse): void => {
-        alert(error.message)
+        if ((error.error.error = "Unauthorized")) {
+          this.router.navigateByUrl("/login")
+        }
       }
     )
   }
@@ -91,11 +97,22 @@ export class DomainsComponent implements OnInit {
               dialogRef.disableClose = true
               dialogConfig.data.buttons[0].options.disabled = true
               dialogConfig.data.buttons[1].options.active = true
-              this.domainsService.domainsDomainDelete(domain).subscribe((): void => {
-                dialogRef.close()
-                this.snackBar.open(`${domain} has been removed`, undefined, { duration: 3000 })
-                this.getDomains()
-              })
+
+              const accessToken = localStorage.getItem("access_token")
+              this.domainsService.configuration.apiKeys = { Authorization: `bearer ${accessToken}` }
+              this.domainsService.domainsDomainDelete(domain).subscribe(
+                (): void => {
+                  dialogRef.close()
+                  this.snackBar.open(`${domain} has been removed`, undefined, { duration: 3000 })
+                  this.getDomains()
+                },
+                (error: HttpErrorResponse): void => {
+                  dialogRef.close()
+                  if ((error.error.error = "Unauthorized")) {
+                    this.router.navigateByUrl("/login")
+                  }
+                }
+              )
             }
           }
         ]
