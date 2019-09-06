@@ -2,11 +2,12 @@ import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
 import { Component, OnInit } from "@angular/core"
 import { FormControl, FormGroup } from "@angular/forms"
 import { MatSnackBar } from "@angular/material"
-import { Router } from '@angular/router';
+import { Router } from "@angular/router"
 import { AccessToken, AuthenticationService } from "ducky-api-client-angular"
 import { MatProgressButtonOptions } from "mat-progress-buttons"
 import { Observable } from "rxjs"
 import { map } from "rxjs/operators"
+import { ErrorSnackbarComponent } from "src/app/components/error-snackbar/error-snackbar.component"
 
 @Component({
   selector: "app-login",
@@ -62,7 +63,14 @@ export class LoginComponent implements OnInit {
           },
           (error): void => {
             this.loginButtonConfig.active = false
-            this.snackBar.open(error.error.error, "OK", { duration: 6000 })
+            if (error.error.error === "Unauthorized") {
+              this.snackBar.openFromComponent(ErrorSnackbarComponent, {
+                data: "Invalid username or password",
+                panelClass: ["error-snackbar"]
+              })
+            } else {
+              this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
+            }
           }
         )
     }

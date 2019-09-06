@@ -1,6 +1,6 @@
 import { MatProgressButtonOptions } from "mat-progress-buttons"
 
-export interface ConfirmDialogConfig {
+export interface DialogConfig {
   data: {
     title: string
     text: string

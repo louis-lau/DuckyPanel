@@ -6,8 +6,9 @@ import { Router } from "@angular/router"
 import { Domain, DomainsService } from "ducky-api-client-angular"
 import { Observable, Subscription } from "rxjs"
 import { map } from "rxjs/operators"
-import { ConfirmDialogComponent } from "src/app/components/confirm-dialog/confirm-dialog.component"
-import { ConfirmDialogConfig } from "src/app/components/confirm-dialog/confirm-dialog.interfaces"
+import { DialogComponent } from "src/app/components/dialog/dialog.component"
+import { DialogConfig } from "src/app/components/dialog/dialog.interfaces"
+import { ErrorSnackbarComponent } from "src/app/components/error-snackbar/error-snackbar.component"
 
 import { AddDomainDialogComponent } from "./components/add-domain-dialog/add-domain-dialog.component"
 
@@ -56,9 +57,7 @@ export class DomainsComponent implements OnInit {
         this.dataSource = new MatTableDataSource(domains)
       },
       (error: HttpErrorResponse): void => {
-        if ((error.error.error = "Unauthorized")) {
-          this.router.navigateByUrl("/login")
-        }
+        this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
       }
     )
   }
@@ -73,7 +72,7 @@ export class DomainsComponent implements OnInit {
   }
 
   public removeConfirmDialog(domain: string): void {
-    const dialogConfig: ConfirmDialogConfig = {
+    const dialogConfig: DialogConfig = {
       data: {
         title: `Remove ${domain}`,
         text: "Are you sure? This will also remove accounts associated with this domain.",
@@ -93,7 +92,7 @@ export class DomainsComponent implements OnInit {
               spinnerSize: 18,
               mode: "indeterminate"
             },
-            callback: (dialogRef: MatDialogRef<ConfirmDialogComponent>): void => {
+            callback: (dialogRef: MatDialogRef<DialogComponent>): void => {
               dialogRef.disableClose = true
               dialogConfig.data.buttons[0].options.disabled = true
               dialogConfig.data.buttons[1].options.active = true
@@ -108,9 +107,7 @@ export class DomainsComponent implements OnInit {
                 },
                 (error: HttpErrorResponse): void => {
                   dialogRef.close()
-                  if ((error.error.error = "Unauthorized")) {
-                    this.router.navigateByUrl("/login")
-                  }
+                  this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
                 }
               )
             }
@@ -118,6 +115,6 @@ export class DomainsComponent implements OnInit {
         ]
       }
     }
-    this.dialog.open(ConfirmDialogComponent, dialogConfig)
+    this.dialog.open(DialogComponent, dialogConfig)
   }
 }

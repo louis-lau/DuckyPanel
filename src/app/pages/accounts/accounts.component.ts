@@ -1,9 +1,10 @@
 import { HttpErrorResponse } from "@angular/common/http"
 import { Component, OnInit, ViewChild } from "@angular/core"
-import { MatDialog, MatDialogConfig, MatSort, MatTableDataSource } from "@angular/material"
+import { MatDialog, MatDialogConfig, MatSnackBar, MatSort, MatTableDataSource } from "@angular/material"
 import { Router } from "@angular/router"
 import { AccountListItem, EmailAccountsService } from "ducky-api-client-angular"
 import { Subscription } from "rxjs"
+import { ErrorSnackbarComponent } from "src/app/components/error-snackbar/error-snackbar.component"
 
 import { AccountListItemFormatted } from "./accounts.interfaces"
 import { AccountDialogComponent } from "./components/account-dialog/account-dialog.component"
@@ -29,7 +30,8 @@ export class AccountsComponent implements OnInit {
   public constructor(
     public dialog: MatDialog,
     private readonly accountsService: EmailAccountsService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
 
   public ngOnInit(): void {
@@ -63,9 +65,7 @@ export class AccountsComponent implements OnInit {
         }
       },
       (error: HttpErrorResponse): void => {
-        if ((error.error.error = "Unauthorized")) {
-          this.router.navigateByUrl("/login")
-        }
+        this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
       }
     )
   }

@@ -4,6 +4,7 @@ import { NgModule } from "@angular/core"
 import { FlexLayoutModule } from "@angular/flex-layout"
 import { FormsModule, ReactiveFormsModule } from "@angular/forms"
 import {
+  MAT_SNACK_BAR_DEFAULT_OPTIONS,
   MatButtonModule,
   MatCardModule,
   MatCheckboxModule,
@@ -30,7 +31,8 @@ import { MatProgressButtonsModule } from "mat-progress-buttons"
 
 import { AppRoutingModule } from "./app-routing.module"
 import { AppComponent } from "./app.component"
-import { ConfirmDialogComponent } from "./components/confirm-dialog/confirm-dialog.component"
+import { DialogComponent } from "./components/dialog/dialog.component"
+import { ErrorSnackbarComponent } from "./components/error-snackbar/error-snackbar.component"
 import { FabButtonComponent } from "./components/fab-button/fab-button.component"
 import { AccountsComponent } from "./pages/accounts/accounts.component"
 import { AccountDialogComponent } from "./pages/accounts/components/account-dialog/account-dialog.component"
@@ -47,17 +49,17 @@ export function apiConfigFactory(): Configuration {
 }
 
 @NgModule({
-  entryComponents: [ConfirmDialogComponent, AccountDialogComponent, AddDomainDialogComponent],
+  entryComponents: [DialogComponent, AccountDialogComponent, AddDomainDialogComponent, ErrorSnackbarComponent],
   declarations: [
     AppComponent,
     DomainsComponent,
-    ConfirmDialogComponent,
-    ConfirmDialogComponent,
+    DialogComponent,
     AccountsComponent,
     FabButtonComponent,
     AccountDialogComponent,
     AddDomainDialogComponent,
-    LoginComponent
+    LoginComponent,
+    ErrorSnackbarComponent
   ],
   imports: [
     BrowserModule,
@@ -89,7 +91,7 @@ export function apiConfigFactory(): Configuration {
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [{ provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 5000 } }],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

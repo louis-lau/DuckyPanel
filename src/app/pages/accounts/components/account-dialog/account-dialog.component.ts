@@ -1,11 +1,12 @@
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
 import { HttpErrorResponse } from "@angular/common/http"
 import { Component, Inject, OnInit } from "@angular/core"
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material"
+import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from "@angular/material"
 import { Router } from "@angular/router"
 import { AccountDetails, DomainsService, EmailAccountsService } from "ducky-api-client-angular"
 import { Observable, Subscription } from "rxjs"
 import { map } from "rxjs/operators"
+import { ErrorSnackbarComponent } from "src/app/components/error-snackbar/error-snackbar.component"
 
 @Component({
   selector: "app-account-dialog",
@@ -29,6 +30,7 @@ export class AccountDialogComponent implements OnInit {
     private readonly domainsService: DomainsService,
     private readonly emailAccountsService: EmailAccountsService,
     private router: Router,
+    private snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data
   ) {}
 
@@ -54,10 +56,7 @@ export class AccountDialogComponent implements OnInit {
         this.domains = [this.accountDetails.address.substring(this.accountDetails.address.lastIndexOf("@") + 1)]
       },
       (error: HttpErrorResponse): void => {
-        if ((error.error.error = "Unauthorized")) {
-          this.dialogRef.close()
-          this.router.navigateByUrl("/login")
-        }
+        this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
       }
     )
   }
@@ -70,10 +69,7 @@ export class AccountDialogComponent implements OnInit {
         this.domains = domains.map((value): string => value.domain)
       },
       (error: HttpErrorResponse): void => {
-        if ((error.error.error = "Unauthorized")) {
-          this.dialogRef.close()
-          this.router.navigateByUrl("/login")
-        }
+        this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
       }
     )
   }

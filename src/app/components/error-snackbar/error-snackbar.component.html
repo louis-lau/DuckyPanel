@@ -1,0 +1,6 @@
+<div class="flex-container" fxLayout="row" fxLayoutAlign="space-between">
+  <span>{{ message }}</span>
+  <div *ngIf="errorDetails" class="action">
+    <button mat-button (click)="showDetails()" color='accent'>Details</button>
+  </div>
+</div>

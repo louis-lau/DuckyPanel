@@ -1,10 +1,11 @@
 import { HttpErrorResponse } from "@angular/common/http"
 import { Component, Inject } from "@angular/core"
 import { FormControl } from "@angular/forms"
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material"
+import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from "@angular/material"
 import { Router } from "@angular/router"
 import { DomainsService } from "ducky-api-client-angular"
 import { MatProgressButtonOptions } from "mat-progress-buttons"
+import { ErrorSnackbarComponent } from "src/app/components/error-snackbar/error-snackbar.component"
 
 @Component({
   selector: "app-add-domain-dialog",
@@ -30,7 +31,7 @@ export class AddDomainDialogComponent {
   public constructor(
     public dialogRef: MatDialogRef<AddDomainDialogComponent>,
     private readonly domainsService: DomainsService,
-    private router: Router,
+    private snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data
   ) {}
 
@@ -47,9 +48,8 @@ export class AddDomainDialogComponent {
       },
       (error: HttpErrorResponse): void => {
         this.dialogRef.close()
-        if ((error.error.error = "Unauthorized")) {
-          this.router.navigateByUrl("/login")
-        }
+        this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
+        // this.snackBar.open("lol", "test")
       }
     )
   }
