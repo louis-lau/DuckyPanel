@@ -13,6 +13,8 @@ import { NavCategory } from "./app.interfaces"
   styleUrls: ["./app.component.scss"]
 })
 export class AppComponent implements OnInit {
+  public constructor(private breakpointObserver: BreakpointObserver, private router: Router) {}
+
   public title = "DuckyPanel"
   public navCategories: NavCategory[] = [
     {
@@ -65,8 +67,6 @@ export class AppComponent implements OnInit {
   @ViewChild("drawer", { static: true })
   private drawer: MatSidenav
   public isFullscreen: boolean
-
-  public constructor(private breakpointObserver: BreakpointObserver, private router: Router) {}
 
   public ngOnInit(): void {
     this.router.events.subscribe((event): void => {

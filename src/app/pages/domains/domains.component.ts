@@ -22,6 +22,14 @@ interface DomainData {
   styleUrls: ["./domains.component.scss"]
 })
 export class DomainsComponent implements OnInit {
+  public constructor(
+    private breakpointObserver: BreakpointObserver,
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private readonly domainsService: DomainsService,
+    private router: Router
+  ) {}
+
   public displayedColumns = ["domain", "actions"]
   public dataSource: MatTableDataSource<DomainData>
   public domainSubscription: Subscription
@@ -36,14 +44,6 @@ export class DomainsComponent implements OnInit {
       this.dataSource.sort = sort
     }
   }
-
-  public constructor(
-    private breakpointObserver: BreakpointObserver,
-    public dialog: MatDialog,
-    private snackBar: MatSnackBar,
-    private readonly domainsService: DomainsService,
-    private router: Router
-  ) {}
 
   public ngOnInit(): void {
     this.getDomains()
@@ -107,7 +107,10 @@ export class DomainsComponent implements OnInit {
                 },
                 (error: HttpErrorResponse): void => {
                   dialogRef.close()
-                  this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
+                  this.snackBar.openFromComponent(ErrorSnackbarComponent, {
+                    data: error,
+                    panelClass: ["error-snackbar"]
+                  })
                 }
               )
             }

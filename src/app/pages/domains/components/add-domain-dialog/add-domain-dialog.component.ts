@@ -13,6 +13,13 @@ import { ErrorSnackbarComponent } from "src/app/components/error-snackbar/error-
   styleUrls: ["./add-domain-dialog.component.scss"]
 })
 export class AddDomainDialogComponent {
+  public constructor(
+    public dialogRef: MatDialogRef<AddDomainDialogComponent>,
+    private readonly domainsService: DomainsService,
+    private snackBar: MatSnackBar,
+    @Inject(MAT_DIALOG_DATA) public data
+  ) {}
+
   public cancelButtonConfig: MatProgressButtonOptions = {
     active: false,
     text: "CANCEL"
@@ -27,13 +34,6 @@ export class AddDomainDialogComponent {
     mode: "indeterminate"
   }
   public domainInput = new FormControl()
-
-  public constructor(
-    public dialogRef: MatDialogRef<AddDomainDialogComponent>,
-    private readonly domainsService: DomainsService,
-    private snackBar: MatSnackBar,
-    @Inject(MAT_DIALOG_DATA) public data
-  ) {}
 
   public addDomain(): void {
     this.dialogRef.disableClose = true

@@ -14,16 +14,6 @@ import { ErrorSnackbarComponent } from "src/app/components/error-snackbar/error-
   styleUrls: ["./account-dialog.component.scss"]
 })
 export class AccountDialogComponent implements OnInit {
-  public isModifyDialog: boolean
-  public isHandset$: Observable<boolean> = this.breakpointObserver
-    .observe(Breakpoints.Handset)
-    .pipe(map((result): boolean => result.matches))
-  public addressName: string
-  public domains: string[]
-  public domainsSubscription: Subscription
-  public accountDetails: AccountDetails
-  public accountDetailsSubscription: Subscription
-
   public constructor(
     public dialogRef: MatDialogRef<AccountDialogComponent>,
     private breakpointObserver: BreakpointObserver,
@@ -33,6 +23,16 @@ export class AccountDialogComponent implements OnInit {
     private snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data
   ) {}
+
+  public isModifyDialog: boolean
+  public isHandset$: Observable<boolean> = this.breakpointObserver
+    .observe(Breakpoints.Handset)
+    .pipe(map((result): boolean => result.matches))
+  public addressName: string
+  public domains: string[]
+  public domainsSubscription: Subscription
+  public accountDetails: AccountDetails
+  public accountDetailsSubscription: Subscription
 
   public ngOnInit(): void {
     // If id was passed this is a modify dialog, otherwise it is a create dialog

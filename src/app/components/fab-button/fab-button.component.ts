@@ -6,9 +6,9 @@ import { Component, Input, OnInit } from "@angular/core"
   styleUrls: ["./fab-button.component.scss"]
 })
 export class FabButtonComponent implements OnInit {
-  @Input() public icon: string
-
   public constructor() {}
+
+  @Input() public icon: string
 
   public ngOnInit(): void {}
 }

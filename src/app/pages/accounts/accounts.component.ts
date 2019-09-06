@@ -15,6 +15,13 @@ import { AccountDialogComponent } from "./components/account-dialog/account-dial
   styleUrls: ["./accounts.component.scss"]
 })
 export class AccountsComponent implements OnInit {
+  public constructor(
+    public dialog: MatDialog,
+    private readonly accountsService: EmailAccountsService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {}
+
   private displayedColumns = ["name", "address", "quotaUsedFormatted", "quotaAllowedFormatted", "actions"]
   private dataSource: MatTableDataSource<AccountListItemFormatted>
   public accountSubscription: Subscription
@@ -26,13 +33,6 @@ export class AccountsComponent implements OnInit {
       this.dataSource.sort = sort
     }
   }
-
-  public constructor(
-    public dialog: MatDialog,
-    private readonly accountsService: EmailAccountsService,
-    private router: Router,
-    private snackBar: MatSnackBar
-  ) {}
 
   public ngOnInit(): void {
     this.getAccounts()
