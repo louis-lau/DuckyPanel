@@ -1,0 +1,52 @@
+<!-- Switch to row or column mode depending on mobile or not -->
+<div [fxLayout]="(isHandset$ | async) ? 'column' : 'row'" fxLayoutGap="10px">
+  <mat-card fxFlex="30%" [fxFlexAlign]="(isHandset$ | async) ? null : 'start'">
+    <mat-card-title>Your forwarders</mat-card-title>
+    <mat-card-content
+      >This is an explanation about fucking forwarders. Who thought that would be needed.</mat-card-content
+    >
+  </mat-card>
+  <mat-card fxFlex="70%">
+    <ng-template #loading>
+      <mat-spinner diameter="50"></mat-spinner>
+    </ng-template>
+    <ng-container *ngIf="forwarderSubscription.closed; else loading">
+      <mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="address">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Forward address </mat-header-cell>
+          <mat-cell *matCellDef="let row" data-label="address"> {{ row.address }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+          <mat-cell *matCellDef="let row" data-label="actions">
+            <button
+              [routerLink]="['/forwarders', row.id]"
+              matTooltip="Modify forwarder"
+              matTooltipPosition="left"
+              matTooltipShowDelay="500"
+              mat-icon-button
+              aria-label="Modify forwarder"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              (click)="removeConfirmDialog(row.id, row.address)"
+              matTooltip="Remove forwarder"
+              matTooltipPosition="left"
+              matTooltipShowDelay="500"
+              mat-icon-button
+              aria-label="Remove forwarder"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"> </mat-row>
+      </mat-table>
+    </ng-container>
+  </mat-card>
+</div>
+<app-fab-button icon="add" (click)="addDialog()"></app-fab-button>

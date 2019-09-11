@@ -41,9 +41,9 @@ export class AppComponent implements OnInit {
           link: "/accounts"
         },
         {
-          name: "Filters",
-          icon: "filter_list",
-          link: "/filters"
+          name: "Forwarders",
+          icon: "send",
+          link: "/forwarders/"
         }
       ]
     },

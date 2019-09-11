@@ -44,16 +44,6 @@
           <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
           <mat-cell *matCellDef="let row" data-label="actions">
             <button
-              (click)="removeConfirm(row.domain)"
-              matTooltip="Account filters"
-              matTooltipPosition="left"
-              matTooltipShowDelay="500"
-              mat-icon-button
-              aria-label="Account filters"
-            >
-              <mat-icon>filter_list</mat-icon>
-            </button>
-            <button
               [routerLink]="['/accounts', row.id]"
               matTooltip="Modify account"
               matTooltipPosition="left"

@@ -114,8 +114,7 @@ export class AccountsComponent implements OnInit {
           {
             options: {
               active: false,
-              text: "NO",
-              buttonColor: "primary"
+              text: "NO"
             }
           },
           {

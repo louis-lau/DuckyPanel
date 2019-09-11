@@ -3,6 +3,7 @@ import { RouterModule, Routes } from "@angular/router"
 
 import { AccountsComponent } from "./pages/accounts/accounts.component"
 import { DomainsComponent } from "./pages/domains/domains.component"
+import { ForwardersComponent } from "./pages/forwarders/forwarders.component"
 import { LoginComponent } from "./pages/login/login.component"
 
 const routes: Routes = [
@@ -27,6 +28,17 @@ const routes: Routes = [
   {
     path: "accounts/:id",
     component: AccountsComponent,
+    data: {
+      isFullscreen: false
+    }
+  },
+  {
+    path: "forwarders",
+    redirectTo: "forwarders/"
+  },
+  {
+    path: "forwarders/:id",
+    component: ForwardersComponent,
     data: {
       isFullscreen: false
     }

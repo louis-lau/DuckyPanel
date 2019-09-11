@@ -38,7 +38,8 @@ import { AccountsComponent } from "./pages/accounts/accounts.component"
 import { AccountDialogComponent } from "./pages/accounts/components/account-dialog/account-dialog.component"
 import { AddDomainDialogComponent } from "./pages/domains/components/add-domain-dialog/add-domain-dialog.component"
 import { DomainsComponent } from "./pages/domains/domains.component"
-import { LoginComponent } from "./pages/login/login.component"
+import { LoginComponent } from "./pages/login/login.component";
+import { ForwardersComponent } from './pages/forwarders/forwarders.component'
 
 // TODO: take these values from a config file or envvar
 export function apiConfigFactory(): Configuration {
@@ -59,7 +60,8 @@ export function apiConfigFactory(): Configuration {
     AccountDialogComponent,
     AddDomainDialogComponent,
     LoginComponent,
-    ErrorSnackbarComponent
+    ErrorSnackbarComponent,
+    ForwardersComponent
   ],
   imports: [
     BrowserModule,
