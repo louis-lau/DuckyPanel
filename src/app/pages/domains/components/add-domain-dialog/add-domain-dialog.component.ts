@@ -1,8 +1,7 @@
 import { HttpErrorResponse } from "@angular/common/http"
-import { Component, Inject } from "@angular/core"
-import { FormControl } from "@angular/forms"
+import { Component, Inject, OnInit } from "@angular/core"
+import { FormControl, Validators } from "@angular/forms"
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from "@angular/material"
-import { Router } from "@angular/router"
 import { DomainsService } from "ducky-api-client-angular"
 import { MatProgressButtonOptions } from "mat-progress-buttons"
 import { ErrorSnackbarComponent } from "src/app/components/error-snackbar/error-snackbar.component"
@@ -12,7 +11,7 @@ import { ErrorSnackbarComponent } from "src/app/components/error-snackbar/error-
   templateUrl: "./add-domain-dialog.component.html",
   styleUrls: ["./add-domain-dialog.component.scss"]
 })
-export class AddDomainDialogComponent {
+export class AddDomainDialogComponent implements OnInit {
   public constructor(
     public dialogRef: MatDialogRef<AddDomainDialogComponent>,
     private readonly domainsService: DomainsService,
@@ -22,10 +21,12 @@ export class AddDomainDialogComponent {
 
   public cancelButtonConfig: MatProgressButtonOptions = {
     active: false,
+    type: "button",
     text: "CANCEL"
   }
   public addButtonConfig: MatProgressButtonOptions = {
     active: false,
+    disabled: true,
     text: "ADD",
     raised: true,
     buttonColor: "primary",
@@ -33,7 +34,16 @@ export class AddDomainDialogComponent {
     spinnerSize: 18,
     mode: "indeterminate"
   }
-  public domainInput = new FormControl()
+  public domainInput = new FormControl(
+    "",
+    Validators.pattern(new RegExp("(?=^.{4,253}$)(^((?!-)[a-zA-Z0-9-]{0,62}[a-zA-Z0-9]\\.)+[a-zA-Z]{2,63}$)")) // valid fqdn
+  )
+
+  public ngOnInit(): void {
+    this.domainInput.valueChanges.subscribe((): void => {
+      this.addButtonConfig.disabled = this.domainInput.invalid
+    })
+  }
 
   public addDomain(): void {
     this.dialogRef.disableClose = true
@@ -47,9 +57,10 @@ export class AddDomainDialogComponent {
         this.dialogRef.close(true)
       },
       (error: HttpErrorResponse): void => {
-        this.dialogRef.close()
+        this.dialogRef.disableClose = false
+        this.cancelButtonConfig.disabled = false
+        this.addButtonConfig.active = false
         this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
-        // this.snackBar.open("lol", "test")
       }
     )
   }

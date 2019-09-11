@@ -1,9 +1,11 @@
 import { HttpErrorResponse } from "@angular/common/http"
 import { Component, OnInit, ViewChild } from "@angular/core"
-import { MatDialog, MatDialogConfig, MatSnackBar, MatSort, MatTableDataSource } from "@angular/material"
+import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar, MatSort, MatTableDataSource } from "@angular/material"
 import { Router } from "@angular/router"
 import { AccountListItem, EmailAccountsService } from "ducky-api-client-angular"
 import { Subscription } from "rxjs"
+import { DialogComponent } from "src/app/components/dialog/dialog.component"
+import { DialogConfig } from "src/app/components/dialog/dialog.interfaces"
 import { ErrorSnackbarComponent } from "src/app/components/error-snackbar/error-snackbar.component"
 
 import { AccountListItemFormatted } from "./accounts.interfaces"
@@ -22,7 +24,7 @@ export class AccountsComponent implements OnInit {
     private snackBar: MatSnackBar
   ) {}
 
-  private displayedColumns = ["name", "address", "quotaUsedFormatted", "quotaAllowedFormatted", "actions"]
+  private displayedColumns = ["address", "name", "quotaUsedFormatted", "quotaAllowedFormatted", "actions"]
   private dataSource: MatTableDataSource<AccountListItemFormatted>
   public accountSubscription: Subscription
 
@@ -74,13 +76,12 @@ export class AccountsComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase()
   }
 
-  public formatBytes(bytes, decimals?): string {
+  public formatBytes(bytes, decimals = 1): string {
     if (bytes == 0) return "0 Bytes"
     const k = 1024,
-      dm = decimals || 2,
       sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
       i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i]
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(decimals)) + " " + sizes[i]
   }
 
   public accountDialog(id?: string): void {
@@ -88,6 +89,63 @@ export class AccountsComponent implements OnInit {
     if (id) {
       dialogConfig.data = { id: id }
     }
-    this.dialog.open(AccountDialogComponent, dialogConfig)
+    const dialog = this.dialog.open(AccountDialogComponent, dialogConfig)
+    dialog.afterClosed().subscribe((result): void => {
+      if (result) {
+        this.getAccounts()
+      }
+    })
+  }
+
+  public removeConfirmDialog(accountId: string, address?: string): void {
+    const dialogConfig: DialogConfig = {
+      data: {
+        title: `Remove ${address || accountId}`,
+        text: "Are you sure? This will delete all messages in this account.",
+        buttons: [
+          {
+            options: {
+              active: false,
+              text: "NO",
+              buttonColor: "primary"
+            }
+          },
+          {
+            options: {
+              active: false,
+              text: "YES",
+              buttonColor: "warn",
+              spinnerSize: 18,
+              mode: "indeterminate"
+            },
+            callback: (dialogRef: MatDialogRef<DialogComponent>): void => {
+              dialogRef.disableClose = true
+              dialogConfig.data.buttons[0].options.disabled = true
+              dialogConfig.data.buttons[1].options.active = true
+
+              const accessToken = localStorage.getItem("access_token")
+              this.accountsService.configuration.apiKeys = { Authorization: `bearer ${accessToken}` }
+              this.accountsService.accountsAccountIdDelete(accountId).subscribe(
+                (): void => {
+                  dialogRef.close()
+                  this.snackBar.open(`${address || accountId} has been removed`)
+                  this.getAccounts()
+                },
+                (error: HttpErrorResponse): void => {
+                  dialogRef.disableClose = false
+                  dialogConfig.data.buttons[0].options.disabled = false
+                  dialogConfig.data.buttons[1].options.active = false
+                  this.snackBar.openFromComponent(ErrorSnackbarComponent, {
+                    data: error,
+                    panelClass: ["error-snackbar"]
+                  })
+                }
+              )
+            }
+          }
+        ]
+      }
+    }
+    this.dialog.open(DialogComponent, dialogConfig)
   }
 }

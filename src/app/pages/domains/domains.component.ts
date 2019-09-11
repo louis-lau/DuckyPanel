@@ -102,7 +102,7 @@ export class DomainsComponent implements OnInit {
               this.domainsService.domainsDomainDelete(domain).subscribe(
                 (): void => {
                   dialogRef.close()
-                  this.snackBar.open(`${domain} has been removed`, undefined, { duration: 3000 })
+                  this.snackBar.open(`${domain} has been removed`)
                   this.getDomains()
                 },
                 (error: HttpErrorResponse): void => {
