@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from "@angular/common/http"
 import { Component, OnInit, ViewChild } from "@angular/core"
 import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar, MatSort, MatTableDataSource } from "@angular/material"
-import { Router } from "@angular/router"
+import { ActivatedRoute, Router } from "@angular/router"
 import { AccountListItem, EmailAccountsService } from "ducky-api-client-angular"
 import { Subscription } from "rxjs"
 import { DialogComponent } from "src/app/components/dialog/dialog.component"
@@ -21,6 +21,7 @@ export class AccountsComponent implements OnInit {
     public dialog: MatDialog,
     private readonly accountsService: EmailAccountsService,
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private snackBar: MatSnackBar
   ) {}
 
@@ -38,6 +39,12 @@ export class AccountsComponent implements OnInit {
 
   public ngOnInit(): void {
     this.getAccounts()
+
+    this.activatedRoute.params.subscribe((params): void => {
+      if (params["id"]) {
+        this.accountDialog(params["id"])
+      }
+    })
   }
 
   public getAccounts(): void {
@@ -91,6 +98,7 @@ export class AccountsComponent implements OnInit {
     }
     const dialog = this.dialog.open(AccountDialogComponent, dialogConfig)
     dialog.afterClosed().subscribe((result): void => {
+      this.router.navigateByUrl("/accounts/")
       if (result) {
         this.getAccounts()
       }

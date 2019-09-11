@@ -54,7 +54,7 @@
               <mat-icon>filter_list</mat-icon>
             </button>
             <button
-              (click)="accountDialog(row.id)"
+              [routerLink]="['/accounts', row.id]"
               matTooltip="Modify account"
               matTooltipPosition="left"
               matTooltipShowDelay="500"

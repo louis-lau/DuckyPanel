@@ -22,6 +22,10 @@ const routes: Routes = [
   },
   {
     path: "accounts",
+    redirectTo: "accounts/"
+  },
+  {
+    path: "accounts/:id",
     component: AccountsComponent,
     data: {
       isFullscreen: false
