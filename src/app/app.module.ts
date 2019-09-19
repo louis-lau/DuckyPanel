@@ -24,6 +24,7 @@ import {
   MatToolbarModule,
   MatTooltipModule
 } from "@angular/material"
+import { MatChipsModule } from "@angular/material/chips"
 import { BrowserModule } from "@angular/platform-browser"
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
 import { ApiModule, Configuration, ConfigurationParameters } from "ducky-api-client-angular"
@@ -38,8 +39,9 @@ import { AccountsComponent } from "./pages/accounts/accounts.component"
 import { AccountDialogComponent } from "./pages/accounts/components/account-dialog/account-dialog.component"
 import { AddDomainDialogComponent } from "./pages/domains/components/add-domain-dialog/add-domain-dialog.component"
 import { DomainsComponent } from "./pages/domains/domains.component"
-import { LoginComponent } from "./pages/login/login.component";
-import { ForwardersComponent } from './pages/forwarders/forwarders.component'
+import { ForwarderDialogComponent } from "./pages/forwarders/components/forwarder-dialog/forwarder-dialog.component"
+import { ForwardersComponent } from "./pages/forwarders/forwarders.component"
+import { LoginComponent } from "./pages/login/login.component"
 
 // TODO: take these values from a config file or envvar
 export function apiConfigFactory(): Configuration {
@@ -48,9 +50,14 @@ export function apiConfigFactory(): Configuration {
   }
   return new Configuration(params)
 }
-
 @NgModule({
-  entryComponents: [DialogComponent, AccountDialogComponent, AddDomainDialogComponent, ErrorSnackbarComponent],
+  entryComponents: [
+    DialogComponent,
+    AccountDialogComponent,
+    AddDomainDialogComponent,
+    ErrorSnackbarComponent,
+    ForwarderDialogComponent
+  ],
   declarations: [
     AppComponent,
     DomainsComponent,
@@ -61,7 +68,8 @@ export function apiConfigFactory(): Configuration {
     AddDomainDialogComponent,
     LoginComponent,
     ErrorSnackbarComponent,
-    ForwardersComponent
+    ForwardersComponent,
+    ForwarderDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -82,6 +90,7 @@ export function apiConfigFactory(): Configuration {
     MatTooltipModule,
     MatSnackBarModule,
     MatInputModule,
+    MatChipsModule,
     MatOptionModule,
     MatSelectModule,
     MatFormFieldModule,

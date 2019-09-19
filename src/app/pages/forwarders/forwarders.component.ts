@@ -1,13 +1,16 @@
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
 import { HttpErrorResponse } from "@angular/common/http"
 import { Component, OnInit, ViewChild } from "@angular/core"
-import { MatDialog, MatDialogRef, MatSnackBar, MatSort, MatTableDataSource } from "@angular/material"
+import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar, MatSort, MatTableDataSource } from "@angular/material"
+import { ActivatedRoute, Router } from "@angular/router"
 import { Forwarder, ForwardersService } from "ducky-api-client-angular"
 import { Observable, Subscription } from "rxjs"
 import { map } from "rxjs/operators"
 import { DialogComponent } from "src/app/components/dialog/dialog.component"
 import { DialogConfig } from "src/app/components/dialog/dialog.interfaces"
 import { ErrorSnackbarComponent } from "src/app/components/error-snackbar/error-snackbar.component"
+
+import { ForwarderDialogComponent } from "./components/forwarder-dialog/forwarder-dialog.component"
 
 @Component({
   selector: "app-forwarders",
@@ -19,7 +22,9 @@ export class ForwardersComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private readonly forwardersService: ForwardersService
+    private readonly forwardersService: ForwardersService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   public displayedColumns = ["address", "actions"]
@@ -39,6 +44,12 @@ export class ForwardersComponent implements OnInit {
 
   public ngOnInit(): void {
     this.getForwarders()
+
+    this.activatedRoute.params.subscribe((params): void => {
+      if (params["id"]) {
+        this.forwarderDialog(params["id"])
+      }
+    })
   }
 
   public getForwarders(): void {
@@ -52,6 +63,20 @@ export class ForwardersComponent implements OnInit {
         this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
       }
     )
+  }
+
+  public forwarderDialog(id?: string): void {
+    const dialogConfig: MatDialogConfig = {}
+    if (id) {
+      dialogConfig.data = { id: id }
+    }
+    const dialog = this.dialog.open(ForwarderDialogComponent, dialogConfig)
+    dialog.afterClosed().subscribe((result): void => {
+      this.router.navigateByUrl("/forwarders/")
+      if (result) {
+        this.getForwarders()
+      }
+    })
   }
 
   public removeConfirmDialog(forwarderId: string, address?: string): void {

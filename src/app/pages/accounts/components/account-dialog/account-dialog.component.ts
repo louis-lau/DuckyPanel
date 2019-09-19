@@ -118,6 +118,7 @@ export class AccountDialogComponent implements OnInit {
         })
       },
       (error: HttpErrorResponse): void => {
+        this.dialogRef.close()
         this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
       }
     )
@@ -131,6 +132,7 @@ export class AccountDialogComponent implements OnInit {
         this.domains = domains.map((value): string => value.domain)
       },
       (error: HttpErrorResponse): void => {
+        this.dialogRef.close()
         this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
       }
     )

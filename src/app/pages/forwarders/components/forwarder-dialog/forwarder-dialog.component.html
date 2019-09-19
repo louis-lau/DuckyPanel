@@ -1,0 +1,97 @@
+<ng-template #loading>
+  <mat-spinner diameter="50"></mat-spinner>
+</ng-template>
+<ng-container
+  *ngIf="
+    (!isModifyDialog && domainsSubscription.closed) ||
+      (isModifyDialog && domainsSubscription.closed && forwarderDetailsSubscription.closed);
+    else loading
+  "
+>
+  <h2 mat-dialog-title>{{ isModifyDialog ? "Modify" : "New" }} forwarder</h2>
+  <mat-dialog-content>
+    <form
+      [formGroup]="forwarderForm"
+      id="forwarderForm"
+      (ngSubmit)="updateAccount()"
+      fxLayout="column"
+      fxLayoutGap="10px"
+    >
+      <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
+
+      <div [fxLayout]="(isHandset$ | async) ? 'column' : 'row'" class="row-container" fxLayoutGap="10px">
+        <mat-form-field appearance="fill" [class.user-input-right]="!(isHandset$ | async)">
+          <mat-label>User</mat-label>
+          <input matInput formControlName="addressUser" [required]="isModifyDialog ? null : 'required'" />
+          <mat-error *ngIf="forwarderForm.controls['addressUser'].hasError('required')">
+            User is required
+          </mat-error>
+          <mat-error *ngIf="forwarderForm.controls['addressUser'].hasError('pattern')">
+            Invalid dot notation
+          </mat-error>
+        </mat-form-field>
+
+        <div *ngIf="!(isHandset$ | async)" class="at-symbol" fxLayout="column" fxLayoutAlign="center">
+          @
+        </div>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Domain</mat-label>
+          <span *ngIf="isHandset$ | async" matPrefix>@</span>
+          <mat-select formControlName="domain" [required]="isModifyDialog ? null : 'required'">
+            <ng-container *ngFor="let domain of domains; let i = index">
+              <mat-option [value]="domain">{{ domain }}</mat-option>
+            </ng-container>
+          </mat-select>
+          <mat-error *ngIf="forwarderForm.controls['domain'].hasError('required')">
+            Domain is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Forwarding targets</mat-label>
+        <mat-chip-list #targetsChipList>
+          <mat-chip
+            *ngFor="let forwardTarget of forwardTargets"
+            selectable="false"
+            removable="true"
+            (removed)="removeTarget(forwardTarget)"
+          >
+            {{ forwardTarget }}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+          <input
+            matInput
+            [matChipInputFor]="targetsChipList"
+            matChipInputAddOnBlur="true"
+            (matChipInputTokenEnd)="addTarget($event)"
+          />
+        </mat-chip-list>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Forward limit</mat-label>
+        <input matInput type="number" formControlName="forwardLimit" />
+        <mat-hint *ngIf="isModifyDialog">Current usage: {{ forwarderDetails.limits.forward.used }}</mat-hint>
+        <mat-error
+          *ngIf="
+            forwarderForm.controls['forwardLimit'].hasError('min') ||
+            forwarderForm.controls['forwardLimit'].hasError('max')
+          "
+        >
+          Limit must be between 1-200
+        </mat-error>
+      </mat-form-field>
+      <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end">
+        <mat-spinner-button (btnClick)="dialogRef.close()" [options]="cancelButtonConfig"></mat-spinner-button>
+        <div (click)="forceCheckForm()">
+          <mat-spinner-button [options]="saveButtonConfig"></mat-spinner-button>
+        </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+</ng-container>
