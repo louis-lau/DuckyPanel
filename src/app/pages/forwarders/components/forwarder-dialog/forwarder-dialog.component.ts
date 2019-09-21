@@ -1,14 +1,17 @@
+import { COMMA, ENTER, SPACE } from "@angular/cdk/keycodes"
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
 import { HttpErrorResponse } from "@angular/common/http"
 import { Component, Inject, OnInit } from "@angular/core"
 import { FormControl, FormGroup, Validators } from "@angular/forms"
 import { MAT_DIALOG_DATA, MatChipInputEvent, MatDialogRef, MatSnackBar } from "@angular/material"
-import { DomainsService, ForwarderDetails, ForwardersService } from "ducky-api-client-angular"
+import { CreateForwarderDto, DomainsService, ForwarderDetails, ForwardersService } from "ducky-api-client-angular"
 import { MatProgressButtonOptions } from "mat-progress-buttons"
 import { Observable, Subscription } from "rxjs"
 import { map } from "rxjs/operators"
-import { ErrorSnackbarComponent } from "src/app/components/error-snackbar/error-snackbar.component"
 import { AccountDialogComponent } from "src/app/pages/accounts/components/account-dialog/account-dialog.component"
+import { ErrorSnackbarComponent } from "src/app/shared/components/error-snackbar/error-snackbar.component"
+import { AddressUsernameValidator } from "src/app/shared/validators/address-username-validator.directive"
+import { forwardingTargetValidator } from "src/app/shared/validators/forwarding-target-validator.directive"
 
 @Component({
   selector: "app-forwarder-dialog",
@@ -30,6 +33,8 @@ export class ForwarderDialogComponent implements OnInit {
   public forwarderDetailsSubscription: Subscription
   public domains: string[]
   public forwardTargets: string[] = []
+  public forwardTargetsDirty: boolean = false
+  public readonly newTargetSeperators: number[] = [ENTER, COMMA, SPACE]
 
   public isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
@@ -37,8 +42,9 @@ export class ForwarderDialogComponent implements OnInit {
 
   public forwarderForm: FormGroup = new FormGroup({
     name: new FormControl(null),
-    addressUser: new FormControl(null, Validators.pattern(new RegExp("^((?!(\\.\\.)|(^\\.)).)*$"))),
+    addressUser: new FormControl(null, AddressUsernameValidator()),
     domain: new FormControl(null),
+    newTarget: new FormControl(null, forwardingTargetValidator()),
     forwardLimit: new FormControl(null, [Validators.min(1), Validators.max(200)])
   })
 
@@ -61,7 +67,11 @@ export class ForwarderDialogComponent implements OnInit {
 
   public ngOnInit(): void {
     this.forwarderForm.valueChanges.subscribe((): void => {
-      this.saveButtonConfig.disabled = this.forwarderForm.invalid || this.forwarderForm.pristine
+      if (this.forwarderForm.dirty && this.forwarderForm.valid) {
+        this.saveButtonConfig.disabled = false
+      } else {
+        this.saveButtonConfig.disabled = true
+      }
     })
 
     this.getDomains()
@@ -74,22 +84,37 @@ export class ForwarderDialogComponent implements OnInit {
   }
 
   public addTarget(event: MatChipInputEvent): void {
-    if ((event.value || "").trim()) {
-      this.forwardTargets.push(event.value.trim())
-    }
+    if (this.forwarderForm.controls["newTarget"].valid) {
+      if ((event.value || "").trim()) {
+        this.forwardTargetsDirty = true
+        this.forwardTargets.push(event.value.trim())
+      }
 
-    // Reset the input value
-    if (event.input) {
-      event.input.value = ""
+      // Reset the input value
+      if (event.input) {
+        this.forwarderForm.controls["newTarget"].setValue("")
+        this.forwarderForm.controls["newTarget"].markAsUntouched()
+      }
+    } else {
+      this.forwarderForm.controls["newTarget"].markAsTouched()
     }
   }
 
   public removeTarget(target: string): void {
-    console.log(target)
     const index = this.forwardTargets.indexOf(target)
 
     if (index >= 0) {
+      this.forwardTargetsDirty = true
+      this.forwarderForm.controls["newTarget"].markAsDirty()
+      this.forwarderForm.controls["newTarget"].markAsTouched()
+      this.saveButtonConfig.disabled = false
       this.forwardTargets.splice(index, 1)
+    }
+  }
+
+  public forceCheckForm(): void {
+    if (this.forwarderForm.invalid) {
+      this.forwarderForm.markAllAsTouched()
     }
   }
 
@@ -121,6 +146,7 @@ export class ForwarderDialogComponent implements OnInit {
           name: forwarder.name,
           addressUser: addressUser,
           domain: domain,
+          newTarget: null,
           forwardLimit: forwarder.limits.forward.allowed
         })
         this.forwardTargets = forwarder.targets
@@ -130,5 +156,50 @@ export class ForwarderDialogComponent implements OnInit {
         this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
       }
     )
+  }
+
+  public updateForwarder(): void {
+    this.dialogRef.disableClose = true
+    this.cancelButtonConfig.disabled = true
+    this.saveButtonConfig.active = true
+
+    const dirtyValues: any = {}
+    for (const key in this.forwarderForm.controls) {
+      const value = this.forwarderForm.controls[key].value
+      if (this.forwarderForm.controls[key].dirty && value !== null && value !== "") {
+        dirtyValues[key] = value
+      }
+    }
+
+    let address: string
+    if (dirtyValues.addressUser || dirtyValues.domain) {
+      address = `${this.forwarderForm.controls["addressUser"].value}@${this.forwarderForm.controls["domain"].value}`
+    }
+
+    const forwarder: CreateForwarderDto = {
+      name: dirtyValues.name,
+      address: address,
+      targets: this.forwardTargetsDirty ? this.forwardTargets : undefined,
+      limits: {
+        forward: dirtyValues.forwardLimit
+      }
+    }
+
+    const onError = (error: HttpErrorResponse): void => {
+      this.dialogRef.disableClose = false
+      this.cancelButtonConfig.disabled = false
+      this.saveButtonConfig.active = false
+      this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
+    }
+
+    if (this.isModifyDialog) {
+      this.forwardersService.forwardersForwarderIdPut(this.data.id, forwarder).subscribe((): void => {
+        this.dialogRef.close(true)
+      }, onError)
+    } else {
+      this.forwardersService.forwardersPost(forwarder).subscribe((): void => {
+        this.dialogRef.close(true)
+      }, onError)
+    }
   }
 }

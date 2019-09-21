@@ -11,6 +11,7 @@ module.exports = {
     sourceType: "module" // Allows for the use of imports
   },
   rules: {
+    "@typescript-eslint/no-explicit-any": "off",
     "prettier/prettier": "warn",
     "simple-import-sort/sort": "warn",
     "@typescript-eslint/indent": ["error", 2],

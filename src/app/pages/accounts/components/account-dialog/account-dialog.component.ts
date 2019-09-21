@@ -13,7 +13,8 @@ import {
 import { MatProgressButtonOptions } from "mat-progress-buttons"
 import { Observable, Subscription } from "rxjs"
 import { map } from "rxjs/operators"
-import { ErrorSnackbarComponent } from "src/app/components/error-snackbar/error-snackbar.component"
+import { ErrorSnackbarComponent } from "src/app/shared/components/error-snackbar/error-snackbar.component"
+import { AddressUsernameValidator } from "src/app/shared/validators/address-username-validator.directive"
 
 @Component({
   selector: "app-account-dialog",
@@ -45,7 +46,7 @@ export class AccountDialogComponent implements OnInit {
     name: new FormControl(null),
     spamLevel: new FormControl(50, [Validators.min(0), Validators.max(100)]),
     disabledScopes: new FormControl(null),
-    addressUser: new FormControl(null, Validators.pattern(new RegExp("^((?!(\\.\\.)|(^\\.)).)*$"))),
+    addressUser: new FormControl(null, AddressUsernameValidator()),
     domain: new FormControl(null),
     password: new FormControl(null, Validators.minLength(8)),
     quota: new FormControl(null, Validators.min(0)),

@@ -4,9 +4,9 @@ import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar, MatSort, MatTabl
 import { ActivatedRoute, Router } from "@angular/router"
 import { AccountListItem, EmailAccountsService } from "ducky-api-client-angular"
 import { Subscription } from "rxjs"
-import { DialogComponent } from "src/app/components/dialog/dialog.component"
-import { DialogConfig } from "src/app/components/dialog/dialog.interfaces"
-import { ErrorSnackbarComponent } from "src/app/components/error-snackbar/error-snackbar.component"
+import { DialogComponent } from "src/app/shared/components/dialog/dialog.component"
+import { DialogConfig } from "src/app/shared/components/dialog/dialog.interfaces"
+import { ErrorSnackbarComponent } from "src/app/shared/components/error-snackbar/error-snackbar.component"
 
 import { AccountListItemFormatted } from "./accounts.interfaces"
 import { AccountDialogComponent } from "./components/account-dialog/account-dialog.component"

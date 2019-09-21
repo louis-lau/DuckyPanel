@@ -13,7 +13,7 @@
     <form
       [formGroup]="forwarderForm"
       id="forwarderForm"
-      (ngSubmit)="updateAccount()"
+      (ngSubmit)="updateForwarder()"
       fxLayout="column"
       fxLayoutGap="10px"
     >
@@ -29,8 +29,8 @@
           <mat-error *ngIf="forwarderForm.controls['addressUser'].hasError('required')">
             User is required
           </mat-error>
-          <mat-error *ngIf="forwarderForm.controls['addressUser'].hasError('pattern')">
-            Invalid dot notation
+          <mat-error *ngIf="forwarderForm.controls['addressUser'].hasError('AddressUsername')">
+            Invalid email address format
           </mat-error>
         </mat-form-field>
 
@@ -54,7 +54,7 @@
 
       <mat-form-field appearance="fill">
         <mat-label>Forwarding targets</mat-label>
-        <mat-chip-list #targetsChipList>
+        <mat-chip-list #targetsChipList formControlName="newTarget">
           <mat-chip
             *ngFor="let forwardTarget of forwardTargets"
             selectable="false"
@@ -66,11 +66,16 @@
           </mat-chip>
           <input
             matInput
+            formControlName="newTarget"
             [matChipInputFor]="targetsChipList"
             matChipInputAddOnBlur="true"
+            [matChipInputSeparatorKeyCodes]="newTargetSeperators"
             (matChipInputTokenEnd)="addTarget($event)"
           />
         </mat-chip-list>
+        <mat-error *ngIf="forwarderForm.controls['newTarget'].hasError('forwardingTarget')">
+          Not an email address, smtp address, or http address
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="fill">

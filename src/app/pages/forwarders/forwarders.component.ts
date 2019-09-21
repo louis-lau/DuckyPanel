@@ -6,9 +6,9 @@ import { ActivatedRoute, Router } from "@angular/router"
 import { Forwarder, ForwardersService } from "ducky-api-client-angular"
 import { Observable, Subscription } from "rxjs"
 import { map } from "rxjs/operators"
-import { DialogComponent } from "src/app/components/dialog/dialog.component"
-import { DialogConfig } from "src/app/components/dialog/dialog.interfaces"
-import { ErrorSnackbarComponent } from "src/app/components/error-snackbar/error-snackbar.component"
+import { DialogComponent } from "src/app/shared/components/dialog/dialog.component"
+import { DialogConfig } from "src/app/shared/components/dialog/dialog.interfaces"
+import { ErrorSnackbarComponent } from "src/app/shared/components/error-snackbar/error-snackbar.component"
 
 import { ForwarderDialogComponent } from "./components/forwarder-dialog/forwarder-dialog.component"
 

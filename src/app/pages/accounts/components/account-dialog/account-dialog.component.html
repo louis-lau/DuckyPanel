@@ -23,8 +23,8 @@
           <mat-error *ngIf="accountForm.controls['addressUser'].hasError('required')">
             User is required
           </mat-error>
-          <mat-error *ngIf="accountForm.controls['addressUser'].hasError('pattern')">
-            Invalid dot notation
+          <mat-error *ngIf="accountForm.controls['addressUser'].hasError('AddressUsername')">
+              Invalid email address format
           </mat-error>
         </mat-form-field>
 

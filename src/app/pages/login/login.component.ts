@@ -7,7 +7,7 @@ import { AccessToken, AuthenticationService } from "ducky-api-client-angular"
 import { MatProgressButtonOptions } from "mat-progress-buttons"
 import { Observable } from "rxjs"
 import { map } from "rxjs/operators"
-import { ErrorSnackbarComponent } from "src/app/components/error-snackbar/error-snackbar.component"
+import { ErrorSnackbarComponent } from "src/app/shared/components/error-snackbar/error-snackbar.component"
 
 @Component({
   selector: "app-login",

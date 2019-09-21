@@ -32,9 +32,6 @@ import { MatProgressButtonsModule } from "mat-progress-buttons"
 
 import { AppRoutingModule } from "./app-routing.module"
 import { AppComponent } from "./app.component"
-import { DialogComponent } from "./components/dialog/dialog.component"
-import { ErrorSnackbarComponent } from "./components/error-snackbar/error-snackbar.component"
-import { FabButtonComponent } from "./components/fab-button/fab-button.component"
 import { AccountsComponent } from "./pages/accounts/accounts.component"
 import { AccountDialogComponent } from "./pages/accounts/components/account-dialog/account-dialog.component"
 import { AddDomainDialogComponent } from "./pages/domains/components/add-domain-dialog/add-domain-dialog.component"
@@ -42,6 +39,9 @@ import { DomainsComponent } from "./pages/domains/domains.component"
 import { ForwarderDialogComponent } from "./pages/forwarders/components/forwarder-dialog/forwarder-dialog.component"
 import { ForwardersComponent } from "./pages/forwarders/forwarders.component"
 import { LoginComponent } from "./pages/login/login.component"
+import { DialogComponent } from "./shared/components/dialog/dialog.component"
+import { ErrorSnackbarComponent } from "./shared/components/error-snackbar/error-snackbar.component"
+import { FabButtonComponent } from "./shared/components/fab-button/fab-button.component"
 
 // TODO: take these values from a config file or envvar
 export function apiConfigFactory(): Configuration {
