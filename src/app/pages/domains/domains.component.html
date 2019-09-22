@@ -19,12 +19,20 @@
           <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
           <mat-cell *matCellDef="let row" data-label="actions">
             <button
+              [matTooltip]="row.dkim ? 'Edit DKIM' : 'Add DKIM'"
+              matTooltipPosition="left"
+              matTooltipShowDelay="500"
+              mat-icon-button
+            >
+              <mat-icon [class.grayed-out]="row.dkim">vpn_key</mat-icon>
+              <mat-icon *ngIf="row.dkim" class="overlap-icon">{{ row.dkim ? 'edit' : 'close' }}</mat-icon>
+            </button>
+            <button
               (click)="removeConfirmDialog(row.domain)"
               matTooltip="Remove this domain"
               matTooltipPosition="left"
               matTooltipShowDelay="500"
               mat-icon-button
-              aria-label="Remove this domain"
             >
               <mat-icon>delete</mat-icon>
             </button>

@@ -52,7 +52,7 @@ export class AddDomainDialogComponent implements OnInit {
 
     const accessToken = localStorage.getItem("access_token")
     this.domainsService.configuration.apiKeys = { Authorization: `bearer ${accessToken}` }
-    this.domainsService.domainsDomainPost(this.domainInput.value).subscribe(
+    this.domainsService.domainsPost({ domain: this.domainInput.value }).subscribe(
       (): void => {
         this.dialogRef.close(true)
       },

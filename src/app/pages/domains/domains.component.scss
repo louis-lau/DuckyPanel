@@ -1,4 +1,17 @@
 // Align actions collumn to the right
 .mat-column-actions {
-  flex: 0 0 40px
+  flex: 0 0 80px
+}
+
+// Align actions column center
+.mat-column-actions.mat-header-cell {
+  justify-content: center;
+}
+
+.grayed-out {
+  color: #cfcfcf;
+}
+
+.overlap-icon {
+  margin-left: -24px
 }
