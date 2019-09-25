@@ -1,7 +1,9 @@
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
+import { Location } from "@angular/common"
 import { HttpErrorResponse } from "@angular/common/http"
 import { Component, OnInit, ViewChild } from "@angular/core"
-import { MatDialog, MatDialogRef, MatSnackBar, MatSort, MatTableDataSource } from "@angular/material"
+import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar, MatSort, MatTableDataSource } from "@angular/material"
+import { ActivatedRoute, Router } from "@angular/router"
 import { Domain, DomainsService } from "ducky-api-client-angular"
 import { Observable, Subscription } from "rxjs"
 import { map } from "rxjs/operators"
@@ -10,6 +12,7 @@ import { DialogConfig } from "src/app/shared/components/dialog/dialog.interfaces
 import { ErrorSnackbarComponent } from "src/app/shared/components/error-snackbar/error-snackbar.component"
 
 import { AddDomainDialogComponent } from "./components/add-domain-dialog/add-domain-dialog.component"
+import { DkimDialogComponent } from "./components/dkim-dialog/dkim-dialog.component"
 
 @Component({
   selector: "app-domains",
@@ -21,7 +24,10 @@ export class DomainsComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private readonly domainsService: DomainsService
+    private readonly domainsService: DomainsService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private location: Location
   ) {}
 
   public displayedColumns = ["domain", "actions"]
@@ -40,6 +46,21 @@ export class DomainsComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.route.queryParams.subscribe((params): void => {
+      if (params.refresh) {
+        this.getDomains()
+
+        // Remove refresh param from url
+        const newParams = { ...params }
+        delete newParams.refresh
+        this.router.navigate(["."], {
+          relativeTo: this.route,
+          queryParams: newParams,
+          replaceUrl: true
+        })
+      }
+    })
+
     this.getDomains()
   }
 
@@ -59,6 +80,21 @@ export class DomainsComponent implements OnInit {
   public addDialog(): void {
     const dialog = this.dialog.open(AddDomainDialogComponent)
     dialog.afterClosed().subscribe((result): void => {
+      if (result) {
+        this.getDomains()
+      }
+    })
+  }
+
+  public dkimDialog(domain: string, edit = false): void {
+    const dialog = this.dialog.open(DkimDialogComponent, {
+      data: {
+        domain: domain,
+        edit: edit
+      }
+    })
+    dialog.afterClosed().subscribe((result): void => {
+      this.router.navigateByUrl("/domains")
       if (result) {
         this.getDomains()
       }

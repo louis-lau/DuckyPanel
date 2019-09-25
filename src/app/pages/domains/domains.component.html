@@ -19,6 +19,7 @@
           <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
           <mat-cell *matCellDef="let row" data-label="actions">
             <button
+              [routerLink]="['/domains', row.domain, 'dkim', row.dkim ? 'edit' : 'new']"
               [matTooltip]="row.dkim ? 'Edit DKIM' : 'Add DKIM'"
               matTooltipPosition="left"
               matTooltipShowDelay="500"
@@ -45,4 +46,6 @@
     </ng-container>
   </mat-card>
 </div>
+<router-outlet></router-outlet>
+
 <app-fab-button icon="add" (click)="addDialog()"></app-fab-button>

@@ -35,6 +35,10 @@ import { AppComponent } from "./app.component"
 import { AccountsComponent } from "./pages/accounts/accounts.component"
 import { AccountDialogComponent } from "./pages/accounts/components/account-dialog/account-dialog.component"
 import { AddDomainDialogComponent } from "./pages/domains/components/add-domain-dialog/add-domain-dialog.component"
+import {
+  DkimDialogComponent,
+  DkimDialogEntryComponent
+} from "./pages/domains/components/dkim-dialog/dkim-dialog.component"
 import { DomainsComponent } from "./pages/domains/domains.component"
 import { ForwarderDialogComponent } from "./pages/forwarders/components/forwarder-dialog/forwarder-dialog.component"
 import { ForwardersComponent } from "./pages/forwarders/forwarders.component"
@@ -56,7 +60,8 @@ export function apiConfigFactory(): Configuration {
     AccountDialogComponent,
     AddDomainDialogComponent,
     ErrorSnackbarComponent,
-    ForwarderDialogComponent
+    ForwarderDialogComponent,
+    DkimDialogComponent
   ],
   declarations: [
     AppComponent,
@@ -69,7 +74,9 @@ export function apiConfigFactory(): Configuration {
     LoginComponent,
     ErrorSnackbarComponent,
     ForwardersComponent,
-    ForwarderDialogComponent
+    ForwarderDialogComponent,
+    DkimDialogComponent,
+    DkimDialogEntryComponent
   ],
   imports: [
     BrowserModule,
