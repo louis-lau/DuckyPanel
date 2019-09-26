@@ -4,7 +4,7 @@
 <ng-container *ngIf="!isModifyDialog || (isModifyDialog && dkimKeySubscription.closed); else loading">
   <h2 mat-dialog-title>{{ isModifyDialog ? "Modify" : "New" }} DKIM for {{ data.domain }}</h2>
   <mat-dialog-content>
-    <form [formGroup]="dkimForm" id="dkimForm" (ngSubmit)="updatedkim()" fxLayout="column" fxLayoutGap="10px">
+    <form [formGroup]="dkimForm" id="dkimForm" (ngSubmit)="updateDkim()" fxLayout="column" fxLayoutGap="10px">
       <mat-form-field appearance="fill">
         <mat-label>Selector</mat-label>
         <input matInput formControlName="selector" required />
@@ -18,10 +18,15 @@
         <textarea matInput formControlName="privateKey" ></textarea>
         <mat-hint>{{ isModifyDialog ? "Leave empty to keep the same key" : "Leave empty to generate a new key" }}</mat-hint>
       </mat-form-field>
-      <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end">
-        <mat-spinner-button (btnClick)="dialogRef.close()" [options]="cancelButtonConfig"></mat-spinner-button>
-        <div (click)="forceCheckForm()">
-          <mat-spinner-button [options]="saveButtonConfig"></mat-spinner-button>
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <div fxLayout="row" fxLayoutAlign="start">
+          <mat-spinner-button *ngIf="isModifyDialog" (btnClick)="disableDialog()" [options]="disableButtonConfig"></mat-spinner-button>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="end" fxLayoutGap="10px">
+          <mat-spinner-button (btnClick)="dialogRef.close()" [options]="cancelButtonConfig"></mat-spinner-button>
+          <div (click)="forceCheckForm()">
+            <mat-spinner-button [options]="saveButtonConfig"></mat-spinner-button>
+          </div>
         </div>
       </div>
     </form>
