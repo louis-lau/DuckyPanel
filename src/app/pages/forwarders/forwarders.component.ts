@@ -109,7 +109,9 @@ export class ForwardersComponent implements OnInit {
               this.forwardersService.forwardersForwarderIdDelete(forwarderId).subscribe(
                 (): void => {
                   dialogRef.close()
-                  this.snackBar.open(`${address || forwarderId} has been removed`)
+                  this.snackBar.open(`${address || forwarderId} has been removed`, undefined, {
+                    panelClass: "success-snackbar"
+                  })
                   this.getForwarders()
                 },
                 (error: HttpErrorResponse): void => {

@@ -174,12 +174,19 @@ export class AccountDialogComponent implements OnInit {
     }
 
     if (this.isModifyDialog) {
+      const address = account.address
       delete account.address
       this.emailAccountsService.accountsAccountIdPut(this.data.id, account).subscribe((): void => {
+        this.snackBar.open(`${address} successfully updated`, undefined, {
+          panelClass: "success-snackbar"
+        })
         this.dialogRef.close(true)
       }, onError)
     } else {
       this.emailAccountsService.accountsPost(account).subscribe((): void => {
+        this.snackBar.open(`${account.address} successfully added`, undefined, {
+          panelClass: "success-snackbar"
+        })
         this.dialogRef.close(true)
       }, onError)
     }

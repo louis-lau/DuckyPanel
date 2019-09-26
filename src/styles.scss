@@ -12,5 +12,8 @@ mat-card > mat-spinner {
   margin: auto;
 }
 .error-snackbar {
-  border-top: 4px solid red
+  border-top: 4px solid #F44336
+}
+.success-snackbar {
+  border-top: 4px solid #8BC34A
 }

@@ -109,6 +109,9 @@ export class DkimDialogComponent implements OnInit {
     this.dkimService.domainsDomainDkimPut(this.data.domain, dkimKey).subscribe(
       (): void => {
         this.dialogRef.close(true)
+        this.snackBar.open(`DKIM for ${this.data.domain} ${this.isModifyDialog ? "updated" : "enabled"}`, undefined, {
+          panelClass: "success-snackbar"
+        })
       },
       (error: HttpErrorResponse): void => {
         this.dialogRef.disableClose = false
@@ -149,7 +152,9 @@ export class DkimDialogComponent implements OnInit {
               this.dkimService.domainsDomainDkimDelete(this.data.domain).subscribe(
                 (): void => {
                   dialogRef.close()
-                  this.snackBar.open(`DKIM for ${this.data.domain} has been disabled`)
+                  this.snackBar.open(`DKIM for ${this.data.domain} has been disabled`, undefined, {
+                    panelClass: "success-snackbar"
+                  })
                   this.dialogRef.close(true)
                 },
                 (error: HttpErrorResponse): void => {

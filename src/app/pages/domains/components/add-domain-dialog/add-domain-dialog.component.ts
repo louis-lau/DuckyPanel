@@ -55,6 +55,9 @@ export class AddDomainDialogComponent implements OnInit {
     this.domainsService.domainsPost({ domain: this.domainInput.value }).subscribe(
       (): void => {
         this.dialogRef.close(true)
+        this.snackBar.open(`${this.domainInput.value} successfully added`, undefined, {
+          panelClass: "success-snackbar"
+        })
       },
       (error: HttpErrorResponse): void => {
         this.dialogRef.disableClose = false

@@ -135,7 +135,9 @@ export class AccountsComponent implements OnInit {
               this.accountsService.accountsAccountIdDelete(accountId).subscribe(
                 (): void => {
                   dialogRef.close()
-                  this.snackBar.open(`${address || accountId} has been removed`)
+                  this.snackBar.open(`${address || accountId} has been removed`, undefined, {
+                    panelClass: "success-snackbar"
+                  })
                   this.getAccounts()
                 },
                 (error: HttpErrorResponse): void => {

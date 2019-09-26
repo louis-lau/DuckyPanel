@@ -143,7 +143,7 @@ export class ForwarderDialogComponent implements OnInit {
         const domain = this.forwarderDetails.address.substring(this.forwarderDetails.address.lastIndexOf("@") + 1)
 
         this.forwarderForm.setValue({
-          name: forwarder.name,
+          name: forwarder.name ? forwarder.name : null, // If name is false then don't fill name field
           addressUser: addressUser,
           domain: domain,
           newTarget: null,
@@ -171,14 +171,15 @@ export class ForwarderDialogComponent implements OnInit {
       }
     }
 
-    let address: string
+    const address = `${this.forwarderForm.controls["addressUser"].value}@${this.forwarderForm.controls["domain"].value}`
+    let dirtyAddress: string
     if (dirtyValues.addressUser || dirtyValues.domain) {
-      address = `${this.forwarderForm.controls["addressUser"].value}@${this.forwarderForm.controls["domain"].value}`
+      dirtyAddress = `${this.forwarderForm.controls["addressUser"].value}@${this.forwarderForm.controls["domain"].value}`
     }
 
     const forwarder: CreateForwarderDto = {
       name: dirtyValues.name,
-      address: address,
+      address: dirtyAddress,
       targets: this.forwardTargetsDirty ? this.forwardTargets : undefined,
       limits: {
         forward: dirtyValues.forwardLimit
@@ -194,10 +195,16 @@ export class ForwarderDialogComponent implements OnInit {
 
     if (this.isModifyDialog) {
       this.forwardersService.forwardersForwarderIdPut(this.data.id, forwarder).subscribe((): void => {
+        this.snackBar.open(`${address} successfully updated`, undefined, {
+          panelClass: "success-snackbar"
+        })
         this.dialogRef.close(true)
       }, onError)
     } else {
       this.forwardersService.forwardersPost(forwarder).subscribe((): void => {
+        this.snackBar.open(`${address} successfully added`, undefined, {
+          panelClass: "success-snackbar"
+        })
         this.dialogRef.close(true)
       }, onError)
     }
