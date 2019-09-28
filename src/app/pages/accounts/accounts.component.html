@@ -2,21 +2,24 @@
   <mat-card>
     <mat-card-title>Your Email Accounts</mat-card-title>
     <mat-card-content
-      >Cat ipsum dolor sit amet, spot something, big eyes, big eyes, crouch, shake butt, prepare to pounce leave fur on
-      owners clothes fooled again thinking the dog likes me yet swat at dog. Meow go back to sleep owner brings food and
-      water tries to pet on head.</mat-card-content
+    >Cat ipsum dolor sit amet, spot something, big eyes, big eyes, crouch, shake butt, prepare to pounce leave fur on
+    owners clothes fooled again thinking the dog likes me yet swat at dog. Meow go back to sleep owner brings food and
+    water tries to pet on head.</mat-card-content
     >
   </mat-card>
   <mat-card class="account-table-card">
     <ng-template #loading>
       <mat-spinner diameter="50"></mat-spinner>
     </ng-template>
-
-    <ng-container *ngIf="accountSubscription.closed; else loading">
+    
+    <div fxLayout="row" fxLayoutAlign="space-between">
       <mat-form-field appearance="fill">
         <mat-label>Filter</mat-label>
         <input matInput type="search" (keyup)="applyFilter($event.target.value)" />
       </mat-form-field>
+      <mat-paginator [pageSizeOptions]="[10, 25, 50, 100, 200, 300, 400, 500]" pageSize="50" showFirstLastButtons></mat-paginator>
+    </div>
+    <ng-container *ngIf="accountSubscription.closed; else loading">
       <mat-table [dataSource]="dataSource" matSort>
         <ng-container matColumnDef="name">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>

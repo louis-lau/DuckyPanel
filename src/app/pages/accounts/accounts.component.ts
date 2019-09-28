@@ -1,6 +1,14 @@
 import { HttpErrorResponse } from "@angular/common/http"
 import { Component, OnInit, ViewChild } from "@angular/core"
-import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar, MatSort, MatTableDataSource } from "@angular/material"
+import {
+  MatDialog,
+  MatDialogConfig,
+  MatDialogRef,
+  MatPaginator,
+  MatSnackBar,
+  MatSort,
+  MatTableDataSource
+} from "@angular/material"
 import { ActivatedRoute, Router } from "@angular/router"
 import { AccountListItem, EmailAccountsService } from "ducky-api-client-angular"
 import { Subscription } from "rxjs"
@@ -26,7 +34,7 @@ export class AccountsComponent implements OnInit {
   ) {}
 
   private displayedColumns = ["address", "name", "quotaUsedFormatted", "quotaAllowedFormatted", "actions"]
-  private dataSource: MatTableDataSource<AccountListItemFormatted>
+  private dataSource: MatTableDataSource<AccountListItemFormatted> = new MatTableDataSource()
   public accountSubscription: Subscription
 
   @ViewChild(MatSort, { static: false })
@@ -37,8 +45,13 @@ export class AccountsComponent implements OnInit {
     }
   }
 
+  @ViewChild(MatPaginator, { static: true })
+  public paginator: MatPaginator
+
   public ngOnInit(): void {
     this.getAccounts()
+
+    this.dataSource.paginator = this.paginator
 
     this.activatedRoute.params.subscribe((params): void => {
       if (params["id"]) {
@@ -60,7 +73,7 @@ export class AccountsComponent implements OnInit {
           accountFormatted.quotaUsedFormatted = this.formatBytes(accountFormatted.quota.used)
         }
 
-        this.dataSource = new MatTableDataSource(accountsFormatted)
+        this.dataSource.data = accountsFormatted
         this.dataSource.sortingDataAccessor = (item, property): string | number => {
           // Sort the number of bytes instead of the formatted string
           switch (property) {
