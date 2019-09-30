@@ -1,7 +1,15 @@
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
 import { HttpErrorResponse } from "@angular/common/http"
 import { Component, OnInit, ViewChild } from "@angular/core"
-import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar, MatSort, MatTableDataSource } from "@angular/material"
+import {
+  MatDialog,
+  MatDialogConfig,
+  MatDialogRef,
+  MatPaginator,
+  MatSnackBar,
+  MatSort,
+  MatTableDataSource
+} from "@angular/material"
 import { ActivatedRoute, Router } from "@angular/router"
 import { Forwarder, ForwardersService } from "ducky-api-client-angular"
 import { Observable, Subscription } from "rxjs"
@@ -28,7 +36,7 @@ export class ForwardersComponent implements OnInit {
   ) {}
 
   public displayedColumns = ["address", "actions"]
-  public dataSource: MatTableDataSource<Forwarder>
+  public dataSource: MatTableDataSource<Forwarder> = new MatTableDataSource()
   public forwarderSubscription: Subscription
   public isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
@@ -42,8 +50,13 @@ export class ForwardersComponent implements OnInit {
     }
   }
 
+  @ViewChild(MatPaginator, { static: true })
+  public paginator: MatPaginator
+
   public ngOnInit(): void {
     this.getForwarders()
+
+    this.dataSource.paginator = this.paginator
 
     this.activatedRoute.params.subscribe((params): void => {
       if (params["id"]) {
@@ -52,12 +65,16 @@ export class ForwardersComponent implements OnInit {
     })
   }
 
+  public applyFilter(filterValue: string): void {
+    this.dataSource.filter = filterValue.trim().toLowerCase()
+  }
+
   public getForwarders(): void {
     const accessToken = localStorage.getItem("access_token")
     this.forwardersService.configuration.apiKeys = { Authorization: `bearer ${accessToken}` }
     this.forwarderSubscription = this.forwardersService.forwardersGet().subscribe(
       (forwarders): void => {
-        this.dataSource = new MatTableDataSource(forwarders)
+        this.dataSource.data = forwarders
       },
       (error: HttpErrorResponse): void => {
         this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
