@@ -11,7 +11,9 @@
     "lint:tsc": "tsc --noEmit -p tsconfig.json",
     "lint:eslint": "eslint --color --max-warnings 0 ./ --ext ts",
     "lint:eslintfix": "eslint --fix --color --max-warnings 0 ./ --ext ts",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "private": true,
   "dependencies": {
@@ -32,7 +34,8 @@
     "mat-progress-buttons": "^8.0.4",
     "rxjs": "~6.4.0",
     "tslib": "^1.9.0",
-    "zone.js": "~0.9.1"
+    "zone.js": "~0.9.1",
+    "snyk": "^1.230.5"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.800.6",
@@ -62,5 +65,6 @@
     "ts-node": "~7.0.0",
     "tslint": "^5.19.0",
     "typescript": "~3.4.3"
-  }
+  },
+  "snyk": true
 }
