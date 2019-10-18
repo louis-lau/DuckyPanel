@@ -2,7 +2,15 @@
 <div [fxLayout]="(isHandset$ | async) ? 'column' : 'row'" fxLayoutGap="10px">
   <mat-card fxFlex="30%" [fxFlexAlign]="(isHandset$ | async) ? null : 'start'">
     <mat-card-title>Your domains</mat-card-title>
-    <mat-card-content>This is an explanation about fucking domains. Who thought that would be needed.</mat-card-content>
+    <mat-card-content>
+      <p>
+        These are the domains you have added to your account. You have access to any accounts and forwarders associated
+        to these domains. Here you can add and delete domains, and manage the DKIM keys for them as well.
+      </p>
+      <p>
+          Do note that when you delete a domain, the accounts will be deleted with it.
+      </p>
+    </mat-card-content>
   </mat-card>
   <mat-card fxFlex="70%">
     <ng-template #loading>
@@ -26,7 +34,7 @@
               mat-icon-button
             >
               <mat-icon [class.grayed-out]="row.dkim">vpn_key</mat-icon>
-              <mat-icon *ngIf="row.dkim" class="overlap-icon">{{ row.dkim ? 'edit' : 'close' }}</mat-icon>
+              <mat-icon *ngIf="row.dkim" class="overlap-icon">{{ row.dkim ? "edit" : "close" }}</mat-icon>
             </button>
             <button
               (click)="removeConfirmDialog(row.domain)"

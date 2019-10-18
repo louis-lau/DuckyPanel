@@ -6,8 +6,8 @@
   <mat-card fxFlex="30%" [fxFlexAlign]="(isHandset$ | async) ? null : 'start'">
     <mat-card-title>DNS records check</mat-card-title>
     <mat-card-content
-      >Select a domain to view the records for a domain. A check will also be performed to see if you've set the records
-      correctly.</mat-card-content
+      >Select a domain to view the needed records for it. A check will also be performed to see if you've set the
+      records correctly.</mat-card-content
     >
   </mat-card>
   <div fxFlex="70%" fxLayout="column" fxLayoutGap="10px">
@@ -73,7 +73,7 @@
               <mat-card-title class="dns-card-title">DNS config for {{ selectedDomain }} looks valid</mat-card-title>
             </div>
           </ng-template>
-          
+
           <ng-container *ngIf="dnsCheck.errors.length !== 0; else noErrors">
             <div fxLayout="row" fxLayoutGap="10px">
               <mat-icon mat-list-icon class="error-icon">error</mat-icon>
