@@ -46,7 +46,8 @@ import { ForwardersComponent } from "./pages/forwarders/forwarders.component"
 import { LoginComponent } from "./pages/login/login.component"
 import { DialogComponent } from "./shared/components/dialog/dialog.component"
 import { ErrorSnackbarComponent } from "./shared/components/error-snackbar/error-snackbar.component"
-import { FabButtonComponent } from "./shared/components/fab-button/fab-button.component"
+import { FabButtonComponent } from "./shared/components/fab-button/fab-button.component";
+import { DnsComponent } from './pages/dns/dns.component'
 
 // TODO: take these values from a config file or envvar
 export function apiConfigFactory(): Configuration {
@@ -77,7 +78,8 @@ export function apiConfigFactory(): Configuration {
     ForwardersComponent,
     ForwarderDialogComponent,
     DkimDialogComponent,
-    DkimDialogEntryComponent
+    DkimDialogEntryComponent,
+    DnsComponent
   ],
   imports: [
     BrowserModule,

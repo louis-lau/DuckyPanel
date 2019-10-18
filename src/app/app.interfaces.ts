@@ -5,5 +5,6 @@ export interface NavCategory {
 export interface NavItem {
   name: string
   icon: string
-  link: string
+  routerLink?: string
+  href?: string
 }

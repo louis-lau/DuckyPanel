@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core"
 import { RouterModule, Routes } from "@angular/router"
 
 import { AccountsComponent } from "./pages/accounts/accounts.component"
+import { DnsComponent } from './pages/dns/dns.component'
 import {
   DkimDialogComponent,
   DkimDialogEntryComponent
@@ -49,6 +50,13 @@ const routes: Routes = [
   {
     path: "forwarders/:id",
     component: ForwardersComponent,
+    data: {
+      isFullscreen: false
+    }
+  },
+  {
+    path: "dns",
+    component: DnsComponent,
     data: {
       isFullscreen: false
     }

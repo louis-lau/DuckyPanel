@@ -1,0 +1,99 @@
+<!-- Switch to row or column mode depending on mobile or not -->
+<div [fxLayout]="(isHandset$ | async) ? 'column' : 'row'" fxLayoutGap="10px">
+  <ng-template #loading>
+    <mat-spinner diameter="50"></mat-spinner>
+  </ng-template>
+  <mat-card fxFlex="30%" [fxFlexAlign]="(isHandset$ | async) ? null : 'start'">
+    <mat-card-title>DNS records check</mat-card-title>
+    <mat-card-content
+      >Select a domain to view the records for a domain. A check will also be performed to see if you've set the records
+      correctly.</mat-card-content
+    >
+  </mat-card>
+  <div fxFlex="70%" fxLayout="column" fxLayoutGap="10px">
+    <form
+      *ngIf="domainsSubscription && domainsSubscription.closed; else loading"
+      [formGroup]="domainForm"
+      id="domainForm"
+    >
+      <mat-form-field appearance="fill" class="domain-field">
+        <mat-label>Domain</mat-label>
+        <mat-select formControlName="domain">
+          <ng-container *ngFor="let domain of domains; let i = index">
+            <mat-option [value]="domain">{{ domain }}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+    </form>
+    <ng-container *ngIf="selectedDomain">
+      <ng-container *ngIf="dnsCheckSubscription && dnsCheckSubscription.closed; else loading">
+        <mat-card>
+          <mat-card-title class="dns-card-title">Valid records for {{ selectedDomain }}</mat-card-title>
+          <h5 class="table-title">MX records</h5>
+          <mat-table [dataSource]="correctMxDataSource">
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+              <mat-cell *matCellDef="let row" data-label="name"> {{ selectedDomain }} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="server">
+              <mat-header-cell *matHeaderCellDef> Mail server </mat-header-cell>
+              <mat-cell *matCellDef="let row" data-label="server"> {{ row.exchange }} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="priority">
+              <mat-header-cell *matHeaderCellDef> Priority </mat-header-cell>
+              <mat-cell *matCellDef="let row" data-label="priority"> {{ row.priority }} </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="correctMxDisplayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: correctMxDisplayedColumns"></mat-row>
+          </mat-table>
+          <h5 class="table-title">TXT records</h5>
+          <mat-table [dataSource]="correctTxtDataSource">
+            <ng-container matColumnDef="name">
+              <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+              <mat-cell *matCellDef="let row" data-label="name">
+                {{
+                  row.isDkim ? dnsCheck.correctValues.dkim.selector + "._domainkey." + selectedDomain : selectedDomain
+                }}
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="content">
+              <mat-header-cell *matHeaderCellDef> Content </mat-header-cell>
+              <mat-cell *matCellDef="let row" data-label="content" [class.dkim-content]="row.isDkim">
+                {{ row.content }}
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="correctTxtDisplayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: correctTxtDisplayedColumns"> </mat-row>
+          </mat-table>
+        </mat-card>
+        <mat-card>
+          <ng-template #noErrors>
+            <div fxLayout="row" fxLayoutGap="10px">
+              <mat-icon mat-list-icon class="success-icon">check_circle</mat-icon>
+              <mat-card-title class="dns-card-title">DNS config for {{ selectedDomain }} looks valid</mat-card-title>
+            </div>
+          </ng-template>
+          
+          <ng-container *ngIf="dnsCheck.errors.length !== 0; else noErrors">
+            <div fxLayout="row" fxLayoutGap="10px">
+              <mat-icon mat-list-icon class="error-icon">error</mat-icon>
+              <mat-card-title class="dns-card-title">Invalid DNS config found for {{ selectedDomain }}</mat-card-title>
+            </div>
+            <mat-table [dataSource]="errorDataSource">
+              <ng-container matColumnDef="type">
+                <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="type"> {{ row.type }} </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="message">
+                <mat-header-cell *matHeaderCellDef> Error message </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="message"> {{ row.message }} </mat-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="errorDisplayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: errorDisplayedColumns"></mat-row>
+            </mat-table>
+          </ng-container>
+        </mat-card>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>

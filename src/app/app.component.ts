@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
         {
           name: "Dashboard",
           icon: "dashboard",
-          link: "/"
+          routerLink: "/"
         }
       ]
     },
@@ -33,32 +33,32 @@ export class AppComponent implements OnInit {
         {
           name: "Domains",
           icon: "domain",
-          link: "/domains"
+          routerLink: "/domains"
         },
         {
           name: "Email Accounts",
           icon: "email",
-          link: "/accounts"
+          routerLink: "/accounts"
         },
         {
           name: "Forwarders",
           icon: "send",
-          link: "/forwarders/"
+          routerLink: "/forwarders/"
         }
       ]
     },
     {
-      title: "DNS",
+      title: "Help",
       items: [
         {
-          name: "MX & SPF",
+          name: "DNS records",
           icon: "dns",
-          link: "/dns"
+          routerLink: "/dns"
         },
         {
-          name: "DKIM",
-          icon: "vpn_key",
-          link: "/dns"
+          name: "Support",
+          icon: "contact_support",
+          href: "https://mxroute.com/help.html"
         }
       ]
     }
