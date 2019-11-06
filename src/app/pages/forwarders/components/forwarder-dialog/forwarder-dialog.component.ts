@@ -119,8 +119,6 @@ export class ForwarderDialogComponent implements OnInit {
   }
 
   public getDomains(): void {
-    const accessToken = localStorage.getItem("access_token")
-    this.domainsService.configuration.apiKeys = { Authorization: `bearer ${accessToken}` }
     this.domainsSubscription = this.domainsService.domainsGet().subscribe(
       (domains): void => {
         this.domains = domains.map((value): string => value.domain)
@@ -133,8 +131,6 @@ export class ForwarderDialogComponent implements OnInit {
   }
 
   public getForwarder(): void {
-    const accessToken = localStorage.getItem("access_token")
-    this.forwardersService.configuration.apiKeys = { Authorization: `bearer ${accessToken}` }
     this.forwarderDetailsSubscription = this.forwardersService.forwardersForwarderIdGet(this.data.id).subscribe(
       (forwarder): void => {
         this.forwarderDetails = forwarder

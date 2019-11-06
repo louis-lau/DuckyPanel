@@ -59,6 +59,7 @@ export class LoginComponent implements OnInit {
         .subscribe(
           (accessToken: AccessToken): void => {
             localStorage.setItem("access_token", accessToken.accessToken)
+            this.authenticationService.configuration.apiKeys = { Authorization: `bearer ${accessToken.accessToken}` }
             this.router.navigateByUrl("/accounts")
           },
           (error): void => {

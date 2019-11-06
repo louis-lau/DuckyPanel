@@ -1,25 +1,24 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing"
 
-import { DkimDialogComponent } from './dkim-dialog.component';
+import { DkimDialogComponent } from "./dkim-dialog.component"
 
-describe('DkimDialogComponent', () => {
-  let component: DkimDialogComponent;
-  let fixture: ComponentFixture<DkimDialogComponent>;
+describe("DkimDialogComponent", (): void => {
+  let component: DkimDialogComponent
+  let fixture: ComponentFixture<DkimDialogComponent>
 
-  beforeEach(async(() => {
+  beforeEach(async((): void => {
     TestBed.configureTestingModule({
-      declarations: [ DkimDialogComponent ]
-    })
-    .compileComponents();
-  }));
+      declarations: [DkimDialogComponent]
+    }).compileComponents()
+  }))
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(DkimDialogComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  beforeEach((): void => {
+    fixture = TestBed.createComponent(DkimDialogComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  it("should create", (): void => {
+    expect(component).toBeTruthy()
+  })
+})

@@ -70,8 +70,6 @@ export class ForwardersComponent implements OnInit {
   }
 
   public getForwarders(): void {
-    const accessToken = localStorage.getItem("access_token")
-    this.forwardersService.configuration.apiKeys = { Authorization: `bearer ${accessToken}` }
     this.forwarderSubscription = this.forwardersService.forwardersGet().subscribe(
       (forwarders): void => {
         this.dataSource.data = forwarders
@@ -121,8 +119,6 @@ export class ForwardersComponent implements OnInit {
               dialogConfig.data.buttons[0].options.disabled = true
               dialogConfig.data.buttons[1].options.active = true
 
-              const accessToken = localStorage.getItem("access_token")
-              this.forwardersService.configuration.apiKeys = { Authorization: `bearer ${accessToken}` }
               this.forwardersService.forwardersForwarderIdDelete(forwarderId).subscribe(
                 (): void => {
                   dialogRef.close()

@@ -2,11 +2,8 @@ import { NgModule } from "@angular/core"
 import { RouterModule, Routes } from "@angular/router"
 
 import { AccountsComponent } from "./pages/accounts/accounts.component"
-import { DnsComponent } from './pages/dns/dns.component'
-import {
-  DkimDialogComponent,
-  DkimDialogEntryComponent
-} from "./pages/domains/components/dkim-dialog/dkim-dialog.component"
+import { DnsComponent } from "./pages/dns/dns.component"
+import { DkimDialogEntryComponent } from "./pages/domains/components/dkim-dialog/dkim-dialog.component"
 import { DomainsComponent } from "./pages/domains/domains.component"
 import { ForwardersComponent } from "./pages/forwarders/forwarders.component"
 import { LoginComponent } from "./pages/login/login.component"

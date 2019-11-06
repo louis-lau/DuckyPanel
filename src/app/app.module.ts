@@ -35,6 +35,7 @@ import { AppRoutingModule } from "./app-routing.module"
 import { AppComponent } from "./app.component"
 import { AccountsComponent } from "./pages/accounts/accounts.component"
 import { AccountDialogComponent } from "./pages/accounts/components/account-dialog/account-dialog.component"
+import { DnsComponent } from "./pages/dns/dns.component"
 import { AddDomainDialogComponent } from "./pages/domains/components/add-domain-dialog/add-domain-dialog.component"
 import {
   DkimDialogComponent,
@@ -46,13 +47,16 @@ import { ForwardersComponent } from "./pages/forwarders/forwarders.component"
 import { LoginComponent } from "./pages/login/login.component"
 import { DialogComponent } from "./shared/components/dialog/dialog.component"
 import { ErrorSnackbarComponent } from "./shared/components/error-snackbar/error-snackbar.component"
-import { FabButtonComponent } from "./shared/components/fab-button/fab-button.component";
-import { DnsComponent } from './pages/dns/dns.component'
+import { FabButtonComponent } from "./shared/components/fab-button/fab-button.component"
 
 // TODO: take these values from a config file or envvar
 export function apiConfigFactory(): Configuration {
+  const accessToken = localStorage.getItem("access_token")
   const params: ConfigurationParameters = {
-    basePath: "http://localhost:3000"
+    basePath: "http://localhost:3000",
+    apiKeys: {
+      Authorization: `bearer ${accessToken}`
+    }
   }
   return new Configuration(params)
 }

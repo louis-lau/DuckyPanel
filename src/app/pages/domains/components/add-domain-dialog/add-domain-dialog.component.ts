@@ -50,8 +50,6 @@ export class AddDomainDialogComponent implements OnInit {
     this.cancelButtonConfig.disabled = true
     this.addButtonConfig.active = true
 
-    const accessToken = localStorage.getItem("access_token")
-    this.domainsService.configuration.apiKeys = { Authorization: `bearer ${accessToken}` }
     this.domainsService.domainsPost({ domain: this.domainInput.value }).subscribe(
       (): void => {
         this.dialogRef.close(true)

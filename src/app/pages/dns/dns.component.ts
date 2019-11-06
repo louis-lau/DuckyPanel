@@ -52,8 +52,6 @@ export class DnsComponent implements OnInit {
   }
 
   public getDomains(): void {
-    const accessToken = localStorage.getItem("access_token")
-    this.domainsService.configuration.apiKeys = { Authorization: `bearer ${accessToken}` }
     this.domainsSubscription = this.domainsService.domainsGet().subscribe(
       (domains): void => {
         this.domains = domains.map((value): string => value.domain)
@@ -65,8 +63,6 @@ export class DnsComponent implements OnInit {
   }
 
   public checkDNS(domain: string): void {
-    const accessToken = localStorage.getItem("access_token")
-    this.domainsService.configuration.apiKeys = { Authorization: `bearer ${accessToken}` }
     this.dnsCheckSubscription = this.domainsService.domainsDomainDNSGet(domain).subscribe(
       (dnsCheck): void => {
         this.dnsCheck = dnsCheck

@@ -4,7 +4,7 @@ import { Component, Inject, OnInit } from "@angular/core"
 import { FormControl, FormGroup } from "@angular/forms"
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar } from "@angular/material"
 import { ActivatedRoute, Router } from "@angular/router"
-import { AddDkimDto, DKIMService, DomainsService, ForwardersService } from "ducky-api-client-angular"
+import { AddDkimDto, DKIMService } from "ducky-api-client-angular"
 import { MatProgressButtonOptions } from "mat-progress-buttons"
 import { Subscription } from "rxjs"
 import { AccountDialogComponent } from "src/app/pages/accounts/components/account-dialog/account-dialog.component"
@@ -72,8 +72,6 @@ export class DkimDialogComponent implements OnInit {
   }
 
   public getDkim(): void {
-    const accessToken = localStorage.getItem("access_token")
-    this.dkimService.configuration.apiKeys = { Authorization: `bearer ${accessToken}` }
     this.dkimKeySubscription = this.dkimService.domainsDomainDkimGet(this.data.domain).subscribe(
       (dkimKey): void => {
         this.dkimForm.setValue({
@@ -147,8 +145,6 @@ export class DkimDialogComponent implements OnInit {
               dialogConfig.data.buttons[0].options.disabled = true
               dialogConfig.data.buttons[1].options.active = true
 
-              const accessToken = localStorage.getItem("access_token")
-              this.dkimService.configuration.apiKeys = { Authorization: `bearer ${accessToken}` }
               this.dkimService.domainsDomainDkimDelete(this.data.domain).subscribe(
                 (): void => {
                   dialogRef.close()

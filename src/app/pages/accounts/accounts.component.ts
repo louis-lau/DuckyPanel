@@ -61,8 +61,6 @@ export class AccountsComponent implements OnInit {
   }
 
   public getAccounts(): void {
-    const accessToken = localStorage.getItem("access_token")
-    this.accountsService.configuration.apiKeys = { Authorization: `bearer ${accessToken}` }
     this.accountSubscription = this.accountsService.accountsGet().subscribe(
       (accounts: AccountListItem[]): void => {
         const accountsFormatted = accounts as AccountListItemFormatted[]
@@ -143,8 +141,6 @@ export class AccountsComponent implements OnInit {
               dialogConfig.data.buttons[0].options.disabled = true
               dialogConfig.data.buttons[1].options.active = true
 
-              const accessToken = localStorage.getItem("access_token")
-              this.accountsService.configuration.apiKeys = { Authorization: `bearer ${accessToken}` }
               this.accountsService.accountsAccountIdDelete(accountId).subscribe(
                 (): void => {
                   dialogRef.close()

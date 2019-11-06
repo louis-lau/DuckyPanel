@@ -2,7 +2,7 @@ import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
 import { Location } from "@angular/common"
 import { HttpErrorResponse } from "@angular/common/http"
 import { Component, OnInit, ViewChild } from "@angular/core"
-import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar, MatSort, MatTableDataSource } from "@angular/material"
+import { MatDialog, MatDialogRef, MatSnackBar, MatSort, MatTableDataSource } from "@angular/material"
 import { ActivatedRoute, Router } from "@angular/router"
 import { Domain, DomainsService } from "ducky-api-client-angular"
 import { Observable, Subscription } from "rxjs"
@@ -65,8 +65,6 @@ export class DomainsComponent implements OnInit {
   }
 
   public getDomains(): void {
-    const accessToken = localStorage.getItem("access_token")
-    this.domainsService.configuration.apiKeys = { Authorization: `bearer ${accessToken}` }
     this.domainSubscription = this.domainsService.domainsGet().subscribe(
       (domains: Domain[]): void => {
         this.dataSource = new MatTableDataSource(domains)
@@ -126,8 +124,6 @@ export class DomainsComponent implements OnInit {
               dialogConfig.data.buttons[0].options.disabled = true
               dialogConfig.data.buttons[1].options.active = true
 
-              const accessToken = localStorage.getItem("access_token")
-              this.domainsService.configuration.apiKeys = { Authorization: `bearer ${accessToken}` }
               this.domainsService.domainsDomainDelete(domain).subscribe(
                 (): void => {
                   dialogRef.close()

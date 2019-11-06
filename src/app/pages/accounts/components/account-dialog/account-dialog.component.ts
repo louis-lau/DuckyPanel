@@ -96,8 +96,6 @@ export class AccountDialogComponent implements OnInit {
     this.accountForm.controls["addressUser"].disable()
     this.accountForm.controls["domain"].disable()
 
-    const accessToken = localStorage.getItem("access_token")
-    this.emailAccountsService.configuration.apiKeys = { Authorization: `bearer ${accessToken}` }
     this.accountDetailsSubscription = this.emailAccountsService.accountsAccountIdGet(this.data.id).subscribe(
       (account): void => {
         this.accountDetails = account
@@ -126,8 +124,6 @@ export class AccountDialogComponent implements OnInit {
   }
 
   public getDomains(): void {
-    const accessToken = localStorage.getItem("access_token")
-    this.domainsService.configuration.apiKeys = { Authorization: `bearer ${accessToken}` }
     this.domainsSubscription = this.domainsService.domainsGet().subscribe(
       (domains): void => {
         this.domains = domains.map((value): string => value.domain)
