@@ -19,9 +19,6 @@ const routes: Routes = [
   {
     path: "domains",
     component: DomainsComponent,
-    data: {
-      isFullscreen: false
-    },
     children: [
       {
         path: ":domain/dkim/:action",
@@ -35,10 +32,7 @@ const routes: Routes = [
   },
   {
     path: "accounts/:id",
-    component: AccountsComponent,
-    data: {
-      isFullscreen: false
-    }
+    component: AccountsComponent
   },
   {
     path: "forwarders",
@@ -46,17 +40,11 @@ const routes: Routes = [
   },
   {
     path: "forwarders/:id",
-    component: ForwardersComponent,
-    data: {
-      isFullscreen: false
-    }
+    component: ForwardersComponent
   },
   {
     path: "dns",
-    component: DnsComponent,
-    data: {
-      isFullscreen: false
-    }
+    component: DnsComponent
   },
   {
     path: "**",

@@ -71,7 +71,7 @@ export class AppComponent implements OnInit {
   public ngOnInit(): void {
     this.router.events.subscribe((event): void => {
       if (event instanceof RoutesRecognized && event.state.root.firstChild) {
-        this.isFullscreen = event.state.root.firstChild.data.isFullscreen
+        this.isFullscreen = event.state.root.firstChild.data.isFullscreen ? true : false
       }
     })
   }
