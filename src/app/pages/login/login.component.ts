@@ -9,6 +9,8 @@ import { Observable } from "rxjs"
 import { map } from "rxjs/operators"
 import { ErrorSnackbarComponent } from "src/app/shared/components/error-snackbar/error-snackbar.component"
 
+import { ProfileService } from "../profile/profile.service"
+
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
@@ -18,6 +20,7 @@ export class LoginComponent implements OnInit {
   public constructor(
     private breakpointObserver: BreakpointObserver,
     private authenticationService: AuthenticationService,
+    private profileService: ProfileService,
     private snackBar: MatSnackBar,
     private router: Router
   ) {}
@@ -60,6 +63,9 @@ export class LoginComponent implements OnInit {
           (accessToken: AccessToken): void => {
             localStorage.setItem("access_token", accessToken.accessToken)
             this.authenticationService.configuration.apiKeys = { Authorization: `bearer ${accessToken.accessToken}` }
+
+            this.profileService.username = this.loginForm.value.username
+
             this.router.navigateByUrl("/accounts")
           },
           (error): void => {

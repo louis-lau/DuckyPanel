@@ -16,6 +16,7 @@ import {
   MatListModule,
   MatOptionModule,
   MatPaginatorModule,
+  MatProgressBarModule,
   MatProgressSpinnerModule,
   MatSelectModule,
   MatSidenavModule,
@@ -45,6 +46,7 @@ import { DomainsComponent } from "./pages/domains/domains.component"
 import { ForwarderDialogComponent } from "./pages/forwarders/components/forwarder-dialog/forwarder-dialog.component"
 import { ForwardersComponent } from "./pages/forwarders/forwarders.component"
 import { LoginComponent } from "./pages/login/login.component"
+import { ProfileComponent } from "./pages/profile/profile.component"
 import { DialogComponent } from "./shared/components/dialog/dialog.component"
 import { ErrorSnackbarComponent } from "./shared/components/error-snackbar/error-snackbar.component"
 import { FabButtonComponent } from "./shared/components/fab-button/fab-button.component"
@@ -83,7 +85,8 @@ export function apiConfigFactory(): Configuration {
     ForwarderDialogComponent,
     DkimDialogComponent,
     DkimDialogEntryComponent,
-    DnsComponent
+    DnsComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -115,9 +118,15 @@ export function apiConfigFactory(): Configuration {
     MatProgressButtonsModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatProgressBarModule
   ],
-  providers: [{ provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 5000 } }],
+  providers: [
+    {
+      provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
+      useValue: { duration: 5000 }
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

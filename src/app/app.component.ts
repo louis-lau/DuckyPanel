@@ -6,6 +6,7 @@ import { Observable } from "rxjs"
 import { map } from "rxjs/operators"
 
 import { NavCategory } from "./app.interfaces"
+import { ProfileService } from "./pages/profile/profile.service"
 
 @Component({
   selector: "app-root",
@@ -13,7 +14,11 @@ import { NavCategory } from "./app.interfaces"
   styleUrls: ["./app.component.scss"]
 })
 export class AppComponent implements OnInit {
-  public constructor(private breakpointObserver: BreakpointObserver, private router: Router) {}
+  public constructor(
+    private breakpointObserver: BreakpointObserver,
+    private router: Router,
+    private profileService: ProfileService
+  ) {}
 
   public title = "DuckyPanel"
   public navCategories: NavCategory[] = [
@@ -69,9 +74,11 @@ export class AppComponent implements OnInit {
   public isFullscreen: boolean
 
   public ngOnInit(): void {
+    this.profileService.getUserInfo()
     this.router.events.subscribe((event): void => {
       if (event instanceof RoutesRecognized && event.state.root.firstChild) {
         this.isFullscreen = event.state.root.firstChild.data.isFullscreen ? true : false
+        this.title = event.state.root.firstChild.data.title ? event.state.root.firstChild.data.title : "DuckyPanel"
       }
     })
   }

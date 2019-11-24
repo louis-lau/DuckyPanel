@@ -7,6 +7,7 @@ import { DkimDialogEntryComponent } from "./pages/domains/components/dkim-dialog
 import { DomainsComponent } from "./pages/domains/domains.component"
 import { ForwardersComponent } from "./pages/forwarders/forwarders.component"
 import { LoginComponent } from "./pages/login/login.component"
+import { ProfileComponent } from "./pages/profile/profile.component"
 
 const routes: Routes = [
   {
@@ -19,6 +20,9 @@ const routes: Routes = [
   {
     path: "domains",
     component: DomainsComponent,
+    data: {
+      title: "Domains"
+    },
     children: [
       {
         path: ":domain/dkim/:action",
@@ -32,7 +36,10 @@ const routes: Routes = [
   },
   {
     path: "accounts/:id",
-    component: AccountsComponent
+    component: AccountsComponent,
+    data: {
+      title: "Email Accounts"
+    }
   },
   {
     path: "forwarders",
@@ -40,11 +47,24 @@ const routes: Routes = [
   },
   {
     path: "forwarders/:id",
-    component: ForwardersComponent
+    component: ForwardersComponent,
+    data: {
+      title: "Forwarders"
+    }
   },
   {
     path: "dns",
-    component: DnsComponent
+    component: DnsComponent,
+    data: {
+      title: "DNS Check"
+    }
+  },
+  {
+    path: "profile",
+    component: ProfileComponent,
+    data: {
+      title: "Profile"
+    }
   },
   {
     path: "**",

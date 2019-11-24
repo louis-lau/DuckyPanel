@@ -1,0 +1,29 @@
+<div class="single-column-content">
+  <div fxLayout="column" fxLayoutGap="10px">
+    <mat-card>
+      <mat-card-title>{{profileService.username}}</mat-card-title>
+      <mat-card-content>
+        <p>
+          You are logged in as {{profileService.username}}, you've got access to 40GB of storage.
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+          <button (click)="logout()" mat-button color="warn">LOG OUT</button>
+          <button (click)="logoutAllDialog()" mat-button color="warn">LOG OUT FROM ALL DEVICES</button>
+      </mat-card-actions>
+    </mat-card>
+    <mat-card>
+      <mat-card-title>Storage used</mat-card-title>
+      <mat-card-content>
+        <p>Currently using 31% of storage.</p>
+        <div fxLayout="row" fxLayoutGap="10px">
+          <mat-progress-bar fxFlexAlign="center" mode="determinate" value="31"></mat-progress-bar>
+          <p>12.5GB/40GB</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-title>Change username/password</mat-card-title>
+    </mat-card>
+  </div>
+</div>
