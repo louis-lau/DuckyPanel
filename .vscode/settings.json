@@ -2,8 +2,8 @@
   "eslint.validate": [
     "javascript",
     "javascriptreact",
-    { "language": "typescript", "autoFix": true },
-    { "language": "typescriptreact", "autoFix": true }
+    "typescript",
+    "typescriptreact"
   ],
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.tabSize": 2,
@@ -13,6 +13,8 @@
     "titleBar.activeForeground": "#e7e7e7",
     "titleBar.inactiveForeground": "#e7e7e799"
   },
-  "eslint.autoFixOnSave": true,
-  "liveServer.settings.root": "/dist/DuckyPanel"
+  "liveServer.settings.root": "/dist/DuckyPanel",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
 }
