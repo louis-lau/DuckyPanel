@@ -15,6 +15,7 @@ import { Subscription } from "rxjs"
 import { DialogComponent } from "src/app/shared/components/dialog/dialog.component"
 import { DialogConfig } from "src/app/shared/components/dialog/dialog.interfaces"
 import { ErrorSnackbarComponent } from "src/app/shared/components/error-snackbar/error-snackbar.component"
+import { formatBytes } from "src/app/shared/functions/formatBytes.function"
 
 import { AccountListItemFormatted } from "./accounts.interfaces"
 import { AccountDialogComponent } from "./components/account-dialog/account-dialog.component"
@@ -67,8 +68,8 @@ export class AccountsComponent implements OnInit {
 
         // Convert quota bytes to human readable
         for (const accountFormatted of accountsFormatted) {
-          accountFormatted.quotaAllowedFormatted = this.formatBytes(accountFormatted.quota.allowed)
-          accountFormatted.quotaUsedFormatted = this.formatBytes(accountFormatted.quota.used)
+          accountFormatted.quotaAllowedFormatted = formatBytes(accountFormatted.quota.allowed)
+          accountFormatted.quotaUsedFormatted = formatBytes(accountFormatted.quota.used)
         }
 
         this.dataSource.data = accountsFormatted
@@ -92,14 +93,6 @@ export class AccountsComponent implements OnInit {
 
   public applyFilter(filterValue: string): void {
     this.dataSource.filter = filterValue.trim().toLowerCase()
-  }
-
-  public formatBytes(bytes, decimals = 1): string {
-    if (bytes == 0) return "0 Bytes"
-    const k = 1024,
-      sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
-      i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(decimals)) + " " + sizes[i]
   }
 
   public accountDialog(id?: string): void {

@@ -110,7 +110,7 @@ export class AccountDialogComponent implements OnInit {
           addressUser: addressUser,
           domain: this.domains[0],
           password: null,
-          quota: Math.round(account.limits.quota.allowed / (1024 ^ 2)),
+          quota: Math.round(account.limits.quota.allowed / 1024 ** 2),
           sendLimit: account.limits.send.allowed,
           receiveLimit: account.limits.receive.allowed,
           forwardLimit: account.limits.forward.allowed
@@ -155,7 +155,7 @@ export class AccountDialogComponent implements OnInit {
       address: dirtyValues.addressUser ? `${dirtyValues.addressUser}@${dirtyValues.domain}` : undefined,
       password: dirtyValues.password,
       limits: {
-        quota: dirtyValues.quota ? dirtyValues.quota * (1024 ^ 2) : undefined,
+        quota: dirtyValues.quota ? dirtyValues.quota * 1024 ** 2 : undefined,
         send: dirtyValues.sendLimit,
         receive: dirtyValues.receiveLimit,
         forward: dirtyValues.forwardLimit

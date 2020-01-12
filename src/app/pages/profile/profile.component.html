@@ -4,7 +4,7 @@
       <mat-card-title>{{profileService.username}}</mat-card-title>
       <mat-card-content>
         <p>
-          You are logged in as {{profileService.username}}, you've got access to 40GB of storage.
+          You are logged in as {{profileService.username}}, you've got access to 10GB of storage.
         </p>
       </mat-card-content>
       <mat-card-actions>
@@ -15,10 +15,10 @@
     <mat-card>
       <mat-card-title>Storage used</mat-card-title>
       <mat-card-content>
-        <p>Currently using 31% of storage.</p>
+        <p>Currently using {{ usage.bytes / 10737418240 * 100 | number:'1.0-2' }}% of storage.</p>
         <div fxLayout="row" fxLayoutGap="10px">
-          <mat-progress-bar fxFlexAlign="center" mode="determinate" value="31"></mat-progress-bar>
-          <p>12.5GB/40GB</p>
+          <mat-progress-bar fxFlexAlign="center" mode="determinate" value="{{ usage.bytes / 10737418240 * 100 | number:'1.0-2' }}"></mat-progress-bar>
+          <p class="usage-text">{{ usage.formatted }}/10 GB</p>
         </div>
       </mat-card-content>
     </mat-card>
