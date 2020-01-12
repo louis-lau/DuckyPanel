@@ -70,7 +70,7 @@ export class ForwardersComponent implements OnInit {
   }
 
   public getForwarders(): void {
-    this.forwarderSubscription = this.forwardersService.forwardersGet().subscribe(
+    this.forwarderSubscription = this.forwardersService.getForwarders().subscribe(
       (forwarders): void => {
         this.dataSource.data = forwarders
       },
@@ -119,7 +119,7 @@ export class ForwardersComponent implements OnInit {
               dialogConfig.data.buttons[0].options.disabled = true
               dialogConfig.data.buttons[1].options.active = true
 
-              this.forwardersService.forwardersForwarderIdDelete(forwarderId).subscribe(
+              this.forwardersService.deleteForwarder(forwarderId).subscribe(
                 (): void => {
                   dialogRef.close()
                   this.snackBar.open(`${address || forwarderId} has been removed`, undefined, {

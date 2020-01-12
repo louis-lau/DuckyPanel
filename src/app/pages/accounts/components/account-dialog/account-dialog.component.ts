@@ -96,7 +96,7 @@ export class AccountDialogComponent implements OnInit {
     this.accountForm.controls["addressUser"].disable()
     this.accountForm.controls["domain"].disable()
 
-    this.accountDetailsSubscription = this.emailAccountsService.accountsAccountIdGet(this.data.id).subscribe(
+    this.accountDetailsSubscription = this.emailAccountsService.getAccountDetails(this.data.id).subscribe(
       (account): void => {
         this.accountDetails = account
         // Split address to name and domain for split input
@@ -124,7 +124,7 @@ export class AccountDialogComponent implements OnInit {
   }
 
   public getDomains(): void {
-    this.domainsSubscription = this.domainsService.domainsGet().subscribe(
+    this.domainsSubscription = this.domainsService.getDomains().subscribe(
       (domains): void => {
         this.domains = domains.map((value): string => value.domain)
       },
@@ -172,14 +172,14 @@ export class AccountDialogComponent implements OnInit {
     if (this.isModifyDialog) {
       const address = account.address
       delete account.address
-      this.emailAccountsService.accountsAccountIdPut(this.data.id, account).subscribe((): void => {
+      this.emailAccountsService.updateAccount(this.data.id, account).subscribe((): void => {
         this.snackBar.open(`${address} successfully updated`, undefined, {
           panelClass: "success-snackbar"
         })
         this.dialogRef.close(true)
       }, onError)
     } else {
-      this.emailAccountsService.accountsPost(account).subscribe((): void => {
+      this.emailAccountsService.createAccount(account).subscribe((): void => {
         this.snackBar.open(`${account.address} successfully added`, undefined, {
           panelClass: "success-snackbar"
         })

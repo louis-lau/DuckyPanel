@@ -55,14 +55,14 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.loginButtonConfig.active = true
       this.authenticationService
-        .authenticationPost({
+        .getAccessToken({
           username: this.loginForm.value.username,
           password: this.loginForm.value.password
         })
         .subscribe(
           (accessToken: AccessToken): void => {
             localStorage.setItem("access_token", accessToken.accessToken)
-            this.authenticationService.configuration.apiKeys = { Authorization: `bearer ${accessToken.accessToken}` }
+            this.authenticationService.configuration.accessToken = accessToken.accessToken
 
             this.profileService.username = this.loginForm.value.username
 

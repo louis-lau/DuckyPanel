@@ -56,9 +56,7 @@ export function apiConfigFactory(): Configuration {
   const accessToken = localStorage.getItem("access_token")
   const params: ConfigurationParameters = {
     basePath: "http://localhost:3000",
-    apiKeys: {
-      Authorization: `bearer ${accessToken}`
-    }
+    accessToken: accessToken
   }
   return new Configuration(params)
 }

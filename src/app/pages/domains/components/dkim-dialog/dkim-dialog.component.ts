@@ -4,7 +4,7 @@ import { Component, Inject, OnInit } from "@angular/core"
 import { FormControl, FormGroup } from "@angular/forms"
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar } from "@angular/material"
 import { ActivatedRoute, Router } from "@angular/router"
-import { AddDkimDto, DKIMService } from "ducky-api-client-angular"
+import { AddDkimDto, DkimService } from "ducky-api-client-angular"
 import { MatProgressButtonOptions } from "mat-progress-buttons"
 import { Subscription } from "rxjs"
 import { AccountDialogComponent } from "src/app/pages/accounts/components/account-dialog/account-dialog.component"
@@ -22,7 +22,7 @@ export class DkimDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<AccountDialogComponent>,
     private breakpointObserver: BreakpointObserver,
     public dialog: MatDialog,
-    private dkimService: DKIMService,
+    private dkimService: DkimService,
     private snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data
   ) {}
@@ -72,7 +72,7 @@ export class DkimDialogComponent implements OnInit {
   }
 
   public getDkim(): void {
-    this.dkimKeySubscription = this.dkimService.domainsDomainDkimGet(this.data.domain).subscribe(
+    this.dkimKeySubscription = this.dkimService.getDkim(this.data.domain).subscribe(
       (dkimKey): void => {
         this.dkimForm.setValue({
           selector: dkimKey.selector,
@@ -104,7 +104,7 @@ export class DkimDialogComponent implements OnInit {
       privateKey: dirtyValues.privateKey
     }
 
-    this.dkimService.domainsDomainDkimPut(this.data.domain, dkimKey).subscribe(
+    this.dkimService.updateDkim(this.data.domain, dkimKey).subscribe(
       (): void => {
         this.dialogRef.close(true)
         this.snackBar.open(`DKIM for ${this.data.domain} ${this.isModifyDialog ? "updated" : "enabled"}`, undefined, {
@@ -145,7 +145,7 @@ export class DkimDialogComponent implements OnInit {
               dialogConfig.data.buttons[0].options.disabled = true
               dialogConfig.data.buttons[1].options.active = true
 
-              this.dkimService.domainsDomainDkimDelete(this.data.domain).subscribe(
+              this.dkimService.deleteDkim(this.data.domain).subscribe(
                 (): void => {
                   dialogRef.close()
                   this.snackBar.open(`DKIM for ${this.data.domain} has been disabled`, undefined, {

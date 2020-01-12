@@ -62,7 +62,7 @@ export class AccountsComponent implements OnInit {
   }
 
   public getAccounts(): void {
-    this.accountSubscription = this.accountsService.accountsGet().subscribe(
+    this.accountSubscription = this.accountsService.getAccounts().subscribe(
       (accounts: AccountListItem[]): void => {
         const accountsFormatted = accounts as AccountListItemFormatted[]
 
@@ -134,7 +134,7 @@ export class AccountsComponent implements OnInit {
               dialogConfig.data.buttons[0].options.disabled = true
               dialogConfig.data.buttons[1].options.active = true
 
-              this.accountsService.accountsAccountIdDelete(accountId).subscribe(
+              this.accountsService.deleteAccount(accountId).subscribe(
                 (): void => {
                   dialogRef.close()
                   this.snackBar.open(`${address || accountId} has been removed`, undefined, {

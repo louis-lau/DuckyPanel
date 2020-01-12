@@ -52,7 +52,7 @@ export class DnsComponent implements OnInit {
   }
 
   public getDomains(): void {
-    this.domainsSubscription = this.domainsService.domainsGet().subscribe(
+    this.domainsSubscription = this.domainsService.getDomains().subscribe(
       (domains): void => {
         this.domains = domains.map((value): string => value.domain)
       },
@@ -63,7 +63,7 @@ export class DnsComponent implements OnInit {
   }
 
   public checkDNS(domain: string): void {
-    this.dnsCheckSubscription = this.domainsService.domainsDomainDNSGet(domain).subscribe(
+    this.dnsCheckSubscription = this.domainsService.checkDNS(domain).subscribe(
       (dnsCheck): void => {
         this.dnsCheck = dnsCheck
         this.errorDataSource.data = dnsCheck.errors

@@ -35,7 +35,7 @@ export class ProfileComponent implements OnInit {
 
   public calculateStorage(): void {
     this.usage.bytes = 0
-    this.emailAccountsService.accountsGet().subscribe((accounts): void => {
+    this.emailAccountsService.getAccounts().subscribe((accounts): void => {
       for (const account of accounts) {
         this.usage.bytes += account.quota.used
       }
@@ -45,7 +45,7 @@ export class ProfileComponent implements OnInit {
 
   public logout(): void {
     localStorage.removeItem("access_token")
-    delete this.authenticationService.configuration.apiKeys
+    delete this.authenticationService.configuration.accessToken
     this.snackBar.open("Logged out successfully", undefined, {
       panelClass: "success-snackbar"
     })
@@ -77,7 +77,7 @@ export class ProfileComponent implements OnInit {
               dialogConfig.data.buttons[0].options.disabled = true
               dialogConfig.data.buttons[1].options.active = true
 
-              this.authenticationService.authenticationDelete().subscribe(
+              this.authenticationService.revokeAllAccessTokens().subscribe(
                 (): void => {
                   dialogRef.close()
                   this.logout()

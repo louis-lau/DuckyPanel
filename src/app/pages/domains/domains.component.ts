@@ -65,7 +65,7 @@ export class DomainsComponent implements OnInit {
   }
 
   public getDomains(): void {
-    this.domainSubscription = this.domainsService.domainsGet().subscribe(
+    this.domainSubscription = this.domainsService.getDomains().subscribe(
       (domains: Domain[]): void => {
         this.dataSource = new MatTableDataSource(domains)
       },
@@ -124,7 +124,7 @@ export class DomainsComponent implements OnInit {
               dialogConfig.data.buttons[0].options.disabled = true
               dialogConfig.data.buttons[1].options.active = true
 
-              this.domainsService.domainsDomainDelete(domain).subscribe(
+              this.domainsService.deleteDomain(domain).subscribe(
                 (): void => {
                   dialogRef.close()
                   this.snackBar.open(`${domain} has been removed`, undefined, { panelClass: "success-snackbar" })

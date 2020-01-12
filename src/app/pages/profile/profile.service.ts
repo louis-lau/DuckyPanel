@@ -12,7 +12,7 @@ export class ProfileService {
   public username: string
 
   public getUserInfo(): void {
-    this.usersService.usersMeGet().subscribe(
+    this.usersService.getMe().subscribe(
       (user): void => {
         this.username = user.username
       },

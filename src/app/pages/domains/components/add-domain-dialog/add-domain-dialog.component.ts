@@ -50,7 +50,7 @@ export class AddDomainDialogComponent implements OnInit {
     this.cancelButtonConfig.disabled = true
     this.addButtonConfig.active = true
 
-    this.domainsService.domainsPost({ domain: this.domainInput.value }).subscribe(
+    this.domainsService.addDomain({ domain: this.domainInput.value }).subscribe(
       (): void => {
         this.dialogRef.close(true)
         this.snackBar.open(`${this.domainInput.value} successfully added`, undefined, {

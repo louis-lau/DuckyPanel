@@ -119,7 +119,7 @@ export class ForwarderDialogComponent implements OnInit {
   }
 
   public getDomains(): void {
-    this.domainsSubscription = this.domainsService.domainsGet().subscribe(
+    this.domainsSubscription = this.domainsService.getDomains().subscribe(
       (domains): void => {
         this.domains = domains.map((value): string => value.domain)
       },
@@ -131,7 +131,7 @@ export class ForwarderDialogComponent implements OnInit {
   }
 
   public getForwarder(): void {
-    this.forwarderDetailsSubscription = this.forwardersService.forwardersForwarderIdGet(this.data.id).subscribe(
+    this.forwarderDetailsSubscription = this.forwardersService.getForwarderDetails(this.data.id).subscribe(
       (forwarder): void => {
         this.forwarderDetails = forwarder
         // Split address to name and domain for split input
@@ -190,14 +190,14 @@ export class ForwarderDialogComponent implements OnInit {
     }
 
     if (this.isModifyDialog) {
-      this.forwardersService.forwardersForwarderIdPut(this.data.id, forwarder).subscribe((): void => {
+      this.forwardersService.updateForwarder(this.data.id, forwarder).subscribe((): void => {
         this.snackBar.open(`${address} successfully updated`, undefined, {
           panelClass: "success-snackbar"
         })
         this.dialogRef.close(true)
       }, onError)
     } else {
-      this.forwardersService.forwardersPost(forwarder).subscribe((): void => {
+      this.forwardersService.createForwarder(forwarder).subscribe((): void => {
         this.snackBar.open(`${address} successfully added`, undefined, {
           panelClass: "success-snackbar"
         })
