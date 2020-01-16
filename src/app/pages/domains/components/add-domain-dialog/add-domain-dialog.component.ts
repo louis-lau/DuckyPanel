@@ -1,15 +1,15 @@
-import { HttpErrorResponse } from "@angular/common/http"
-import { Component, Inject, OnInit } from "@angular/core"
-import { FormControl, Validators } from "@angular/forms"
-import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from "@angular/material"
-import { DomainsService } from "ducky-api-client-angular"
-import { MatProgressButtonOptions } from "mat-progress-buttons"
-import { ErrorSnackbarService } from "src/app/shared/components/error-snackbar/error-snackbar.service"
+import { HttpErrorResponse } from '@angular/common/http'
+import { Component, Inject, OnInit } from '@angular/core'
+import { FormControl, Validators } from '@angular/forms'
+import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material'
+import { DomainsService } from 'ducky-api-client-angular'
+import { MatProgressButtonOptions } from 'mat-progress-buttons'
+import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
 
 @Component({
-  selector: "app-add-domain-dialog",
-  templateUrl: "./add-domain-dialog.component.html",
-  styleUrls: ["./add-domain-dialog.component.scss"]
+  selector: 'app-add-domain-dialog',
+  templateUrl: './add-domain-dialog.component.html',
+  styleUrls: ['./add-domain-dialog.component.scss'],
 })
 export class AddDomainDialogComponent implements OnInit {
   public constructor(
@@ -17,27 +17,27 @@ export class AddDomainDialogComponent implements OnInit {
     private readonly domainsService: DomainsService,
     private snackBar: MatSnackBar,
     private errorSnackbarService: ErrorSnackbarService,
-    @Inject(MAT_DIALOG_DATA) public data
+    @Inject(MAT_DIALOG_DATA) public data,
   ) {}
 
   public cancelButtonConfig: MatProgressButtonOptions = {
     active: false,
-    type: "button",
-    text: "CANCEL"
+    type: 'button',
+    text: 'CANCEL',
   }
   public addButtonConfig: MatProgressButtonOptions = {
     active: false,
     disabled: true,
-    text: "ADD",
+    text: 'ADD',
     raised: true,
-    buttonColor: "primary",
-    spinnerColor: "accent",
+    buttonColor: 'primary',
+    spinnerColor: 'accent',
     spinnerSize: 18,
-    mode: "indeterminate"
+    mode: 'indeterminate',
   }
   public domainInput = new FormControl(
-    "",
-    Validators.pattern(new RegExp("(?=^.{4,253}$)(^((?!-)[a-zA-Z0-9-]{0,62}[a-zA-Z0-9]\\.)+[a-zA-Z]{2,63}$)")) // valid fqdn
+    '',
+    Validators.pattern(new RegExp('(?=^.{4,253}$)(^((?!-)[a-zA-Z0-9-]{0,62}[a-zA-Z0-9]\\.)+[a-zA-Z]{2,63}$)')), // valid fqdn
   )
 
   public ngOnInit(): void {
@@ -55,7 +55,7 @@ export class AddDomainDialogComponent implements OnInit {
       (): void => {
         this.dialogRef.close(true)
         this.snackBar.open(`${this.domainInput.value} successfully added`, undefined, {
-          panelClass: "success-snackbar"
+          panelClass: 'success-snackbar',
         })
       },
       (error: HttpErrorResponse): void => {
@@ -63,7 +63,7 @@ export class AddDomainDialogComponent implements OnInit {
         this.cancelButtonConfig.disabled = false
         this.addButtonConfig.active = false
         this.errorSnackbarService.open(error)
-      }
+      },
     )
   }
 }

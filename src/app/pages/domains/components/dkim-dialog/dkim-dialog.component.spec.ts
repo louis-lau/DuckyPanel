@@ -1,14 +1,14 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing"
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { DkimDialogComponent } from "./dkim-dialog.component"
+import { DkimDialogComponent } from './dkim-dialog.component'
 
-describe("DkimDialogComponent", (): void => {
+describe('DkimDialogComponent', (): void => {
   let component: DkimDialogComponent
   let fixture: ComponentFixture<DkimDialogComponent>
 
   beforeEach(async((): void => {
     TestBed.configureTestingModule({
-      declarations: [DkimDialogComponent]
+      declarations: [DkimDialogComponent],
     }).compileComponents()
   }))
 
@@ -18,7 +18,7 @@ describe("DkimDialogComponent", (): void => {
     fixture.detectChanges()
   })
 
-  it("should create", (): void => {
+  it('should create', (): void => {
     expect(component).toBeTruthy()
   })
 })

@@ -1,22 +1,22 @@
-import { COMMA, ENTER, SPACE } from "@angular/cdk/keycodes"
-import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
-import { HttpErrorResponse } from "@angular/common/http"
-import { Component, Inject, OnInit } from "@angular/core"
-import { FormControl, FormGroup, Validators } from "@angular/forms"
-import { MAT_DIALOG_DATA, MatChipInputEvent, MatDialogRef, MatSnackBar } from "@angular/material"
-import { CreateForwarderDto, DomainsService, ForwarderDetails, ForwardersService } from "ducky-api-client-angular"
-import { MatProgressButtonOptions } from "mat-progress-buttons"
-import { Observable, Subscription } from "rxjs"
-import { map } from "rxjs/operators"
-import { AccountDialogComponent } from "src/app/pages/accounts/components/account-dialog/account-dialog.component"
-import { ErrorSnackbarService } from "src/app/shared/components/error-snackbar/error-snackbar.service"
-import { AddressUsernameValidator } from "src/app/shared/validators/address-username-validator.directive"
-import { forwardingTargetValidator } from "src/app/shared/validators/forwarding-target-validator.directive"
+import { COMMA, ENTER, SPACE } from '@angular/cdk/keycodes'
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
+import { HttpErrorResponse } from '@angular/common/http'
+import { Component, Inject, OnInit } from '@angular/core'
+import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { MAT_DIALOG_DATA, MatChipInputEvent, MatDialogRef, MatSnackBar } from '@angular/material'
+import { CreateForwarderDto, DomainsService, ForwarderDetails, ForwardersService } from 'ducky-api-client-angular'
+import { MatProgressButtonOptions } from 'mat-progress-buttons'
+import { Observable, Subscription } from 'rxjs'
+import { map } from 'rxjs/operators'
+import { AccountDialogComponent } from 'src/app/pages/accounts/components/account-dialog/account-dialog.component'
+import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
+import { AddressUsernameValidator } from 'src/app/shared/validators/address-username-validator.directive'
+import { forwardingTargetValidator } from 'src/app/shared/validators/forwarding-target-validator.directive'
 
 @Component({
-  selector: "app-forwarder-dialog",
-  templateUrl: "./forwarder-dialog.component.html",
-  styleUrls: ["./forwarder-dialog.component.scss"]
+  selector: 'app-forwarder-dialog',
+  templateUrl: './forwarder-dialog.component.html',
+  styleUrls: ['./forwarder-dialog.component.scss'],
 })
 export class ForwarderDialogComponent implements OnInit {
   public constructor(
@@ -26,7 +26,7 @@ export class ForwarderDialogComponent implements OnInit {
     private readonly forwardersService: ForwardersService,
     private snackBar: MatSnackBar,
     private errorSnackbarService: ErrorSnackbarService,
-    @Inject(MAT_DIALOG_DATA) public data
+    @Inject(MAT_DIALOG_DATA) public data,
   ) {}
   public isModifyDialog: boolean
   public domainsSubscription: Subscription
@@ -46,24 +46,24 @@ export class ForwarderDialogComponent implements OnInit {
     addressUser: new FormControl(null, AddressUsernameValidator()),
     domain: new FormControl(null),
     newTarget: new FormControl(null, forwardingTargetValidator()),
-    forwardLimit: new FormControl(null, [Validators.min(1), Validators.max(200)])
+    forwardLimit: new FormControl(null, [Validators.min(1), Validators.max(200)]),
   })
 
   public saveButtonConfig: MatProgressButtonOptions = {
     active: false,
-    text: "SAVE",
+    text: 'SAVE',
     disabled: true,
     raised: true,
-    buttonColor: "primary",
-    spinnerColor: "accent",
+    buttonColor: 'primary',
+    spinnerColor: 'accent',
     spinnerSize: 18,
-    mode: "indeterminate"
+    mode: 'indeterminate',
   }
 
   public cancelButtonConfig: MatProgressButtonOptions = {
     active: false,
-    type: "button",
-    text: "CANCEL"
+    type: 'button',
+    text: 'CANCEL',
   }
 
   public ngOnInit(): void {
@@ -85,19 +85,19 @@ export class ForwarderDialogComponent implements OnInit {
   }
 
   public addTarget(event: MatChipInputEvent): void {
-    if (this.forwarderForm.controls["newTarget"].valid) {
-      if ((event.value || "").trim()) {
+    if (this.forwarderForm.controls['newTarget'].valid) {
+      if ((event.value || '').trim()) {
         this.forwardTargetsDirty = true
         this.forwardTargets.push(event.value.trim())
       }
 
       // Reset the input value
       if (event.input) {
-        this.forwarderForm.controls["newTarget"].setValue("")
-        this.forwarderForm.controls["newTarget"].markAsUntouched()
+        this.forwarderForm.controls['newTarget'].setValue('')
+        this.forwarderForm.controls['newTarget'].markAsUntouched()
       }
     } else {
-      this.forwarderForm.controls["newTarget"].markAsTouched()
+      this.forwarderForm.controls['newTarget'].markAsTouched()
     }
   }
 
@@ -106,8 +106,8 @@ export class ForwarderDialogComponent implements OnInit {
 
     if (index >= 0) {
       this.forwardTargetsDirty = true
-      this.forwarderForm.controls["newTarget"].markAsDirty()
-      this.forwarderForm.controls["newTarget"].markAsTouched()
+      this.forwarderForm.controls['newTarget'].markAsDirty()
+      this.forwarderForm.controls['newTarget'].markAsTouched()
       this.saveButtonConfig.disabled = false
       this.forwardTargets.splice(index, 1)
     }
@@ -127,7 +127,7 @@ export class ForwarderDialogComponent implements OnInit {
       (error: HttpErrorResponse): void => {
         this.dialogRef.close()
         this.errorSnackbarService.open(error)
-      }
+      },
     )
   }
 
@@ -136,22 +136,22 @@ export class ForwarderDialogComponent implements OnInit {
       (forwarder): void => {
         this.forwarderDetails = forwarder
         // Split address to name and domain for split input
-        const addressUser = this.forwarderDetails.address.substring(0, this.forwarderDetails.address.lastIndexOf("@"))
-        const domain = this.forwarderDetails.address.substring(this.forwarderDetails.address.lastIndexOf("@") + 1)
+        const addressUser = this.forwarderDetails.address.substring(0, this.forwarderDetails.address.lastIndexOf('@'))
+        const domain = this.forwarderDetails.address.substring(this.forwarderDetails.address.lastIndexOf('@') + 1)
 
         this.forwarderForm.setValue({
           name: forwarder.name ? forwarder.name : null, // If name is false then don't fill name field
           addressUser: addressUser,
           domain: domain,
           newTarget: null,
-          forwardLimit: forwarder.limits.forward.allowed
+          forwardLimit: forwarder.limits.forward.allowed,
         })
         this.forwardTargets = forwarder.targets
       },
       (error: HttpErrorResponse): void => {
         this.dialogRef.close()
         this.errorSnackbarService.open(error)
-      }
+      },
     )
   }
 
@@ -163,15 +163,15 @@ export class ForwarderDialogComponent implements OnInit {
     const dirtyValues: any = {}
     for (const key in this.forwarderForm.controls) {
       const value = this.forwarderForm.controls[key].value
-      if (this.forwarderForm.controls[key].dirty && value !== null && value !== "") {
+      if (this.forwarderForm.controls[key].dirty && value !== null && value !== '') {
         dirtyValues[key] = value
       }
     }
 
-    const address = `${this.forwarderForm.controls["addressUser"].value}@${this.forwarderForm.controls["domain"].value}`
+    const address = `${this.forwarderForm.controls['addressUser'].value}@${this.forwarderForm.controls['domain'].value}`
     let dirtyAddress: string
     if (dirtyValues.addressUser || dirtyValues.domain) {
-      dirtyAddress = `${this.forwarderForm.controls["addressUser"].value}@${this.forwarderForm.controls["domain"].value}`
+      dirtyAddress = `${this.forwarderForm.controls['addressUser'].value}@${this.forwarderForm.controls['domain'].value}`
     }
 
     const forwarder: CreateForwarderDto = {
@@ -179,8 +179,8 @@ export class ForwarderDialogComponent implements OnInit {
       address: dirtyAddress,
       targets: this.forwardTargetsDirty ? this.forwardTargets : undefined,
       limits: {
-        forward: dirtyValues.forwardLimit
-      }
+        forward: dirtyValues.forwardLimit,
+      },
     }
 
     const onError = (error: HttpErrorResponse): void => {
@@ -193,14 +193,14 @@ export class ForwarderDialogComponent implements OnInit {
     if (this.isModifyDialog) {
       this.forwardersService.updateForwarder(this.data.id, forwarder).subscribe((): void => {
         this.snackBar.open(`${address} successfully updated`, undefined, {
-          panelClass: "success-snackbar"
+          panelClass: 'success-snackbar',
         })
         this.dialogRef.close(true)
       }, onError)
     } else {
       this.forwardersService.createForwarder(forwarder).subscribe((): void => {
         this.snackBar.open(`${address} successfully added`, undefined, {
-          panelClass: "success-snackbar"
+          panelClass: 'success-snackbar',
         })
         this.dialogRef.close(true)
       }, onError)

@@ -1,14 +1,14 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing"
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { AccountsComponent } from "./accounts.component"
+import { AccountsComponent } from './accounts.component'
 
-describe("AccountsComponent", (): void => {
+describe('AccountsComponent', (): void => {
   let component: AccountsComponent
   let fixture: ComponentFixture<AccountsComponent>
 
   beforeEach(async((): void => {
     TestBed.configureTestingModule({
-      declarations: [AccountsComponent]
+      declarations: [AccountsComponent],
     }).compileComponents()
   }))
 
@@ -18,7 +18,7 @@ describe("AccountsComponent", (): void => {
     fixture.detectChanges()
   })
 
-  it("should create", (): void => {
+  it('should create', (): void => {
     expect(component).toBeTruthy()
   })
 })

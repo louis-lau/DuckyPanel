@@ -1,8 +1,8 @@
-import { LayoutModule } from "@angular/cdk/layout"
-import { HttpClientModule } from "@angular/common/http"
-import { NgModule } from "@angular/core"
-import { FlexLayoutModule } from "@angular/flex-layout"
-import { FormsModule, ReactiveFormsModule } from "@angular/forms"
+import { LayoutModule } from '@angular/cdk/layout'
+import { HttpClientModule } from '@angular/common/http'
+import { NgModule } from '@angular/core'
+import { FlexLayoutModule } from '@angular/flex-layout'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import {
   MAT_SNACK_BAR_DEFAULT_OPTIONS,
   MatButtonModule,
@@ -24,39 +24,39 @@ import {
   MatSortModule,
   MatTableModule,
   MatToolbarModule,
-  MatTooltipModule
-} from "@angular/material"
-import { MatChipsModule } from "@angular/material/chips"
-import { BrowserModule } from "@angular/platform-browser"
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
-import { ApiModule, Configuration, ConfigurationParameters } from "ducky-api-client-angular"
-import { MatProgressButtonsModule } from "mat-progress-buttons"
+  MatTooltipModule,
+} from '@angular/material'
+import { MatChipsModule } from '@angular/material/chips'
+import { BrowserModule } from '@angular/platform-browser'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { ApiModule, Configuration, ConfigurationParameters } from 'ducky-api-client-angular'
+import { MatProgressButtonsModule } from 'mat-progress-buttons'
 
-import { AppRoutingModule } from "./app-routing.module"
-import { AppComponent } from "./app.component"
-import { AccountsComponent } from "./pages/accounts/accounts.component"
-import { AccountDialogComponent } from "./pages/accounts/components/account-dialog/account-dialog.component"
-import { DnsComponent } from "./pages/dns/dns.component"
-import { AddDomainDialogComponent } from "./pages/domains/components/add-domain-dialog/add-domain-dialog.component"
+import { AppRoutingModule } from './app-routing.module'
+import { AppComponent } from './app.component'
+import { AccountsComponent } from './pages/accounts/accounts.component'
+import { AccountDialogComponent } from './pages/accounts/components/account-dialog/account-dialog.component'
+import { DnsComponent } from './pages/dns/dns.component'
+import { AddDomainDialogComponent } from './pages/domains/components/add-domain-dialog/add-domain-dialog.component'
 import {
   DkimDialogComponent,
-  DkimDialogEntryComponent
-} from "./pages/domains/components/dkim-dialog/dkim-dialog.component"
-import { DomainsComponent } from "./pages/domains/domains.component"
-import { ForwarderDialogComponent } from "./pages/forwarders/components/forwarder-dialog/forwarder-dialog.component"
-import { ForwardersComponent } from "./pages/forwarders/forwarders.component"
-import { LoginComponent } from "./pages/login/login.component"
-import { ProfileComponent } from "./pages/profile/profile.component"
-import { DialogComponent } from "./shared/components/dialog/dialog.component"
-import { ErrorSnackbarComponent } from "./shared/components/error-snackbar/error-snackbar.component"
-import { FabButtonComponent } from "./shared/components/fab-button/fab-button.component"
+  DkimDialogEntryComponent,
+} from './pages/domains/components/dkim-dialog/dkim-dialog.component'
+import { DomainsComponent } from './pages/domains/domains.component'
+import { ForwarderDialogComponent } from './pages/forwarders/components/forwarder-dialog/forwarder-dialog.component'
+import { ForwardersComponent } from './pages/forwarders/forwarders.component'
+import { LoginComponent } from './pages/login/login.component'
+import { ProfileComponent } from './pages/profile/profile.component'
+import { DialogComponent } from './shared/components/dialog/dialog.component'
+import { ErrorSnackbarComponent } from './shared/components/error-snackbar/error-snackbar.component'
+import { FabButtonComponent } from './shared/components/fab-button/fab-button.component'
 
 // TODO: take these values from a config file or envvar
 export function apiConfigFactory(): Configuration {
-  const accessToken = localStorage.getItem("access_token")
+  const accessToken = localStorage.getItem('access_token')
   const params: ConfigurationParameters = {
-    basePath: "http://localhost:3000",
-    accessToken: accessToken
+    basePath: 'http://localhost:3000',
+    accessToken: accessToken,
   }
   return new Configuration(params)
 }
@@ -67,7 +67,7 @@ export function apiConfigFactory(): Configuration {
     AddDomainDialogComponent,
     ErrorSnackbarComponent,
     ForwarderDialogComponent,
-    DkimDialogComponent
+    DkimDialogComponent,
   ],
   declarations: [
     AppComponent,
@@ -84,7 +84,7 @@ export function apiConfigFactory(): Configuration {
     DkimDialogComponent,
     DkimDialogEntryComponent,
     DnsComponent,
-    ProfileComponent
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -117,14 +117,14 @@ export function apiConfigFactory(): Configuration {
     FormsModule,
     ReactiveFormsModule,
     MatPaginatorModule,
-    MatProgressBarModule
+    MatProgressBarModule,
   ],
   providers: [
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
-      useValue: { duration: 5000 }
-    }
+      useValue: { duration: 5000 },
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

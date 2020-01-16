@@ -1,14 +1,14 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing"
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { AddDomainDialogComponent } from "./add-domain-dialog.component"
+import { AddDomainDialogComponent } from './add-domain-dialog.component'
 
-describe("AddDomainDialogComponent", (): void => {
+describe('AddDomainDialogComponent', (): void => {
   let component: AddDomainDialogComponent
   let fixture: ComponentFixture<AddDomainDialogComponent>
 
   beforeEach(async((): void => {
     TestBed.configureTestingModule({
-      declarations: [AddDomainDialogComponent]
+      declarations: [AddDomainDialogComponent],
     }).compileComponents()
   }))
 
@@ -18,7 +18,7 @@ describe("AddDomainDialogComponent", (): void => {
     fixture.detectChanges()
   })
 
-  it("should create", (): void => {
+  it('should create', (): void => {
     expect(component).toBeTruthy()
   })
 })

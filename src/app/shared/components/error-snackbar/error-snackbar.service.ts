@@ -1,10 +1,10 @@
-import { Injectable, NgZone } from "@angular/core"
-import { MatSnackBar } from "@angular/material"
+import { Injectable, NgZone } from '@angular/core'
+import { MatSnackBar } from '@angular/material'
 
-import { ErrorSnackbarComponent } from "./error-snackbar.component"
+import { ErrorSnackbarComponent } from './error-snackbar.component'
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root',
 })
 export class ErrorSnackbarService {
   constructor(private snackBar: MatSnackBar, private zone: NgZone) {}
@@ -13,7 +13,7 @@ export class ErrorSnackbarService {
     this.zone.run(() => {
       this.snackBar.openFromComponent(ErrorSnackbarComponent, {
         data: error,
-        panelClass: ["error-snackbar"]
+        panelClass: ['error-snackbar'],
       })
     })
   }

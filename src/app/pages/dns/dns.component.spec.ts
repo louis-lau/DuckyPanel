@@ -1,14 +1,14 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing"
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { DnsComponent } from "./dns.component"
+import { DnsComponent } from './dns.component'
 
-describe("DnsComponent", (): void => {
+describe('DnsComponent', (): void => {
   let component: DnsComponent
   let fixture: ComponentFixture<DnsComponent>
 
   beforeEach(async((): void => {
     TestBed.configureTestingModule({
-      declarations: [DnsComponent]
+      declarations: [DnsComponent],
     }).compileComponents()
   }))
 
@@ -18,7 +18,7 @@ describe("DnsComponent", (): void => {
     fixture.detectChanges()
   })
 
-  it("should create", (): void => {
+  it('should create', (): void => {
     expect(component).toBeTruthy()
   })
 })

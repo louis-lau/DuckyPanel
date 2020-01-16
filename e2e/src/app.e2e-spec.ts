@@ -1,17 +1,17 @@
-import { browser, logging } from "protractor"
+import { browser, logging } from 'protractor'
 
-import { AppPage } from "./app.po"
+import { AppPage } from './app.po'
 
-describe("workspace-project App", (): void => {
+describe('workspace-project App', (): void => {
   let page: AppPage
 
   beforeEach((): void => {
     page = new AppPage()
   })
 
-  it("should display welcome message", (): void => {
+  it('should display welcome message', (): void => {
     page.navigateTo()
-    expect(page.getTitleText()).toEqual("Welcome to DuckyPanel!")
+    expect(page.getTitleText()).toEqual('Welcome to DuckyPanel!')
   })
 
   afterEach(
@@ -23,9 +23,9 @@ describe("workspace-project App", (): void => {
         .get(logging.Type.BROWSER)
       expect(logs).not.toContain(
         jasmine.objectContaining({
-          level: logging.Level.SEVERE
-        } as logging.Entry)
+          level: logging.Level.SEVERE,
+        } as logging.Entry),
       )
-    }
+    },
   )
 })

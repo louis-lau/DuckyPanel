@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core"
-import { UsersService } from "ducky-api-client-angular"
-import { ErrorSnackbarService } from "src/app/shared/components/error-snackbar/error-snackbar.service"
+import { Injectable } from '@angular/core'
+import { UsersService } from 'ducky-api-client-angular'
+import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root',
 })
 export class ProfileService {
   public constructor(private usersService: UsersService, private errorSnackbarService: ErrorSnackbarService) {}
@@ -17,7 +17,7 @@ export class ProfileService {
       },
       error => {
         this.errorSnackbarService.open(error)
-      }
+      },
     )
   }
 }

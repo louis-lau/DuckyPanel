@@ -1,4 +1,4 @@
-import { MatProgressButtonOptions } from "mat-progress-buttons"
+import { MatProgressButtonOptions } from 'mat-progress-buttons'
 
 export interface DialogConfig {
   data: {

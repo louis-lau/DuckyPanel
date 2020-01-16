@@ -1,14 +1,14 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing"
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { ErrorSnackbarComponent } from "./error-snackbar.component"
+import { ErrorSnackbarComponent } from './error-snackbar.component'
 
-describe("ErrorSnackbarComponent", (): void => {
+describe('ErrorSnackbarComponent', (): void => {
   let component: ErrorSnackbarComponent
   let fixture: ComponentFixture<ErrorSnackbarComponent>
 
   beforeEach(async((): void => {
     TestBed.configureTestingModule({
-      declarations: [ErrorSnackbarComponent]
+      declarations: [ErrorSnackbarComponent],
     }).compileComponents()
   }))
 
@@ -18,7 +18,7 @@ describe("ErrorSnackbarComponent", (): void => {
     fixture.detectChanges()
   })
 
-  it("should create", (): void => {
+  it('should create', (): void => {
     expect(component).toBeTruthy()
   })
 })

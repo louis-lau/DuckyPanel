@@ -1,5 +1,5 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms"
-import { Validator } from "class-validator"
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms'
+import { Validator } from 'class-validator'
 
 /**
  * @description Function that validates if string is empty, email address, smtp address, or http address
@@ -11,9 +11,9 @@ export function forwardingTargetValidator(): ValidatorFn {
       validator.isEmpty(control.value) ||
       validator.isEmail(control.value) ||
       validator.isURL(control.value, {
-        protocols: ["http", "https", "smtp", "smtps"],
+        protocols: ['http', 'https', 'smtp', 'smtps'],
         // eslint-disable-next-line @typescript-eslint/camelcase
-        require_protocol: true
+        require_protocol: true,
       })
     ) {
       // string is valid
@@ -22,8 +22,8 @@ export function forwardingTargetValidator(): ValidatorFn {
       // string is not an email or an url with a valid protocol
       return {
         forwardingTarget: {
-          valid: false
-        }
+          valid: false,
+        },
       }
     }
   }

@@ -1,21 +1,21 @@
-import { BreakpointObserver } from "@angular/cdk/layout"
-import { HttpErrorResponse } from "@angular/common/http"
-import { Component, Inject, OnInit } from "@angular/core"
-import { FormControl, FormGroup } from "@angular/forms"
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar } from "@angular/material"
-import { ActivatedRoute, Router } from "@angular/router"
-import { AddDkimDto, DkimService } from "ducky-api-client-angular"
-import { MatProgressButtonOptions } from "mat-progress-buttons"
-import { Subscription } from "rxjs"
-import { AccountDialogComponent } from "src/app/pages/accounts/components/account-dialog/account-dialog.component"
-import { DialogComponent } from "src/app/shared/components/dialog/dialog.component"
-import { DialogConfig } from "src/app/shared/components/dialog/dialog.interfaces"
-import { ErrorSnackbarService } from "src/app/shared/components/error-snackbar/error-snackbar.service"
+import { BreakpointObserver } from '@angular/cdk/layout'
+import { HttpErrorResponse } from '@angular/common/http'
+import { Component, Inject, OnInit } from '@angular/core'
+import { FormControl, FormGroup } from '@angular/forms'
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar } from '@angular/material'
+import { ActivatedRoute, Router } from '@angular/router'
+import { AddDkimDto, DkimService } from 'ducky-api-client-angular'
+import { MatProgressButtonOptions } from 'mat-progress-buttons'
+import { Subscription } from 'rxjs'
+import { AccountDialogComponent } from 'src/app/pages/accounts/components/account-dialog/account-dialog.component'
+import { DialogComponent } from 'src/app/shared/components/dialog/dialog.component'
+import { DialogConfig } from 'src/app/shared/components/dialog/dialog.interfaces'
+import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
 
 @Component({
-  selector: "app-dkim-dialog",
-  templateUrl: "./dkim-dialog.component.html",
-  styleUrls: ["./dkim-dialog.component.scss"]
+  selector: 'app-dkim-dialog',
+  templateUrl: './dkim-dialog.component.html',
+  styleUrls: ['./dkim-dialog.component.scss'],
 })
 export class DkimDialogComponent implements OnInit {
   public constructor(
@@ -25,40 +25,40 @@ export class DkimDialogComponent implements OnInit {
     private dkimService: DkimService,
     private snackBar: MatSnackBar,
     private errorSnackbarService: ErrorSnackbarService,
-    @Inject(MAT_DIALOG_DATA) public data
+    @Inject(MAT_DIALOG_DATA) public data,
   ) {}
   public isModifyDialog: boolean
   public dkimForm: FormGroup = new FormGroup({
     selector: new FormControl(null),
-    privateKey: new FormControl(null)
+    privateKey: new FormControl(null),
   })
   public dkimKeySubscription: Subscription
 
   public saveButtonConfig: MatProgressButtonOptions = {
     active: false,
-    text: "SAVE",
+    text: 'SAVE',
     disabled: true,
     raised: true,
-    buttonColor: "primary",
-    spinnerColor: "accent",
+    buttonColor: 'primary',
+    spinnerColor: 'accent',
     spinnerSize: 18,
-    mode: "indeterminate"
+    mode: 'indeterminate',
   }
 
   public disableButtonConfig: MatProgressButtonOptions = {
     active: false,
-    type: "button",
-    text: "DISABLE",
-    buttonColor: "warn",
-    spinnerColor: "accent",
+    type: 'button',
+    text: 'DISABLE',
+    buttonColor: 'warn',
+    spinnerColor: 'accent',
     spinnerSize: 18,
-    mode: "indeterminate"
+    mode: 'indeterminate',
   }
 
   public cancelButtonConfig: MatProgressButtonOptions = {
     active: false,
-    type: "button",
-    text: "CANCEL"
+    type: 'button',
+    text: 'CANCEL',
   }
 
   public ngOnInit(): void {
@@ -77,13 +77,13 @@ export class DkimDialogComponent implements OnInit {
       (dkimKey): void => {
         this.dkimForm.setValue({
           selector: dkimKey.selector,
-          privateKey: null
+          privateKey: null,
         })
       },
       (error: HttpErrorResponse): void => {
         this.dialogRef.close()
         this.errorSnackbarService.open(error)
-      }
+      },
     )
   }
 
@@ -95,21 +95,21 @@ export class DkimDialogComponent implements OnInit {
     const dirtyValues: any = {}
     for (const key in this.dkimForm.controls) {
       const value = this.dkimForm.controls[key].value
-      if (this.dkimForm.controls[key].dirty && value !== null && value !== "") {
+      if (this.dkimForm.controls[key].dirty && value !== null && value !== '') {
         dirtyValues[key] = value
       }
     }
 
     const dkimKey: AddDkimDto = {
       selector: dirtyValues.selector,
-      privateKey: dirtyValues.privateKey
+      privateKey: dirtyValues.privateKey,
     }
 
     this.dkimService.updateDkim(this.data.domain, dkimKey).subscribe(
       (): void => {
         this.dialogRef.close(true)
-        this.snackBar.open(`DKIM for ${this.data.domain} ${this.isModifyDialog ? "updated" : "enabled"}`, undefined, {
-          panelClass: "success-snackbar"
+        this.snackBar.open(`DKIM for ${this.data.domain} ${this.isModifyDialog ? 'updated' : 'enabled'}`, undefined, {
+          panelClass: 'success-snackbar',
         })
       },
       (error: HttpErrorResponse): void => {
@@ -117,7 +117,7 @@ export class DkimDialogComponent implements OnInit {
         this.cancelButtonConfig.disabled = false
         this.saveButtonConfig.active = false
         this.errorSnackbarService.open(error)
-      }
+      },
     )
   }
 
@@ -125,21 +125,21 @@ export class DkimDialogComponent implements OnInit {
     const dialogConfig: DialogConfig = {
       data: {
         title: `Disable DKIM for ${this.data.domain}`,
-        text: "Are you sure? This will also delete the private key from the server.",
+        text: 'Are you sure? This will also delete the private key from the server.',
         buttons: [
           {
             options: {
               active: false,
-              text: "NO"
-            }
+              text: 'NO',
+            },
           },
           {
             options: {
               active: false,
-              text: "YES",
-              buttonColor: "warn",
+              text: 'YES',
+              buttonColor: 'warn',
               spinnerSize: 18,
-              mode: "indeterminate"
+              mode: 'indeterminate',
             },
             callback: (dialogRef: MatDialogRef<DialogComponent>): void => {
               dialogRef.disableClose = true
@@ -150,7 +150,7 @@ export class DkimDialogComponent implements OnInit {
                 (): void => {
                   dialogRef.close()
                   this.snackBar.open(`DKIM for ${this.data.domain} has been disabled`, undefined, {
-                    panelClass: "success-snackbar"
+                    panelClass: 'success-snackbar',
                   })
                   this.dialogRef.close(true)
                 },
@@ -159,25 +159,25 @@ export class DkimDialogComponent implements OnInit {
                   dialogConfig.data.buttons[0].options.disabled = false
                   dialogConfig.data.buttons[1].options.active = false
                   this.errorSnackbarService.open(error)
-                }
+                },
               )
-            }
-          }
-        ]
-      }
+            },
+          },
+        ],
+      },
     }
     this.dialog.open(DialogComponent, dialogConfig)
   }
 }
 
 @Component({
-  template: ""
+  template: '',
 })
 export class DkimDialogEntryComponent implements OnInit {
   public constructor(public dialog: MatDialog, private router: Router, private route: ActivatedRoute) {}
   public ngOnInit(): void {
     this.route.params.subscribe((params): void => {
-      this.dkimDialog(params["domain"], params["action"] === "edit")
+      this.dkimDialog(params['domain'], params['action'] === 'edit')
     })
   }
 
@@ -185,14 +185,14 @@ export class DkimDialogEntryComponent implements OnInit {
     const dialog = this.dialog.open(DkimDialogComponent, {
       data: {
         domain: domain,
-        edit: edit
-      }
+        edit: edit,
+      },
     })
     dialog.afterClosed().subscribe((result): void => {
       if (result) {
-        this.router.navigateByUrl("/domains?refresh=true")
+        this.router.navigateByUrl('/domains?refresh=true')
       } else {
-        this.router.navigateByUrl("/domains")
+        this.router.navigateByUrl('/domains')
       }
     })
   }

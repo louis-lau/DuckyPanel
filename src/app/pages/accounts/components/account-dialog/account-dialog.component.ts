@@ -1,25 +1,25 @@
-import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
-import { HttpErrorResponse } from "@angular/common/http"
-import { Component, Inject, OnInit } from "@angular/core"
-import { FormControl, FormGroup, Validators } from "@angular/forms"
-import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from "@angular/material"
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
+import { HttpErrorResponse } from '@angular/common/http'
+import { Component, Inject, OnInit } from '@angular/core'
+import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material'
 import {
   AccountDetails,
   CreateAccountDto,
   DomainsService,
   EmailAccountsService,
-  UpdateAccountDto
-} from "ducky-api-client-angular"
-import { MatProgressButtonOptions } from "mat-progress-buttons"
-import { Observable, Subscription } from "rxjs"
-import { map } from "rxjs/operators"
-import { ErrorSnackbarService } from "src/app/shared/components/error-snackbar/error-snackbar.service"
-import { AddressUsernameValidator } from "src/app/shared/validators/address-username-validator.directive"
+  UpdateAccountDto,
+} from 'ducky-api-client-angular'
+import { MatProgressButtonOptions } from 'mat-progress-buttons'
+import { Observable, Subscription } from 'rxjs'
+import { map } from 'rxjs/operators'
+import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
+import { AddressUsernameValidator } from 'src/app/shared/validators/address-username-validator.directive'
 
 @Component({
-  selector: "app-account-dialog",
-  templateUrl: "./account-dialog.component.html",
-  styleUrls: ["./account-dialog.component.scss"]
+  selector: 'app-account-dialog',
+  templateUrl: './account-dialog.component.html',
+  styleUrls: ['./account-dialog.component.scss'],
 })
 export class AccountDialogComponent implements OnInit {
   public constructor(
@@ -29,7 +29,7 @@ export class AccountDialogComponent implements OnInit {
     private readonly emailAccountsService: EmailAccountsService,
     private snackBar: MatSnackBar,
     private errorSnackbarService: ErrorSnackbarService,
-    @Inject(MAT_DIALOG_DATA) public data
+    @Inject(MAT_DIALOG_DATA) public data,
   ) {}
 
   public isModifyDialog: boolean
@@ -53,24 +53,24 @@ export class AccountDialogComponent implements OnInit {
     quota: new FormControl(null, Validators.min(0)),
     sendLimit: new FormControl(null, [Validators.min(1), Validators.max(300)]),
     receiveLimit: new FormControl(null, Validators.min(0)),
-    forwardLimit: new FormControl(null, [Validators.min(1), Validators.max(200)])
+    forwardLimit: new FormControl(null, [Validators.min(1), Validators.max(200)]),
   })
 
   public saveButtonConfig: MatProgressButtonOptions = {
     active: false,
-    text: "SAVE",
+    text: 'SAVE',
     disabled: true,
     raised: true,
-    buttonColor: "primary",
-    spinnerColor: "accent",
+    buttonColor: 'primary',
+    spinnerColor: 'accent',
     spinnerSize: 18,
-    mode: "indeterminate"
+    mode: 'indeterminate',
   }
 
   public cancelButtonConfig: MatProgressButtonOptions = {
     active: false,
-    type: "button",
-    text: "CANCEL"
+    type: 'button',
+    text: 'CANCEL',
   }
 
   public ngOnInit(): void {
@@ -94,15 +94,15 @@ export class AccountDialogComponent implements OnInit {
   }
 
   public getAccount(): void {
-    this.accountForm.controls["addressUser"].disable()
-    this.accountForm.controls["domain"].disable()
+    this.accountForm.controls['addressUser'].disable()
+    this.accountForm.controls['domain'].disable()
 
     this.accountDetailsSubscription = this.emailAccountsService.getAccountDetails(this.data.id).subscribe(
       (account): void => {
         this.accountDetails = account
         // Split address to name and domain for split input
-        const addressUser = this.accountDetails.address.substring(0, this.accountDetails.address.lastIndexOf("@"))
-        this.domains = [this.accountDetails.address.substring(this.accountDetails.address.lastIndexOf("@") + 1)]
+        const addressUser = this.accountDetails.address.substring(0, this.accountDetails.address.lastIndexOf('@'))
+        this.domains = [this.accountDetails.address.substring(this.accountDetails.address.lastIndexOf('@') + 1)]
 
         this.accountForm.setValue({
           name: account.name,
@@ -114,13 +114,13 @@ export class AccountDialogComponent implements OnInit {
           quota: Math.round(account.limits.quota.allowed / 1024 ** 2),
           sendLimit: account.limits.send.allowed,
           receiveLimit: account.limits.receive.allowed,
-          forwardLimit: account.limits.forward.allowed
+          forwardLimit: account.limits.forward.allowed,
         })
       },
       (error: HttpErrorResponse): void => {
         this.dialogRef.close()
         this.errorSnackbarService.open(error)
-      }
+      },
     )
   }
 
@@ -132,7 +132,7 @@ export class AccountDialogComponent implements OnInit {
       (error: HttpErrorResponse): void => {
         this.dialogRef.close()
         this.errorSnackbarService.open(error)
-      }
+      },
     )
   }
 
@@ -144,7 +144,7 @@ export class AccountDialogComponent implements OnInit {
     const dirtyValues: any = {}
     for (const key in this.accountForm.controls) {
       const value = this.accountForm.controls[key].value
-      if (this.accountForm.controls[key].dirty && value !== null && value !== "") {
+      if (this.accountForm.controls[key].dirty && value !== null && value !== '') {
         dirtyValues[key] = value
       }
     }
@@ -159,8 +159,8 @@ export class AccountDialogComponent implements OnInit {
         quota: dirtyValues.quota ? dirtyValues.quota * 1024 ** 2 : undefined,
         send: dirtyValues.sendLimit,
         receive: dirtyValues.receiveLimit,
-        forward: dirtyValues.forwardLimit
-      }
+        forward: dirtyValues.forwardLimit,
+      },
     }
 
     const onError = (error: HttpErrorResponse): void => {
@@ -175,14 +175,14 @@ export class AccountDialogComponent implements OnInit {
       delete account.address
       this.emailAccountsService.updateAccount(this.data.id, account).subscribe((): void => {
         this.snackBar.open(`${address} successfully updated`, undefined, {
-          panelClass: "success-snackbar"
+          panelClass: 'success-snackbar',
         })
         this.dialogRef.close(true)
       }, onError)
     } else {
       this.emailAccountsService.createAccount(account).subscribe((): void => {
         this.snackBar.open(`${account.address} successfully added`, undefined, {
-          panelClass: "success-snackbar"
+          panelClass: 'success-snackbar',
         })
         this.dialogRef.close(true)
       }, onError)

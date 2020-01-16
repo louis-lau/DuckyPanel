@@ -1,17 +1,17 @@
-import { async, TestBed } from "@angular/core/testing"
-import { RouterTestingModule } from "@angular/router/testing"
+import { async, TestBed } from '@angular/core/testing'
+import { RouterTestingModule } from '@angular/router/testing'
 
-import { AppComponent } from "./app.component"
+import { AppComponent } from './app.component'
 
-describe("AppComponent", (): void => {
+describe('AppComponent', (): void => {
   beforeEach(async((): void => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [AppComponent]
+      declarations: [AppComponent],
     }).compileComponents()
   }))
 
-  it("should create the app", (): void => {
+  it('should create the app', (): void => {
     const fixture = TestBed.createComponent(AppComponent)
     const app = fixture.debugElement.componentInstance
     expect(app).toBeTruthy()
@@ -20,13 +20,13 @@ describe("AppComponent", (): void => {
   it(`should have as title 'DuckyPanel'`, (): void => {
     const fixture = TestBed.createComponent(AppComponent)
     const app = fixture.debugElement.componentInstance
-    expect(app.title).toEqual("DuckyPanel")
+    expect(app.title).toEqual('DuckyPanel')
   })
 
-  it("should render title in a h1 tag", (): void => {
+  it('should render title in a h1 tag', (): void => {
     const fixture = TestBed.createComponent(AppComponent)
     fixture.detectChanges()
     const compiled = fixture.debugElement.nativeElement
-    expect(compiled.querySelector("h1").textContent).toContain("Welcome to DuckyPanel!")
+    expect(compiled.querySelector('h1').textContent).toContain('Welcome to DuckyPanel!')
   })
 })

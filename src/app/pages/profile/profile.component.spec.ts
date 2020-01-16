@@ -1,14 +1,14 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing"
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { ProfileComponent } from "./profile.component"
+import { ProfileComponent } from './profile.component'
 
-describe("ProfileComponent", (): void => {
+describe('ProfileComponent', (): void => {
   let component: ProfileComponent
   let fixture: ComponentFixture<ProfileComponent>
 
   beforeEach(async((): void => {
     TestBed.configureTestingModule({
-      declarations: [ProfileComponent]
+      declarations: [ProfileComponent],
     }).compileComponents()
   }))
 
@@ -18,7 +18,7 @@ describe("ProfileComponent", (): void => {
     fixture.detectChanges()
   })
 
-  it("should create", (): void => {
+  it('should create', (): void => {
     expect(component).toBeTruthy()
   })
 })

@@ -1,14 +1,14 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing"
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { AccountDialogComponent } from "./account-dialog.component"
+import { AccountDialogComponent } from './account-dialog.component'
 
-describe("AccountDialogComponent", (): void => {
+describe('AccountDialogComponent', (): void => {
   let component: AccountDialogComponent
   let fixture: ComponentFixture<AccountDialogComponent>
 
   beforeEach(async((): void => {
     TestBed.configureTestingModule({
-      declarations: [AccountDialogComponent]
+      declarations: [AccountDialogComponent],
     }).compileComponents()
   }))
 
@@ -18,7 +18,7 @@ describe("AccountDialogComponent", (): void => {
     fixture.detectChanges()
   })
 
-  it("should create", (): void => {
+  it('should create', (): void => {
     expect(component).toBeTruthy()
   })
 })

@@ -1,23 +1,23 @@
-import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
-import { Location } from "@angular/common"
-import { HttpErrorResponse } from "@angular/common/http"
-import { Component, OnInit, ViewChild } from "@angular/core"
-import { MatDialog, MatDialogRef, MatSnackBar, MatSort, MatTableDataSource } from "@angular/material"
-import { ActivatedRoute, Router } from "@angular/router"
-import { Domain, DomainsService } from "ducky-api-client-angular"
-import { Observable, Subscription } from "rxjs"
-import { map } from "rxjs/operators"
-import { DialogComponent } from "src/app/shared/components/dialog/dialog.component"
-import { DialogConfig } from "src/app/shared/components/dialog/dialog.interfaces"
-import { ErrorSnackbarService } from "src/app/shared/components/error-snackbar/error-snackbar.service"
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
+import { Location } from '@angular/common'
+import { HttpErrorResponse } from '@angular/common/http'
+import { Component, OnInit, ViewChild } from '@angular/core'
+import { MatDialog, MatDialogRef, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material'
+import { ActivatedRoute, Router } from '@angular/router'
+import { Domain, DomainsService } from 'ducky-api-client-angular'
+import { Observable, Subscription } from 'rxjs'
+import { map } from 'rxjs/operators'
+import { DialogComponent } from 'src/app/shared/components/dialog/dialog.component'
+import { DialogConfig } from 'src/app/shared/components/dialog/dialog.interfaces'
+import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
 
-import { AddDomainDialogComponent } from "./components/add-domain-dialog/add-domain-dialog.component"
-import { DkimDialogComponent } from "./components/dkim-dialog/dkim-dialog.component"
+import { AddDomainDialogComponent } from './components/add-domain-dialog/add-domain-dialog.component'
+import { DkimDialogComponent } from './components/dkim-dialog/dkim-dialog.component'
 
 @Component({
-  selector: "app-domains",
-  templateUrl: "./domains.component.html",
-  styleUrls: ["./domains.component.scss"]
+  selector: 'app-domains',
+  templateUrl: './domains.component.html',
+  styleUrls: ['./domains.component.scss'],
 })
 export class DomainsComponent implements OnInit {
   public constructor(
@@ -28,10 +28,10 @@ export class DomainsComponent implements OnInit {
     private readonly domainsService: DomainsService,
     private route: ActivatedRoute,
     private router: Router,
-    private location: Location
+    private location: Location,
   ) {}
 
-  public displayedColumns = ["domain", "actions"]
+  public displayedColumns = ['domain', 'actions']
   public dataSource: MatTableDataSource<Domain>
   public domainSubscription: Subscription
   public isHandset$: Observable<boolean> = this.breakpointObserver
@@ -54,10 +54,10 @@ export class DomainsComponent implements OnInit {
         // Remove refresh param from url
         const newParams = { ...params }
         delete newParams.refresh
-        this.router.navigate(["."], {
+        this.router.navigate(['.'], {
           relativeTo: this.route,
           queryParams: newParams,
-          replaceUrl: true
+          replaceUrl: true,
         })
       }
     })
@@ -72,7 +72,7 @@ export class DomainsComponent implements OnInit {
       },
       error => {
         this.errorSnackbarService.open(error)
-      }
+      },
     )
   }
 
@@ -89,11 +89,11 @@ export class DomainsComponent implements OnInit {
     const dialog = this.dialog.open(DkimDialogComponent, {
       data: {
         domain: domain,
-        edit: edit
-      }
+        edit: edit,
+      },
     })
     dialog.afterClosed().subscribe((result): void => {
-      this.router.navigateByUrl("/domains")
+      this.router.navigateByUrl('/domains')
       if (result) {
         this.getDomains()
       }
@@ -104,21 +104,21 @@ export class DomainsComponent implements OnInit {
     const dialogConfig: DialogConfig = {
       data: {
         title: `Remove ${domain}`,
-        text: "Are you sure? This will also remove accounts associated with this domain.",
+        text: 'Are you sure? This will also remove accounts associated with this domain.',
         buttons: [
           {
             options: {
               active: false,
-              text: "NO"
-            }
+              text: 'NO',
+            },
           },
           {
             options: {
               active: false,
-              text: "YES",
-              buttonColor: "warn",
+              text: 'YES',
+              buttonColor: 'warn',
               spinnerSize: 18,
-              mode: "indeterminate"
+              mode: 'indeterminate',
             },
             callback: (dialogRef: MatDialogRef<DialogComponent>): void => {
               dialogRef.disableClose = true
@@ -128,18 +128,18 @@ export class DomainsComponent implements OnInit {
               this.domainsService.deleteDomain(domain).subscribe(
                 (): void => {
                   dialogRef.close()
-                  this.snackBar.open(`${domain} has been removed`, undefined, { panelClass: "success-snackbar" })
+                  this.snackBar.open(`${domain} has been removed`, undefined, { panelClass: 'success-snackbar' })
                   this.getDomains()
                 },
                 (error: HttpErrorResponse): void => {
                   dialogRef.close()
                   this.errorSnackbarService.open(error)
-                }
+                },
               )
-            }
-          }
-        ]
-      }
+            },
+          },
+        ],
+      },
     }
     this.dialog.open(DialogComponent, dialogConfig)
   }

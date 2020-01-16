@@ -1,14 +1,14 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing"
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { ForwarderDialogComponent } from "./forwarder-dialog.component"
+import { ForwarderDialogComponent } from './forwarder-dialog.component'
 
-describe("ForwarderDialogComponent", (): void => {
+describe('ForwarderDialogComponent', (): void => {
   let component: ForwarderDialogComponent
   let fixture: ComponentFixture<ForwarderDialogComponent>
 
   beforeEach(async((): void => {
     TestBed.configureTestingModule({
-      declarations: [ForwarderDialogComponent]
+      declarations: [ForwarderDialogComponent],
     }).compileComponents()
   }))
 
@@ -18,7 +18,7 @@ describe("ForwarderDialogComponent", (): void => {
     fixture.detectChanges()
   })
 
-  it("should create", (): void => {
+  it('should create', (): void => {
     expect(component).toBeTruthy()
   })
 })

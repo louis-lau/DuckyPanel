@@ -1,14 +1,14 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing"
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { FabButtonComponent } from "./fab-button.component"
+import { FabButtonComponent } from './fab-button.component'
 
-describe("FabButtonComponent", (): void => {
+describe('FabButtonComponent', (): void => {
   let component: FabButtonComponent
   let fixture: ComponentFixture<FabButtonComponent>
 
   beforeEach(async((): void => {
     TestBed.configureTestingModule({
-      declarations: [FabButtonComponent]
+      declarations: [FabButtonComponent],
     }).compileComponents()
   }))
 
@@ -18,7 +18,7 @@ describe("FabButtonComponent", (): void => {
     fixture.detectChanges()
   })
 
-  it("should create", (): void => {
+  it('should create', (): void => {
     expect(component).toBeTruthy()
   })
 })
