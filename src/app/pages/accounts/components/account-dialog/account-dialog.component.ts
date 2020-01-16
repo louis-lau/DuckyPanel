@@ -13,7 +13,7 @@ import {
 import { MatProgressButtonOptions } from "mat-progress-buttons"
 import { Observable, Subscription } from "rxjs"
 import { map } from "rxjs/operators"
-import { ErrorSnackbarComponent } from "src/app/shared/components/error-snackbar/error-snackbar.component"
+import { ErrorSnackbarService } from "src/app/shared/components/error-snackbar/error-snackbar.service"
 import { AddressUsernameValidator } from "src/app/shared/validators/address-username-validator.directive"
 
 @Component({
@@ -28,6 +28,7 @@ export class AccountDialogComponent implements OnInit {
     private readonly domainsService: DomainsService,
     private readonly emailAccountsService: EmailAccountsService,
     private snackBar: MatSnackBar,
+    private errorSnackbarService: ErrorSnackbarService,
     @Inject(MAT_DIALOG_DATA) public data
   ) {}
 
@@ -118,7 +119,7 @@ export class AccountDialogComponent implements OnInit {
       },
       (error: HttpErrorResponse): void => {
         this.dialogRef.close()
-        this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
+        this.errorSnackbarService.open(error)
       }
     )
   }
@@ -130,7 +131,7 @@ export class AccountDialogComponent implements OnInit {
       },
       (error: HttpErrorResponse): void => {
         this.dialogRef.close()
-        this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
+        this.errorSnackbarService.open(error)
       }
     )
   }
@@ -166,7 +167,7 @@ export class AccountDialogComponent implements OnInit {
       this.dialogRef.disableClose = false
       this.cancelButtonConfig.disabled = false
       this.saveButtonConfig.active = false
-      this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
+      this.errorSnackbarService.open(error)
     }
 
     if (this.isModifyDialog) {

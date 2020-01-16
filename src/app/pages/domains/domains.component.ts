@@ -9,7 +9,7 @@ import { Observable, Subscription } from "rxjs"
 import { map } from "rxjs/operators"
 import { DialogComponent } from "src/app/shared/components/dialog/dialog.component"
 import { DialogConfig } from "src/app/shared/components/dialog/dialog.interfaces"
-import { ErrorSnackbarComponent } from "src/app/shared/components/error-snackbar/error-snackbar.component"
+import { ErrorSnackbarService } from "src/app/shared/components/error-snackbar/error-snackbar.service"
 
 import { AddDomainDialogComponent } from "./components/add-domain-dialog/add-domain-dialog.component"
 import { DkimDialogComponent } from "./components/dkim-dialog/dkim-dialog.component"
@@ -24,6 +24,7 @@ export class DomainsComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
+    private errorSnackbarService: ErrorSnackbarService,
     private readonly domainsService: DomainsService,
     private route: ActivatedRoute,
     private router: Router,
@@ -69,8 +70,8 @@ export class DomainsComponent implements OnInit {
       (domains: Domain[]): void => {
         this.dataSource = new MatTableDataSource(domains)
       },
-      (error: HttpErrorResponse): void => {
-        this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
+      error => {
+        this.errorSnackbarService.open(error)
       }
     )
   }
@@ -132,10 +133,7 @@ export class DomainsComponent implements OnInit {
                 },
                 (error: HttpErrorResponse): void => {
                   dialogRef.close()
-                  this.snackBar.openFromComponent(ErrorSnackbarComponent, {
-                    data: error,
-                    panelClass: ["error-snackbar"]
-                  })
+                  this.errorSnackbarService.open(error)
                 }
               )
             }

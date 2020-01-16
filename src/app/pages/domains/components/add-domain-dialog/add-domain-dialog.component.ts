@@ -4,7 +4,7 @@ import { FormControl, Validators } from "@angular/forms"
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from "@angular/material"
 import { DomainsService } from "ducky-api-client-angular"
 import { MatProgressButtonOptions } from "mat-progress-buttons"
-import { ErrorSnackbarComponent } from "src/app/shared/components/error-snackbar/error-snackbar.component"
+import { ErrorSnackbarService } from "src/app/shared/components/error-snackbar/error-snackbar.service"
 
 @Component({
   selector: "app-add-domain-dialog",
@@ -16,6 +16,7 @@ export class AddDomainDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<AddDomainDialogComponent>,
     private readonly domainsService: DomainsService,
     private snackBar: MatSnackBar,
+    private errorSnackbarService: ErrorSnackbarService,
     @Inject(MAT_DIALOG_DATA) public data
   ) {}
 
@@ -61,7 +62,7 @@ export class AddDomainDialogComponent implements OnInit {
         this.dialogRef.disableClose = false
         this.cancelButtonConfig.disabled = false
         this.addButtonConfig.active = false
-        this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
+        this.errorSnackbarService.open(error)
       }
     )
   }

@@ -1,13 +1,12 @@
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
 import { Component, OnInit } from "@angular/core"
 import { FormControl, FormGroup } from "@angular/forms"
-import { MatSnackBar } from "@angular/material"
 import { Router } from "@angular/router"
 import { AccessToken, AuthenticationService } from "ducky-api-client-angular"
 import { MatProgressButtonOptions } from "mat-progress-buttons"
 import { Observable } from "rxjs"
 import { map } from "rxjs/operators"
-import { ErrorSnackbarComponent } from "src/app/shared/components/error-snackbar/error-snackbar.component"
+import { ErrorSnackbarService } from "src/app/shared/components/error-snackbar/error-snackbar.service"
 
 import { ProfileService } from "../profile/profile.service"
 
@@ -21,7 +20,7 @@ export class LoginComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private authenticationService: AuthenticationService,
     private profileService: ProfileService,
-    private snackBar: MatSnackBar,
+    private errorSnackbarService: ErrorSnackbarService,
     private router: Router
   ) {}
 
@@ -71,12 +70,9 @@ export class LoginComponent implements OnInit {
           (error): void => {
             this.loginButtonConfig.active = false
             if (error.error.error === "Unauthorized") {
-              this.snackBar.openFromComponent(ErrorSnackbarComponent, {
-                data: "Invalid username or password",
-                panelClass: ["error-snackbar"]
-              })
+              this.errorSnackbarService.open("Invalid username or password")
             } else {
-              this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
+              this.errorSnackbarService.open(error)
             }
           }
         )

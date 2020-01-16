@@ -16,7 +16,7 @@ import { Observable, Subscription } from "rxjs"
 import { map } from "rxjs/operators"
 import { DialogComponent } from "src/app/shared/components/dialog/dialog.component"
 import { DialogConfig } from "src/app/shared/components/dialog/dialog.interfaces"
-import { ErrorSnackbarComponent } from "src/app/shared/components/error-snackbar/error-snackbar.component"
+import { ErrorSnackbarService } from "src/app/shared/components/error-snackbar/error-snackbar.service"
 
 import { ForwarderDialogComponent } from "./components/forwarder-dialog/forwarder-dialog.component"
 
@@ -30,6 +30,7 @@ export class ForwardersComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
+    private errorSnackbarService: ErrorSnackbarService,
     private readonly forwardersService: ForwardersService,
     private router: Router,
     private activatedRoute: ActivatedRoute
@@ -74,8 +75,8 @@ export class ForwardersComponent implements OnInit {
       (forwarders): void => {
         this.dataSource.data = forwarders
       },
-      (error: HttpErrorResponse): void => {
-        this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
+      error => {
+        this.errorSnackbarService.open(error)
       }
     )
   }
@@ -131,10 +132,7 @@ export class ForwardersComponent implements OnInit {
                   dialogRef.disableClose = false
                   dialogConfig.data.buttons[0].options.disabled = false
                   dialogConfig.data.buttons[1].options.active = false
-                  this.snackBar.openFromComponent(ErrorSnackbarComponent, {
-                    data: error,
-                    panelClass: ["error-snackbar"]
-                  })
+                  this.errorSnackbarService.open(error)
                 }
               )
             }

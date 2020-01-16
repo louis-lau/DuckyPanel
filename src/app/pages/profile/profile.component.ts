@@ -5,7 +5,7 @@ import { Router } from "@angular/router"
 import { AuthenticationService, EmailAccountsService } from "ducky-api-client-angular"
 import { DialogComponent } from "src/app/shared/components/dialog/dialog.component"
 import { DialogConfig } from "src/app/shared/components/dialog/dialog.interfaces"
-import { ErrorSnackbarComponent } from "src/app/shared/components/error-snackbar/error-snackbar.component"
+import { ErrorSnackbarService } from "src/app/shared/components/error-snackbar/error-snackbar.service"
 import { formatBytes } from "src/app/shared/functions/formatBytes.function"
 
 import { ProfileService } from "./profile.service"
@@ -21,6 +21,7 @@ export class ProfileComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private emailAccountsService: EmailAccountsService,
     private snackBar: MatSnackBar,
+    private errorSnackbarService: ErrorSnackbarService,
     private router: Router,
     public dialog: MatDialog
   ) {}
@@ -35,12 +36,17 @@ export class ProfileComponent implements OnInit {
 
   public calculateStorage(): void {
     this.usage.bytes = 0
-    this.emailAccountsService.getAccounts().subscribe((accounts): void => {
-      for (const account of accounts) {
-        this.usage.bytes += account.quota.used
+    this.emailAccountsService.getAccounts().subscribe(
+      (accounts): void => {
+        for (const account of accounts) {
+          this.usage.bytes += account.quota.used
+        }
+        this.usage.formatted = formatBytes(this.usage.bytes)
+      },
+      error => {
+        this.errorSnackbarService.open(error)
       }
-      this.usage.formatted = formatBytes(this.usage.bytes)
-    })
+    )
   }
 
   public logout(): void {
@@ -86,10 +92,7 @@ export class ProfileComponent implements OnInit {
                   dialogRef.disableClose = false
                   dialogConfig.data.buttons[0].options.disabled = false
                   dialogConfig.data.buttons[1].options.active = false
-                  this.snackBar.openFromComponent(ErrorSnackbarComponent, {
-                    data: error,
-                    panelClass: ["error-snackbar"]
-                  })
+                  this.errorSnackbarService.open(error)
                 }
               )
             }

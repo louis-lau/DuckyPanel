@@ -14,7 +14,7 @@ import { AccountListItem, EmailAccountsService } from "ducky-api-client-angular"
 import { Subscription } from "rxjs"
 import { DialogComponent } from "src/app/shared/components/dialog/dialog.component"
 import { DialogConfig } from "src/app/shared/components/dialog/dialog.interfaces"
-import { ErrorSnackbarComponent } from "src/app/shared/components/error-snackbar/error-snackbar.component"
+import { ErrorSnackbarService } from "src/app/shared/components/error-snackbar/error-snackbar.service"
 import { formatBytes } from "src/app/shared/functions/formatBytes.function"
 
 import { AccountListItemFormatted } from "./accounts.interfaces"
@@ -31,7 +31,8 @@ export class AccountsComponent implements OnInit {
     private readonly accountsService: EmailAccountsService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private errorSnackbarService: ErrorSnackbarService
   ) {}
 
   private displayedColumns = ["address", "name", "quotaUsedFormatted", "quotaAllowedFormatted", "actions"]
@@ -85,8 +86,8 @@ export class AccountsComponent implements OnInit {
           }
         }
       },
-      (error: HttpErrorResponse): void => {
-        this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
+      error => {
+        this.errorSnackbarService.open(error)
       }
     )
   }
@@ -146,10 +147,7 @@ export class AccountsComponent implements OnInit {
                   dialogRef.disableClose = false
                   dialogConfig.data.buttons[0].options.disabled = false
                   dialogConfig.data.buttons[1].options.active = false
-                  this.snackBar.openFromComponent(ErrorSnackbarComponent, {
-                    data: error,
-                    panelClass: ["error-snackbar"]
-                  })
+                  this.errorSnackbarService.open(error)
                 }
               )
             }

@@ -10,7 +10,7 @@ import { Subscription } from "rxjs"
 import { AccountDialogComponent } from "src/app/pages/accounts/components/account-dialog/account-dialog.component"
 import { DialogComponent } from "src/app/shared/components/dialog/dialog.component"
 import { DialogConfig } from "src/app/shared/components/dialog/dialog.interfaces"
-import { ErrorSnackbarComponent } from "src/app/shared/components/error-snackbar/error-snackbar.component"
+import { ErrorSnackbarService } from "src/app/shared/components/error-snackbar/error-snackbar.service"
 
 @Component({
   selector: "app-dkim-dialog",
@@ -24,6 +24,7 @@ export class DkimDialogComponent implements OnInit {
     public dialog: MatDialog,
     private dkimService: DkimService,
     private snackBar: MatSnackBar,
+    private errorSnackbarService: ErrorSnackbarService,
     @Inject(MAT_DIALOG_DATA) public data
   ) {}
   public isModifyDialog: boolean
@@ -81,7 +82,7 @@ export class DkimDialogComponent implements OnInit {
       },
       (error: HttpErrorResponse): void => {
         this.dialogRef.close()
-        this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
+        this.errorSnackbarService.open(error)
       }
     )
   }
@@ -115,7 +116,7 @@ export class DkimDialogComponent implements OnInit {
         this.dialogRef.disableClose = false
         this.cancelButtonConfig.disabled = false
         this.saveButtonConfig.active = false
-        this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
+        this.errorSnackbarService.open(error)
       }
     )
   }
@@ -157,10 +158,7 @@ export class DkimDialogComponent implements OnInit {
                   dialogRef.disableClose = false
                   dialogConfig.data.buttons[0].options.disabled = false
                   dialogConfig.data.buttons[1].options.active = false
-                  this.snackBar.openFromComponent(ErrorSnackbarComponent, {
-                    data: error,
-                    panelClass: ["error-snackbar"]
-                  })
+                  this.errorSnackbarService.open(error)
                 }
               )
             }

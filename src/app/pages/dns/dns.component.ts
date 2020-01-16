@@ -1,12 +1,11 @@
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout"
-import { HttpErrorResponse } from "@angular/common/http"
 import { Component, OnInit } from "@angular/core"
 import { FormControl, FormGroup } from "@angular/forms"
 import { MatSnackBar, MatTableDataSource } from "@angular/material"
 import { DnsCheck, DnsCheckError, DnsCheckMxRecord, DomainsService } from "ducky-api-client-angular"
 import { Observable, Subscription } from "rxjs"
 import { map } from "rxjs/operators"
-import { ErrorSnackbarComponent } from "src/app/shared/components/error-snackbar/error-snackbar.component"
+import { ErrorSnackbarService } from "src/app/shared/components/error-snackbar/error-snackbar.service"
 
 import { DnsCheckTxtRecord } from "./dns.interfaces"
 
@@ -19,7 +18,8 @@ export class DnsComponent implements OnInit {
   public constructor(
     private breakpointObserver: BreakpointObserver,
     private domainsService: DomainsService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private errorSnackbarService: ErrorSnackbarService
   ) {}
 
   public domains: string[]
@@ -56,8 +56,8 @@ export class DnsComponent implements OnInit {
       (domains): void => {
         this.domains = domains.map((value): string => value.domain)
       },
-      (error: HttpErrorResponse): void => {
-        this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
+      error => {
+        this.errorSnackbarService.open(error)
       }
     )
   }
@@ -79,8 +79,8 @@ export class DnsComponent implements OnInit {
           })
         }
       },
-      (error: HttpErrorResponse): void => {
-        this.snackBar.openFromComponent(ErrorSnackbarComponent, { data: error, panelClass: ["error-snackbar"] })
+      error => {
+        this.errorSnackbarService.open(error)
       }
     )
   }
