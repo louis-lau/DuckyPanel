@@ -24,6 +24,33 @@
     </mat-card>
     <mat-card>
       <mat-card-title>Change username/password</mat-card-title>
+      <mat-card-content>
+        <form [formGroup]="loginDetailsForm" (ngSubmit)="changeLoginDetails()">
+          <div fxLayout="column" fxLayoutGap="10px">
+            <mat-form-field appearance="fill">
+              <mat-label>Username</mat-label>
+              <input type="text" matInput formControlName="username" />
+              <mat-error *ngIf="loginDetailsForm.controls['username'].hasError('isAscii')">
+                Username can only contain ASCII characters
+              </mat-error>
+              <mat-error *ngIf="loginDetailsForm.controls['username'].hasError('notContains')">
+                Username can not contain spaces
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Password</mat-label>
+              <input type="password" matInput formControlName="password" />
+              <mat-error *ngIf="loginDetailsForm.controls['password'].hasError('required')">
+                Password is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+  
+          <div align="end">
+            <mat-spinner-button type="submit" [options]="loginDetailsButtonConfig"></mat-spinner-button>
+          </div>
+        </form>
+      </mat-card-content>
     </mat-card>
   </div>
 </div>
