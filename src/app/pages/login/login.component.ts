@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('access_token', accessToken.accessToken)
             this.authenticationService.configuration.accessToken = accessToken.accessToken
 
-            this.profileService.username = this.loginForm.value.username
+            this.profileService.user.username = this.loginForm.value.username
 
             this.router.navigateByUrl('/accounts')
           },

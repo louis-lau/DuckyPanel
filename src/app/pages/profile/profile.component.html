@@ -1,24 +1,29 @@
 <div class="single-column-content">
   <div fxLayout="column" fxLayoutGap="10px">
     <mat-card>
-      <mat-card-title>{{profileService.username}}</mat-card-title>
+      <mat-card-title>{{ profileService.user.username }}</mat-card-title>
       <mat-card-content>
         <p>
-          You are logged in as {{profileService.username}}, you've got access to 10GB of storage.
+          You are logged in as {{ profileService.user.username }}, you've got access to {{ quota.formatted }} of
+          storage.
         </p>
       </mat-card-content>
       <mat-card-actions>
-          <button (click)="logout()" mat-button color="warn">LOG OUT</button>
-          <button (click)="logoutAllDialog()" mat-button color="warn">LOG OUT FROM ALL DEVICES</button>
+        <button (click)="logout()" mat-button color="warn">LOG OUT</button>
+        <button (click)="logoutAllDialog()" mat-button color="warn">LOG OUT FROM ALL DEVICES</button>
       </mat-card-actions>
     </mat-card>
     <mat-card>
       <mat-card-title>Storage used</mat-card-title>
       <mat-card-content>
-        <p>Currently using {{ usage.bytes / 10737418240 * 100 | number:'1.0-2' }}% of storage.</p>
+        <p>Currently using {{ usage.bytes / quota.bytes | percent: '1.0-2' }} of storage.</p>
         <div fxLayout="row" fxLayoutGap="10px">
-          <mat-progress-bar fxFlexAlign="center" mode="determinate" value="{{ usage.bytes / 10737418240 * 100 | number:'1.0-2' }}"></mat-progress-bar>
-          <p class="usage-text">{{ usage.formatted }}/10 GB</p>
+          <mat-progress-bar
+            fxFlexAlign="center"
+            [mode]="calculateStorageSubscription && calculateStorageSubscription.closed ? 'determinate' : 'query'"
+            value="{{ (usage.bytes / quota.bytes) * 100 | number: '1.0-2' }}"
+          ></mat-progress-bar>
+          <p class="usage-text">{{ usage.formatted }}/{{ quota.formatted }}</p>
         </div>
       </mat-card-content>
     </mat-card>
@@ -45,7 +50,7 @@
               </mat-error>
             </mat-form-field>
           </div>
-  
+
           <div align="end">
             <mat-spinner-button type="submit" [options]="loginDetailsButtonConfig"></mat-spinner-button>
           </div>

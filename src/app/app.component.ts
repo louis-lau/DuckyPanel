@@ -60,11 +60,11 @@ export class AppComponent implements OnInit {
           icon: 'dns',
           routerLink: '/dns',
         },
-        {
-          name: 'Support',
-          icon: 'contact_support',
-          href: 'https://mxroute.com/help.html',
-        },
+        // {
+        //   name: 'Support',
+        //   icon: 'contact_support',
+        //   href: 'https://example.com/help.html',
+        // },
       ],
     },
   ]

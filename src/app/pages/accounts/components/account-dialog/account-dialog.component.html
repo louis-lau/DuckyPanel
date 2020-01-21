@@ -74,8 +74,8 @@
         <mat-form-field appearance="fill">
           <mat-label>Quota</mat-label>
           <input matInput type="number" formControlName="quota" />
-          <span matSuffix>MB</span>
-          <mat-hint *ngIf="isModifyDialog">Current usage: {{ math.round(accountDetails.limits.quota.used / math.pow(1024, 2)) }}MB</mat-hint>
+          <span matSuffix>MiB</span>
+          <mat-hint *ngIf="isModifyDialog">Current usage: {{ math.round(accountDetails.limits.quota.used / math.pow(1024, 2)) }}MiB</mat-hint>
           <mat-error *ngIf="accountForm.controls['quota'].hasError('min')">
             Quota must be above 0
           </mat-error>

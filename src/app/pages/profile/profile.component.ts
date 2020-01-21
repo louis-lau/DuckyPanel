@@ -5,6 +5,7 @@ import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material'
 import { Router } from '@angular/router'
 import { AuthenticationService, EmailAccountsService, UsersService } from 'ducky-api-client-angular'
 import { MatProgressButtonOptions } from 'mat-progress-buttons'
+import { Subscription } from 'rxjs'
 import { DialogComponent } from 'src/app/shared/components/dialog/dialog.component'
 import { DialogConfig } from 'src/app/shared/components/dialog/dialog.interfaces'
 import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
@@ -32,11 +33,16 @@ export class ProfileComponent implements OnInit {
   ) {}
   public usage = {
     bytes: 0,
-    formatted: '0 Bytes',
+    formatted: 'Usage',
   }
+  public quota = {
+    bytes: 0,
+    formatted: 'Quota',
+  }
+  public calculateStorageSubscription: Subscription
 
   public loginDetailsForm: FormGroup = new FormGroup({
-    username: new FormControl(this.profileService.username, [IsAsciiValidator(), notContainsValidator(' ')]),
+    username: new FormControl(this.profileService.user.username, [IsAsciiValidator(), notContainsValidator(' ')]),
     password: new FormControl(null),
   })
 
@@ -54,8 +60,10 @@ export class ProfileComponent implements OnInit {
   public ngOnInit(): void {
     this.calculateStorage()
     this.profileService.userInfoSubscription.add(() => {
-      // Only set username after the userinfo request has finished
-      this.loginDetailsForm.controls['username'].setValue(this.profileService.username)
+      // Only set username and quota if the userinfo request has finished
+      this.loginDetailsForm.controls['username'].setValue(this.profileService.user.username)
+      this.quota.bytes = this.profileService.user.quota
+      this.quota.formatted = formatBytes(this.quota.bytes)
     })
     this.loginDetailsForm.valueChanges.subscribe((): void => {
       this.loginDetailsButtonConfig.disabled = this.loginDetailsForm.invalid
@@ -64,7 +72,7 @@ export class ProfileComponent implements OnInit {
 
   public calculateStorage(): void {
     this.usage.bytes = 0
-    this.emailAccountsService.getAccounts().subscribe(
+    this.calculateStorageSubscription = this.emailAccountsService.getAccounts().subscribe(
       (accounts): void => {
         for (const account of accounts) {
           this.usage.bytes += account.quota.used
