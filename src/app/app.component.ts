@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   public constructor(
     private breakpointObserver: BreakpointObserver,
     private router: Router,
-    private profileService: ProfileService,
+    public profileService: ProfileService,
   ) {}
 
   public title = 'DuckyPanel'

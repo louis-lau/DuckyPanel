@@ -171,7 +171,7 @@ export class AccountDialogComponent implements OnInit {
     }
 
     if (this.isModifyDialog) {
-      const address = account.address
+      const address = `${this.accountForm.controls['addressUser'].value}@${this.accountForm.controls['domain'].value}`
       delete account.address
       this.emailAccountsService.updateAccount(this.data.id, account).subscribe((): void => {
         this.snackBar.open(`${address} successfully updated`, undefined, {

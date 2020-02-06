@@ -23,7 +23,7 @@ import { ProfileService } from './profile.service'
 export class ProfileComponent implements OnInit {
   public constructor(
     private usersService: UsersService,
-    private profileService: ProfileService,
+    public profileService: ProfileService,
     private authenticationService: AuthenticationService,
     private emailAccountsService: EmailAccountsService,
     private snackBar: MatSnackBar,

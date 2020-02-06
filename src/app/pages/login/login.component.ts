@@ -64,6 +64,7 @@ export class LoginComponent implements OnInit {
             this.authenticationService.configuration.accessToken = accessToken.accessToken
 
             this.profileService.user.username = this.loginForm.value.username
+            this.profileService.getUserInfo()
 
             this.router.navigateByUrl('/accounts')
           },

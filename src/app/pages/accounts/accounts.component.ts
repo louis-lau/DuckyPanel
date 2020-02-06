@@ -36,7 +36,7 @@ export class AccountsComponent implements OnInit {
   ) {}
 
   private displayedColumns = ['address', 'name', 'quotaUsedFormatted', 'quotaAllowedFormatted', 'actions']
-  private dataSource: MatTableDataSource<AccountListItemFormatted> = new MatTableDataSource()
+  public dataSource: MatTableDataSource<AccountListItemFormatted> = new MatTableDataSource()
   public accountSubscription: Subscription
 
   @ViewChild(MatSort, { static: false })
