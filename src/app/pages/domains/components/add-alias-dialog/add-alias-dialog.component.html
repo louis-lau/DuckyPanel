@@ -1,0 +1,35 @@
+<ng-template #loading>
+  <mat-spinner diameter="50"></mat-spinner>
+</ng-template>
+<ng-container *ngIf="domainsSubscription && domainsSubscription.closed; else loading">
+  <h2 mat-dialog-title>Add Alias</h2>
+  <mat-dialog-content>
+    <form (ngSubmit)="addAlias()" [formGroup]="aliasForm" fxLayout="column">
+      <mat-form-field appearance="fill">
+        <mat-label>Existing domain</mat-label>
+        <mat-select formControlName="existingDomain" required>
+          <ng-container *ngFor="let domain of domains; let i = index;">
+            <mat-option [value]="domain">{{ domain }}</mat-option>
+          </ng-container>
+        </mat-select>
+        <mat-error *ngIf="aliasForm.controls['existingDomain'].hasError('required')">
+          Existing domain is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Alias domain</mat-label>
+        <input type="text" matInput formControlName="aliasDomain" required />
+        <mat-error *ngIf="aliasForm.controls['aliasDomain'].hasError('pattern')">
+          Not a valid domain name
+        </mat-error>
+        <mat-error *ngIf="aliasForm.controls['aliasDomain'].hasError('required')">
+          Alias domain is required
+        </mat-error>
+      </mat-form-field>
+      <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end">
+        <mat-spinner-button (btnClick)="dialogRef.close()" [options]="cancelButtonConfig"></mat-spinner-button>
+        <mat-spinner-button [options]="addButtonConfig"></mat-spinner-button>
+      </div>
+    </form>
+  </mat-dialog-content>
+</ng-container>

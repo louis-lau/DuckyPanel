@@ -29,6 +29,7 @@ import {
 import { MatChipsModule } from '@angular/material/chips'
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { EcoFabSpeedDialModule } from '@ecodev/fab-speed-dial'
 import { ApiModule, Configuration, ConfigurationParameters } from 'ducky-api-client-angular'
 import { MatProgressButtonsModule } from 'mat-progress-buttons'
 
@@ -37,6 +38,7 @@ import { AppComponent } from './app.component'
 import { AccountsComponent } from './pages/accounts/accounts.component'
 import { AccountDialogComponent } from './pages/accounts/components/account-dialog/account-dialog.component'
 import { DnsComponent } from './pages/dns/dns.component'
+import { AddAliasDialogComponent } from './pages/domains/components/add-alias-dialog/add-alias-dialog.component'
 import { AddDomainDialogComponent } from './pages/domains/components/add-domain-dialog/add-domain-dialog.component'
 import {
   DkimDialogComponent,
@@ -65,6 +67,7 @@ export function apiConfigFactory(): Configuration {
     DialogComponent,
     AccountDialogComponent,
     AddDomainDialogComponent,
+    AddAliasDialogComponent,
     ErrorSnackbarComponent,
     ForwarderDialogComponent,
     DkimDialogComponent,
@@ -77,6 +80,7 @@ export function apiConfigFactory(): Configuration {
     FabButtonComponent,
     AccountDialogComponent,
     AddDomainDialogComponent,
+    AddAliasDialogComponent,
     LoginComponent,
     ErrorSnackbarComponent,
     ForwardersComponent,
@@ -118,6 +122,7 @@ export function apiConfigFactory(): Configuration {
     ReactiveFormsModule,
     MatPaginatorModule,
     MatProgressBarModule,
+    EcoFabSpeedDialModule,
   ],
   providers: [
     {

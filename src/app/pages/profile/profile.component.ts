@@ -3,7 +3,11 @@ import { Component, OnInit } from '@angular/core'
 import { FormControl, FormGroup } from '@angular/forms'
 import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material'
 import { Router } from '@angular/router'
-import { AuthenticationService, EmailAccountsService, UsersService } from 'ducky-api-client-angular'
+import {
+  AuthenticationService,
+  EmailAccountsService,
+  ProfileService as ApiProfileService,
+} from 'ducky-api-client-angular'
 import { MatProgressButtonOptions } from 'mat-progress-buttons'
 import { Subscription } from 'rxjs'
 import { DialogComponent } from 'src/app/shared/components/dialog/dialog.component'
@@ -22,7 +26,7 @@ import { ProfileService } from './profile.service'
 })
 export class ProfileComponent implements OnInit {
   public constructor(
-    private usersService: UsersService,
+    public apiProfileService: ApiProfileService,
     public profileService: ProfileService,
     private authenticationService: AuthenticationService,
     private emailAccountsService: EmailAccountsService,
@@ -88,7 +92,7 @@ export class ProfileComponent implements OnInit {
   public changeLoginDetails(): void {
     if (this.loginDetailsForm.valid) {
       this.loginDetailsButtonConfig.active = true
-      this.usersService
+      this.apiProfileService
         .updateMe({
           username: this.loginDetailsForm.value.username,
           password: this.loginDetailsForm.value.password,
