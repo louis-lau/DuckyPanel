@@ -12,6 +12,8 @@ import { DialogComponent } from 'src/app/shared/components/dialog/dialog.compone
 import { DialogConfig } from 'src/app/shared/components/dialog/dialog.interfaces'
 import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
 
+import { DomainsService } from '../../domains.service'
+
 @Component({
   selector: 'app-dkim-dialog',
   templateUrl: './dkim-dialog.component.html',
@@ -20,12 +22,12 @@ import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/e
 export class DkimDialogComponent implements OnInit {
   public constructor(
     public dialogRef: MatDialogRef<AccountDialogComponent>,
-    private breakpointObserver: BreakpointObserver,
     public dialog: MatDialog,
     private dkimService: DkimService,
     private snackBar: MatSnackBar,
     private errorSnackbarService: ErrorSnackbarService,
-    @Inject(MAT_DIALOG_DATA) public data,
+    @Inject(MAT_DIALOG_DATA)
+    public data,
   ) {}
   public isModifyDialog: boolean
   public dkimForm: FormGroup = new FormGroup({
@@ -63,7 +65,9 @@ export class DkimDialogComponent implements OnInit {
 
   public ngOnInit(): void {
     this.dkimForm.valueChanges.subscribe((): void => {
-      this.saveButtonConfig.disabled = this.dkimForm.invalid || this.dkimForm.pristine
+      if (!this.isModifyDialog || this.dkimKeySubscription.closed) {
+        this.saveButtonConfig.disabled = this.dkimForm.invalid || this.dkimForm.pristine
+      }
     })
 
     if (this.data.edit) {
@@ -121,6 +125,12 @@ export class DkimDialogComponent implements OnInit {
     )
   }
 
+  public forceCheckForm(): void {
+    if (this.dkimForm.invalid) {
+      this.dkimForm.markAllAsTouched()
+    }
+  }
+
   public disableDialog(): void {
     const dialogConfig: DialogConfig = {
       data: {
@@ -174,7 +184,12 @@ export class DkimDialogComponent implements OnInit {
   template: '',
 })
 export class DkimDialogEntryComponent implements OnInit {
-  public constructor(public dialog: MatDialog, private router: Router, private route: ActivatedRoute) {}
+  public constructor(
+    public dialog: MatDialog,
+    private router: Router,
+    private route: ActivatedRoute,
+    public domainService: DomainsService,
+  ) {}
   public ngOnInit(): void {
     this.route.params.subscribe((params): void => {
       this.dkimDialog(params['domain'], params['action'] === 'edit')
@@ -190,7 +205,8 @@ export class DkimDialogEntryComponent implements OnInit {
     })
     dialog.afterClosed().subscribe((result): void => {
       if (result) {
-        this.router.navigateByUrl('/domains?refresh=true')
+        this.domainService.getDomains()
+        this.router.navigateByUrl('/domains')
       } else {
         this.router.navigateByUrl('/domains')
       }

@@ -4,11 +4,12 @@ import { HttpErrorResponse } from '@angular/common/http'
 import { Component, Inject, OnInit } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { MAT_DIALOG_DATA, MatChipInputEvent, MatDialogRef, MatSnackBar } from '@angular/material'
-import { CreateForwarderDto, DomainsService, ForwarderDetails, ForwardersService } from 'ducky-api-client-angular'
+import { CreateForwarderDto, ForwarderDetails, ForwardersService } from 'ducky-api-client-angular'
 import { MatProgressButtonOptions } from 'mat-progress-buttons'
 import { Observable, Subscription } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { AccountDialogComponent } from 'src/app/pages/accounts/components/account-dialog/account-dialog.component'
+import { DomainsService } from 'src/app/pages/domains/domains.service'
 import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
 import { AddressUsernameValidator } from 'src/app/shared/validators/address-username-validator.directive'
 import { forwardingTargetValidator } from 'src/app/shared/validators/forwarding-target-validator.directive'
@@ -22,17 +23,15 @@ export class ForwarderDialogComponent implements OnInit {
   public constructor(
     public dialogRef: MatDialogRef<AccountDialogComponent>,
     private breakpointObserver: BreakpointObserver,
-    private readonly domainsService: DomainsService,
+    public readonly domainsService: DomainsService,
     private readonly forwardersService: ForwardersService,
     private snackBar: MatSnackBar,
     private errorSnackbarService: ErrorSnackbarService,
     @Inject(MAT_DIALOG_DATA) public data,
   ) {}
   public isModifyDialog: boolean
-  public domainsSubscription: Subscription
   public forwarderDetails: ForwarderDetails
   public forwarderDetailsSubscription: Subscription
-  public domains: string[]
   public forwardTargets: string[] = []
   public forwardTargetsDirty = false
   public readonly newTargetSeperators: number[] = [ENTER, COMMA, SPACE]
@@ -75,8 +74,6 @@ export class ForwarderDialogComponent implements OnInit {
       }
     })
 
-    this.getDomains()
-
     // If id was passed this is a modify dialog and we need to get existing data
     if (this.data) {
       this.isModifyDialog = true
@@ -117,18 +114,6 @@ export class ForwarderDialogComponent implements OnInit {
     if (this.forwarderForm.invalid) {
       this.forwarderForm.markAllAsTouched()
     }
-  }
-
-  public getDomains(): void {
-    this.domainsSubscription = this.domainsService.getDomains().subscribe(
-      (domains): void => {
-        this.domains = domains.map((value): string => value.domain)
-      },
-      (error: HttpErrorResponse): void => {
-        this.dialogRef.close()
-        this.errorSnackbarService.open(error)
-      },
-    )
   }
 
   public getForwarder(): void {

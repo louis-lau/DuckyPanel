@@ -14,20 +14,23 @@
   </mat-card>
   <mat-card fxFlex="70%">
     <ng-template #loading>
-      <mat-spinner diameter="50"></mat-spinner>
+      <td-loading-mask width="100%" height="56px"> </td-loading-mask>
+      <td-loading-mask width="100%" height="48px"> </td-loading-mask>
+      <td-loading-mask width="100%" height="48px"> </td-loading-mask>
+      <td-loading-mask width="100%" height="48px"> </td-loading-mask>
     </ng-template>
-    <ng-container *ngIf="domainSubscription.closed; else loading">
+    <ng-container *ngIf="domainsService.domainsSubscription && domainsService.domainsSubscription.closed; else loading">
       <mat-table [dataSource]="dataSource">
         <ng-container matColumnDef="domain">
           <mat-header-cell *matHeaderCellDef> Domain </mat-header-cell>
-          <mat-cell *matCellDef="let row;" data-label="domain">
+          <mat-cell *matCellDef="let row" data-label="domain">
             <mat-icon *ngIf="!row.admin">subdirectory_arrow_right</mat-icon> {{ row.domain }}
           </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="actions">
           <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
-          <mat-cell *matCellDef="let row;" data-label="actions">
+          <mat-cell *matCellDef="let row" data-label="actions">
             <button
               [routerLink]="['/domains', row.domain, 'dkim', row.dkim ? 'edit' : 'new']"
               [matTooltip]="row.dkim ? 'Edit DKIM' : 'Add DKIM'"
@@ -71,19 +74,27 @@
 </div>
 <router-outlet></router-outlet>
 
-<ng-container *ngIf="dataSource.data.length > 0; else addDomain">
+<ng-container
+  *ngIf="
+    domainsService.domainsSubscription && domainsService.domainsSubscription.closed && dataSource.data.length > 0;
+    else addDomain
+  "
+>
   <eco-fab-speed-dial animationMode="scale">
     <eco-fab-speed-dial-trigger spin="true">
       <button mat-fab><mat-icon class="spin135">add</mat-icon></button>
     </eco-fab-speed-dial-trigger>
-    
+
     <eco-fab-speed-dial-actions>
-      <button mat-mini-fab (click)="addDomainDialog()" matTooltip="Add domain" matTooltipPosition="left"><mat-icon>domain</mat-icon></button>
-      <button mat-mini-fab (click)="addAliasDialog()" matTooltip="Add alias" matTooltipPosition="left"><mat-icon>link</mat-icon></button>
+      <button mat-mini-fab (click)="addDomainDialog()" matTooltip="Add domain" matTooltipPosition="left">
+        <mat-icon>domain</mat-icon>
+      </button>
+      <button mat-mini-fab (click)="addAliasDialog()" matTooltip="Add alias" matTooltipPosition="left">
+        <mat-icon>link</mat-icon>
+      </button>
     </eco-fab-speed-dial-actions>
   </eco-fab-speed-dial>
 </ng-container>
 <ng-template #addDomain>
   <app-fab-button icon="add" (click)="addDomainDialog()"></app-fab-button>
 </ng-template>
-

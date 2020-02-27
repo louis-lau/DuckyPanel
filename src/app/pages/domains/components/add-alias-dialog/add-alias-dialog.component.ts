@@ -2,10 +2,11 @@ import { HttpErrorResponse } from '@angular/common/http'
 import { Component, Inject, OnInit } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material'
-import { DomainsService } from 'ducky-api-client-angular'
+import { DomainsService as ApiDomainsService } from 'ducky-api-client-angular'
 import { MatProgressButtonOptions } from 'mat-progress-buttons'
-import { Subscription } from 'rxjs'
 import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
+
+import { DomainsService } from '../../domains.service'
 
 @Component({
   selector: 'app-add-alias-dialog',
@@ -15,15 +16,12 @@ import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/e
 export class AddAliasDialogComponent implements OnInit {
   public constructor(
     public dialogRef: MatDialogRef<AddAliasDialogComponent>,
-    private readonly domainsService: DomainsService,
+    private readonly apiDomainsService: ApiDomainsService,
+    public domainsService: DomainsService,
     private snackBar: MatSnackBar,
     private errorSnackbarService: ErrorSnackbarService,
     @Inject(MAT_DIALOG_DATA) public data,
   ) {}
-
-  public domainsSubscription: Subscription
-  public domains: string[]
-
   public cancelButtonConfig: MatProgressButtonOptions = {
     active: false,
     type: 'button',
@@ -48,22 +46,11 @@ export class AddAliasDialogComponent implements OnInit {
   })
 
   public ngOnInit(): void {
-    this.getDomains()
     this.aliasForm.valueChanges.subscribe((): void => {
-      this.addButtonConfig.disabled = this.aliasForm.invalid
+      if (this.domainsService.domainsSubscription.closed) {
+        this.addButtonConfig.disabled = this.aliasForm.invalid
+      }
     })
-  }
-
-  public getDomains(): void {
-    this.domainsSubscription = this.domainsService.getDomains().subscribe(
-      (domains): void => {
-        this.domains = domains.map((value): string => value.domain)
-      },
-      (error: HttpErrorResponse): void => {
-        this.dialogRef.close()
-        this.errorSnackbarService.open(error)
-      },
-    )
   }
 
   public addAlias(): void {
@@ -71,7 +58,7 @@ export class AddAliasDialogComponent implements OnInit {
     this.cancelButtonConfig.disabled = true
     this.addButtonConfig.active = true
 
-    this.domainsService
+    this.apiDomainsService
       .addAlias(this.aliasForm.controls['existingDomain'].value, {
         domain: this.aliasForm.controls['aliasDomain'].value,
       })

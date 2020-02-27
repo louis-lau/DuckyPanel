@@ -3,12 +3,12 @@
 </ng-template>
 <ng-container
   *ngIf="
-    (domainsSubscription && domainsSubscription.closed) ||
+    (!isModifyDialog && domainsService.domainsSubscription && domainsService.domainsSubscription.closed) ||
       (accountDetailsSubscription && accountDetailsSubscription.closed);
     else loading
   "
 >
-  <h2 mat-dialog-title>{{ isModifyDialog ? "Modify" : "New" }} email account</h2>
+  <h2 mat-dialog-title>{{ isModifyDialog ? 'Modify' : 'New' }} email account</h2>
   <mat-dialog-content>
     <form [formGroup]="accountForm" id="accountForm" (ngSubmit)="updateAccount()" fxLayout="column" fxLayoutGap="10px">
       <mat-form-field appearance="fill">
@@ -24,7 +24,7 @@
             User is required
           </mat-error>
           <mat-error *ngIf="accountForm.controls['addressUser'].hasError('AddressUsername')">
-              Invalid email address format
+            Invalid email address format
           </mat-error>
         </mat-form-field>
 
@@ -36,7 +36,7 @@
           <mat-label>Domain</mat-label>
           <span *ngIf="isHandset$ | async" matPrefix>@</span>
           <mat-select formControlName="domain" [required]="isModifyDialog ? null : 'required'">
-            <ng-container *ngFor="let domain of domains; let i = index">
+            <ng-container *ngFor="let domain of domainsService.domainsStrings; let i = index">
               <mat-option [value]="domain">{{ domain }}</mat-option>
             </ng-container>
           </mat-select>
@@ -75,7 +75,9 @@
           <mat-label>Quota</mat-label>
           <input matInput type="number" formControlName="quota" />
           <span matSuffix>MiB</span>
-          <mat-hint *ngIf="isModifyDialog">Current usage: {{ math.round(accountDetails.limits.quota.used / math.pow(1024, 2)) }}MiB</mat-hint>
+          <mat-hint *ngIf="isModifyDialog"
+            >Current usage: {{ math.round(accountDetails.limits.quota.used / math.pow(1024, 2)) }}MiB</mat-hint
+          >
           <mat-error *ngIf="accountForm.controls['quota'].hasError('min')">
             Quota must be above 0
           </mat-error>

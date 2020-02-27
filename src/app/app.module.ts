@@ -29,6 +29,7 @@ import {
 import { MatChipsModule } from '@angular/material/chips'
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { TdLoadingMaskModule } from '@covalent/experimental/loading-mask'
 import { EcoFabSpeedDialModule } from '@ecodev/fab-speed-dial'
 import { ApiModule, Configuration, ConfigurationParameters } from 'ducky-api-client-angular'
 import { MatProgressButtonsModule } from 'mat-progress-buttons'
@@ -123,6 +124,7 @@ export function apiConfigFactory(): Configuration {
     MatPaginatorModule,
     MatProgressBarModule,
     EcoFabSpeedDialModule,
+    TdLoadingMaskModule,
   ],
   providers: [
     {

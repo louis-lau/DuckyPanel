@@ -3,16 +3,11 @@ import { HttpErrorResponse } from '@angular/common/http'
 import { Component, Inject, OnInit } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material'
-import {
-  AccountDetails,
-  CreateAccountDto,
-  DomainsService,
-  EmailAccountsService,
-  UpdateAccountDto,
-} from 'ducky-api-client-angular'
+import { AccountDetails, CreateAccountDto, EmailAccountsService, UpdateAccountDto } from 'ducky-api-client-angular'
 import { MatProgressButtonOptions } from 'mat-progress-buttons'
 import { Observable, Subscription } from 'rxjs'
 import { map } from 'rxjs/operators'
+import { DomainsService } from 'src/app/pages/domains/domains.service'
 import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
 import { AddressUsernameValidator } from 'src/app/shared/validators/address-username-validator.directive'
 
@@ -25,7 +20,7 @@ export class AccountDialogComponent implements OnInit {
   public constructor(
     public dialogRef: MatDialogRef<AccountDialogComponent>,
     private breakpointObserver: BreakpointObserver,
-    private readonly domainsService: DomainsService,
+    public readonly domainsService: DomainsService,
     private readonly emailAccountsService: EmailAccountsService,
     private snackBar: MatSnackBar,
     private errorSnackbarService: ErrorSnackbarService,
@@ -33,8 +28,6 @@ export class AccountDialogComponent implements OnInit {
   ) {}
 
   public isModifyDialog: boolean
-  public domains: string[]
-  public domainsSubscription: Subscription
   public accountDetails: AccountDetails
   public accountDetailsSubscription: Subscription
   public math: Math = Math
@@ -82,8 +75,6 @@ export class AccountDialogComponent implements OnInit {
     if (this.data) {
       this.isModifyDialog = true
       this.getAccount()
-    } else {
-      this.getDomains()
     }
   }
 
@@ -102,32 +93,19 @@ export class AccountDialogComponent implements OnInit {
         this.accountDetails = account
         // Split address to name and domain for split input
         const addressUser = this.accountDetails.address.substring(0, this.accountDetails.address.lastIndexOf('@'))
-        this.domains = [this.accountDetails.address.substring(this.accountDetails.address.lastIndexOf('@') + 1)]
 
         this.accountForm.setValue({
           name: account.name,
           spamLevel: account.spamLevel,
           disabledScopes: account.disabledScopes,
           addressUser: addressUser,
-          domain: this.domains[0],
+          domain: this.accountDetails.address.substring(this.accountDetails.address.lastIndexOf('@') + 1),
           password: null,
           quota: Math.round(account.limits.quota.allowed / 1024 ** 2),
           sendLimit: account.limits.send.allowed,
           receiveLimit: account.limits.receive.allowed,
           forwardLimit: account.limits.forward.allowed,
         })
-      },
-      (error: HttpErrorResponse): void => {
-        this.dialogRef.close()
-        this.errorSnackbarService.open(error)
-      },
-    )
-  }
-
-  public getDomains(): void {
-    this.domainsSubscription = this.domainsService.getDomains().subscribe(
-      (domains): void => {
-        this.domains = domains.map((value): string => value.domain)
       },
       (error: HttpErrorResponse): void => {
         this.dialogRef.close()

@@ -1,12 +1,18 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
 import { Component, OnInit } from '@angular/core'
 import { FormControl, FormGroup } from '@angular/forms'
-import { MatSnackBar, MatTableDataSource } from '@angular/material'
-import { DnsCheck, DnsCheckError, DnsCheckMxRecord, DomainsService } from 'ducky-api-client-angular'
+import { MatTableDataSource } from '@angular/material'
+import {
+  DnsCheck,
+  DnsCheckError,
+  DnsCheckMxRecord,
+  DomainsService as ApiDomainsService,
+} from 'ducky-api-client-angular'
 import { Observable, Subscription } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
 
+import { DomainsService } from '../domains/domains.service'
 import { DnsCheckTxtRecord } from './dns.interfaces'
 
 @Component({
@@ -17,14 +23,12 @@ import { DnsCheckTxtRecord } from './dns.interfaces'
 export class DnsComponent implements OnInit {
   public constructor(
     private breakpointObserver: BreakpointObserver,
-    private domainsService: DomainsService,
-    private snackBar: MatSnackBar,
+    private apiDomainsService: ApiDomainsService,
+    public domainsService: DomainsService,
     private errorSnackbarService: ErrorSnackbarService,
   ) {}
 
-  public domains: string[]
   public selectedDomain: string
-  public domainsSubscription: Subscription
   public dnsCheck: DnsCheck
   public dnsCheckSubscription: Subscription
   public correctMxDataSource: MatTableDataSource<DnsCheckMxRecord> = new MatTableDataSource()
@@ -43,27 +47,14 @@ export class DnsComponent implements OnInit {
   })
 
   public ngOnInit(): void {
-    this.getDomains()
-
     this.domainForm.controls['domain'].valueChanges.subscribe((value): void => {
       this.selectedDomain = value
       this.checkDNS(value)
     })
   }
 
-  public getDomains(): void {
-    this.domainsSubscription = this.domainsService.getDomains().subscribe(
-      (domains): void => {
-        this.domains = domains.map((value): string => value.domain)
-      },
-      error => {
-        this.errorSnackbarService.open(error)
-      },
-    )
-  }
-
   public checkDNS(domain: string): void {
-    this.dnsCheckSubscription = this.domainsService.checkDNS(domain).subscribe(
+    this.dnsCheckSubscription = this.apiDomainsService.checkDNS(domain).subscribe(
       (dnsCheck): void => {
         this.dnsCheck = dnsCheck
         this.errorDataSource.data = dnsCheck.errors

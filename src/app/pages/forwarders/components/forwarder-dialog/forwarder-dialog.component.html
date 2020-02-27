@@ -3,12 +3,16 @@
 </ng-template>
 <ng-container
   *ngIf="
-    (!isModifyDialog && domainsSubscription.closed) ||
-      (isModifyDialog && domainsSubscription.closed && forwarderDetailsSubscription.closed);
+    (!isModifyDialog && domainsService.domainsSubscription && domainsService.domainsSubscription.closed) ||
+      (isModifyDialog &&
+        domainsService.domainsSubscription &&
+        domainsService.domainsSubscription.closed &&
+        forwarderDetailsSubscription &&
+        forwarderDetailsSubscription.closed);
     else loading
   "
 >
-  <h2 mat-dialog-title>{{ isModifyDialog ? "Modify" : "New" }} forwarder</h2>
+  <h2 mat-dialog-title>{{ isModifyDialog ? 'Modify' : 'New' }} forwarder</h2>
   <mat-dialog-content>
     <form
       [formGroup]="forwarderForm"
@@ -42,7 +46,7 @@
           <mat-label>Domain</mat-label>
           <span *ngIf="isHandset$ | async" matPrefix>@</span>
           <mat-select formControlName="domain" [required]="isModifyDialog ? null : 'required'">
-            <ng-container *ngFor="let domain of domains; let i = index">
+            <ng-container *ngFor="let domain of domainsService.domainsStrings; let i = index">
               <mat-option [value]="domain">{{ domain }}</mat-option>
             </ng-container>
           </mat-select>

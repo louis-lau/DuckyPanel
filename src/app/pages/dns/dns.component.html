@@ -12,14 +12,14 @@
   </mat-card>
   <div fxFlex="70%" fxLayout="column" fxLayoutGap="10px">
     <form
-      *ngIf="domainsSubscription && domainsSubscription.closed; else loading"
+      *ngIf="domainsService.domainsSubscription && domainsService.domainsSubscription.closed; else loading"
       [formGroup]="domainForm"
       id="domainForm"
     >
       <mat-form-field appearance="fill" class="domain-field">
         <mat-label>Domain</mat-label>
         <mat-select formControlName="domain">
-          <ng-container *ngFor="let domain of domains; let i = index">
+          <ng-container *ngFor="let domain of domainsService.domainsAndAliasesStrings; let i = index">
             <mat-option [value]="domain">{{ domain }}</mat-option>
           </ng-container>
         </mat-select>
@@ -52,7 +52,7 @@
               <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
               <mat-cell *matCellDef="let row" data-label="name">
                 {{
-                  row.isDkim ? dnsCheck.correctValues.dkim.selector + "._domainkey." + selectedDomain : selectedDomain
+                  row.isDkim ? dnsCheck.correctValues.dkim.selector + '._domainkey.' + selectedDomain : selectedDomain
                 }}
               </mat-cell>
             </ng-container>

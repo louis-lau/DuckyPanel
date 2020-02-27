@@ -6,6 +6,7 @@ import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 
 import { NavCategory } from './app.interfaces'
+import { DomainsService } from './pages/domains/domains.service'
 import { ProfileService } from './pages/profile/profile.service'
 
 @Component({
@@ -18,6 +19,7 @@ export class AppComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private router: Router,
     public profileService: ProfileService,
+    public domainsService: DomainsService,
   ) {}
 
   public title = 'DuckyPanel'
@@ -60,11 +62,6 @@ export class AppComponent implements OnInit {
           icon: 'dns',
           routerLink: '/dns',
         },
-        // {
-        //   name: 'Support',
-        //   icon: 'contact_support',
-        //   href: 'https://example.com/help.html',
-        // },
       ],
     },
   ]
@@ -75,6 +72,7 @@ export class AppComponent implements OnInit {
 
   public ngOnInit(): void {
     this.profileService.getUserInfo()
+    this.domainsService.getDomains()
     this.router.events.subscribe((event): void => {
       if (event instanceof RoutesRecognized && event.state.root.firstChild) {
         this.isFullscreen = event.state.root.firstChild.data.isFullscreen ? true : false
