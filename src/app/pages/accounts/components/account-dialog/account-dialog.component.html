@@ -1,15 +1,40 @@
-<ng-template #loading>
-  <mat-spinner diameter="50"></mat-spinner>
-</ng-template>
-<ng-container
-  *ngIf="
-    (!isModifyDialog && domainsService.domainsSubscription && domainsService.domainsSubscription.closed) ||
-      (accountDetailsSubscription && accountDetailsSubscription.closed);
-    else loading
-  "
->
-  <h2 mat-dialog-title>{{ isModifyDialog ? 'Modify' : 'New' }} email account</h2>
-  <mat-dialog-content>
+<h2 mat-dialog-title>{{ isModifyDialog ? 'Modify' : 'New' }} email account</h2>
+<mat-dialog-content>
+  <ng-template #loader>
+    <div class="loader-container" fxLayout="column" fxLayoutGap="calc(10px + 1.34375em)">
+      <td-loading-mask class="loading-field" width="100%" height="59.5px"></td-loading-mask>
+      <div [fxLayout]="(isHandset$ | async) ? 'column' : 'row'" class="row-container" fxLayoutGap="10px">
+        <td-loading-mask class="loading-field" width="100%" height="59.5px"></td-loading-mask>
+        <div *ngIf="!(isHandset$ | async)" fxLayout="column" fxLayoutAlign="center">
+          @
+        </div>
+        <td-loading-mask class="loading-field" width="100%" height="59.5px"></td-loading-mask>
+      </div>
+      <td-loading-mask class="loading-field" width="100%" height="59.5px"></td-loading-mask>
+      <div [fxLayout]="(isHandset$ | async) ? 'column' : 'row'" fxLayoutGap="10px" class="row-container">
+        <td-loading-mask class="loading-field" width="100%" height="59.5px"></td-loading-mask>
+        <td-loading-mask class="loading-field" width="100%" height="59.5px"></td-loading-mask>
+        <td-loading-mask class="loading-field" width="100%" height="59.5px"></td-loading-mask>
+      </div>
+      <div [fxLayout]="(isHandset$ | async) ? 'column' : 'row'" fxLayoutGap="10px" class="row-container">
+        <td-loading-mask class="loading-field" width="100%" height="59.5px"></td-loading-mask>
+        <td-loading-mask class="loading-field" width="100%" height="59.5px"></td-loading-mask>
+        <td-loading-mask class="loading-field" width="100%" height="59.5px"></td-loading-mask>
+      </div>
+      <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end">
+        <mat-spinner-button (btnClick)="dialogRef.close()" [options]="cancelButtonConfig"></mat-spinner-button>
+        <td-loading-mask width="66px" height="36px"></td-loading-mask>
+      </div>
+    </div>
+  </ng-template>
+  <ng-container
+    *ngIf="
+      (!isModifyDialog && domainsService.domainsSubscription && domainsService.domainsSubscription.closed) ||
+        (accountDetailsSubscription && accountDetailsSubscription.closed);
+      else loader
+    "
+  >
+  <!-- <ng-container *ngIf="false; else loader"> -->
     <form [formGroup]="accountForm" id="accountForm" (ngSubmit)="updateAccount()" fxLayout="column" fxLayoutGap="10px">
       <mat-form-field appearance="fill">
         <mat-label>Name</mat-label>
@@ -137,5 +162,5 @@
         </div>
       </div>
     </form>
-  </mat-dialog-content>
-</ng-container>
+  </ng-container>
+</mat-dialog-content>

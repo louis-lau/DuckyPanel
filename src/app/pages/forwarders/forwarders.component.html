@@ -19,10 +19,13 @@
         showFirstLastButtons
       ></mat-paginator>
     </div>
-    <ng-template #loading>
-      <mat-spinner diameter="50"></mat-spinner>
+    <ng-template #loader>
+      <td-loading-mask width="100%" height="56px"></td-loading-mask>
+      <td-loading-mask width="100%" height="48px"></td-loading-mask>
+      <td-loading-mask width="100%" height="48px"></td-loading-mask>
+      <td-loading-mask width="100%" height="48px"></td-loading-mask>
     </ng-template>
-    <ng-container *ngIf="forwarderSubscription.closed; else loading">
+    <ng-container *ngIf="forwarderSubscription.closed; else loader">
       <mat-table [dataSource]="dataSource" matSort>
         <ng-container matColumnDef="address">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Forward address </mat-header-cell>

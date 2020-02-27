@@ -35,7 +35,7 @@ export class AccountsComponent implements OnInit {
     private errorSnackbarService: ErrorSnackbarService,
   ) {}
 
-  private displayedColumns = ['address', 'name', 'quotaUsedFormatted', 'quotaAllowedFormatted', 'actions']
+  public displayedColumns = ['address', 'name', 'quotaUsedFormatted', 'quotaAllowedFormatted', 'actions']
   public dataSource: MatTableDataSource<AccountListItemFormatted> = new MatTableDataSource()
   public accountSubscription: Subscription
 

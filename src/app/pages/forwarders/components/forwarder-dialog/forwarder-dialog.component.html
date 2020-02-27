@@ -1,19 +1,34 @@
-<ng-template #loading>
-  <mat-spinner diameter="50"></mat-spinner>
-</ng-template>
-<ng-container
-  *ngIf="
-    (!isModifyDialog && domainsService.domainsSubscription && domainsService.domainsSubscription.closed) ||
-      (isModifyDialog &&
-        domainsService.domainsSubscription &&
-        domainsService.domainsSubscription.closed &&
-        forwarderDetailsSubscription &&
-        forwarderDetailsSubscription.closed);
-    else loading
-  "
->
-  <h2 mat-dialog-title>{{ isModifyDialog ? 'Modify' : 'New' }} forwarder</h2>
-  <mat-dialog-content>
+<h2 mat-dialog-title>{{ isModifyDialog ? 'Modify' : 'New' }} forwarder</h2>
+<mat-dialog-content>
+  <ng-template #loader>
+    <div class="loader-container" fxLayout="column" fxLayoutGap="calc(10px + 1.34375em)">
+      <td-loading-mask width="100%" height="59.5px"></td-loading-mask>
+      <div [fxLayout]="(isHandset$ | async) ? 'column' : 'row'" class="row-container" fxLayoutGap="10px">
+        <td-loading-mask width="100%" height="59.5px"></td-loading-mask>
+        <div *ngIf="!(isHandset$ | async)" fxLayout="column" fxLayoutAlign="center">
+          @
+        </div>
+        <td-loading-mask width="100%" height="59.5px"></td-loading-mask>
+      </div>
+      <td-loading-mask width="100%" height="73.3px"></td-loading-mask>
+      <td-loading-mask width="100%" height="59.5px"></td-loading-mask>
+      <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end">
+        <mat-spinner-button (btnClick)="dialogRef.close()" [options]="cancelButtonConfig"></mat-spinner-button>
+        <td-loading-mask width="66px" height="36px"></td-loading-mask>
+      </div>
+    </div>
+  </ng-template>
+  <ng-container
+    *ngIf="
+      (!isModifyDialog && domainsService.domainsSubscription && domainsService.domainsSubscription.closed) ||
+        (isModifyDialog &&
+          domainsService.domainsSubscription &&
+          domainsService.domainsSubscription.closed &&
+          forwarderDetailsSubscription &&
+          forwarderDetailsSubscription.closed);
+      else loader
+    "
+  >
     <form
       [formGroup]="forwarderForm"
       id="forwarderForm"
@@ -102,5 +117,5 @@
         </div>
       </div>
     </form>
-  </mat-dialog-content>
-</ng-container>
+  </ng-container>
+</mat-dialog-content>

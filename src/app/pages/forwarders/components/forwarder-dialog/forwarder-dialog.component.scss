@@ -10,3 +10,11 @@
 .at-symbol {
   padding-bottom: 1.34375em;
 }
+
+.loader-container {
+  width: 80vw;
+  margin: 0 -24px;
+  padding: 0 24px;
+  box-sizing: border-box;
+  max-width: 490.38px; // Width of the entire form. Sorry for the magic number, I couldn't figure out how to get to this value otherwise
+}
