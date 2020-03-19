@@ -12,7 +12,6 @@ import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/e
 
 import { AddAliasDialogComponent } from './components/add-alias-dialog/add-alias-dialog.component'
 import { AddDomainDialogComponent } from './components/add-domain-dialog/add-domain-dialog.component'
-import { DkimDialogComponent } from './components/dkim-dialog/dkim-dialog.component'
 import { DomainsService } from './domains.service'
 
 @Component({
@@ -41,11 +40,8 @@ export class DomainsComponent implements OnInit {
     this.domainsService.domainsSubscription.add(() => {
       this.dataSource = new MatTableDataSource(this.domainsService.domainsAndAliases)
     })
-  }
-
-  public refreshDomains(): void {
-    this.domainsService.getDomains().add(() => {
-      this.dataSource = new MatTableDataSource(this.domainsService.domainsAndAliases)
+    this.domainsService.domainsAndAliasesSubject.subscribe(domainsAndAliases => {
+      this.dataSource.data = domainsAndAliases
     })
   }
 
@@ -53,7 +49,7 @@ export class DomainsComponent implements OnInit {
     const dialog = this.dialog.open(AddDomainDialogComponent)
     dialog.afterClosed().subscribe((result): void => {
       if (result) {
-        this.refreshDomains()
+        this.domainsService.getDomains()
       }
     })
   }
@@ -62,22 +58,7 @@ export class DomainsComponent implements OnInit {
     const dialog = this.dialog.open(AddAliasDialogComponent)
     dialog.afterClosed().subscribe((result): void => {
       if (result) {
-        this.refreshDomains()
-      }
-    })
-  }
-
-  public dkimDialog(domain: string, edit = false): void {
-    const dialog = this.dialog.open(DkimDialogComponent, {
-      data: {
-        domain: domain,
-        edit: edit,
-      },
-    })
-    dialog.afterClosed().subscribe((result): void => {
-      this.router.navigateByUrl('/domains')
-      if (result) {
-        this.refreshDomains()
+        this.domainsService.getDomains()
       }
     })
   }
@@ -111,7 +92,7 @@ export class DomainsComponent implements OnInit {
                 (): void => {
                   dialogRef.close()
                   this.snackBar.open(`${domain} has been removed`, undefined, { panelClass: 'success-snackbar' })
-                  this.refreshDomains()
+                  this.domainsService.getDomains()
                 },
                 (error: HttpErrorResponse): void => {
                   dialogRef.close()
@@ -155,7 +136,7 @@ export class DomainsComponent implements OnInit {
                 (): void => {
                   dialogRef.close()
                   this.snackBar.open(`${alias} has been removed`, undefined, { panelClass: 'success-snackbar' })
-                  this.refreshDomains()
+                  this.domainsService.getDomains()
                 },
                 (error: HttpErrorResponse): void => {
                   dialogRef.close()

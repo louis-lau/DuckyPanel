@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Domain, DomainsService as ApiDomainsService } from 'ducky-api-client-angular'
-import { Subscription } from 'rxjs'
+import { Subject, Subscription } from 'rxjs'
 import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
 
 import { DomainWithAliasParentInfo } from './domains.interfaces'
@@ -15,10 +15,11 @@ export class DomainsService {
   public domains: Domain[]
   public domainsStrings: string[]
   public domainsAndAliases: DomainWithAliasParentInfo[]
+  public domainsAndAliasesSubject: Subject<DomainWithAliasParentInfo[]> = new Subject()
   public domainsAndAliasesStrings: string[]
 
-  public getDomains(): Subscription {
-    const domainsSubscription = this.apiDomainsService.getDomains().subscribe(
+  public getDomains(): void {
+    this.domainsSubscription = this.apiDomainsService.getDomains().subscribe(
       (domains: Domain[]): void => {
         this.domains = domains
         this.domainsStrings = domains.map((value): string => value.domain)
@@ -38,14 +39,12 @@ export class DomainsService {
         }
 
         this.domainsAndAliases = domainsAndAliases
+        this.domainsAndAliasesSubject.next(domainsAndAliases)
         this.domainsAndAliasesStrings = domainsAndAliases.map((value): string => value.domain)
       },
       error => {
         this.errorSnackbarService.open(error)
       },
     )
-
-    this.domainsSubscription = domainsSubscription
-    return domainsSubscription
   }
 }

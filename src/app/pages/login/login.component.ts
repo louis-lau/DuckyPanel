@@ -8,6 +8,7 @@ import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
 
+import { DomainsService } from '../domains/domains.service'
 import { ProfileService } from '../profile/profile.service'
 
 @Component({
@@ -21,6 +22,7 @@ export class LoginComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private profileService: ProfileService,
     private errorSnackbarService: ErrorSnackbarService,
+    private domainsService: DomainsService,
     private router: Router,
   ) {}
 
@@ -65,6 +67,7 @@ export class LoginComponent implements OnInit {
 
             this.profileService.user.username = this.loginForm.value.username
             this.profileService.getUserInfo()
+            this.domainsService.getDomains()
 
             this.router.navigateByUrl('/accounts')
           },
