@@ -2,7 +2,8 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
 import { HttpErrorResponse } from '@angular/common/http'
 import { Component, Inject, OnInit } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
-import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material'
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar } from '@angular/material'
+import { ActivatedRoute, Router } from '@angular/router'
 import { AccountDetails, CreateAccountDto, EmailAccountsService, UpdateAccountDto } from 'ducky-api-client-angular'
 import { MatProgressButtonOptions } from 'mat-progress-buttons'
 import { Observable, Subscription } from 'rxjs'
@@ -10,6 +11,8 @@ import { map } from 'rxjs/operators'
 import { DomainsService } from 'src/app/pages/domains/domains.service'
 import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
 import { AddressUsernameValidator } from 'src/app/shared/validators/address-username-validator.directive'
+
+import { AccountsService } from '../../accounts.service'
 
 @Component({
   selector: 'app-account-dialog',
@@ -24,7 +27,8 @@ export class AccountDialogComponent implements OnInit {
     private readonly emailAccountsService: EmailAccountsService,
     private snackBar: MatSnackBar,
     private errorSnackbarService: ErrorSnackbarService,
-    @Inject(MAT_DIALOG_DATA) public data,
+    @Inject(MAT_DIALOG_DATA)
+    public data,
   ) {}
 
   public isModifyDialog: boolean
@@ -71,8 +75,8 @@ export class AccountDialogComponent implements OnInit {
       this.saveButtonConfig.disabled = this.accountForm.invalid || this.accountForm.pristine
     })
 
-    // If id was passed this is a modify dialog, otherwise it is a create dialog
-    if (this.data) {
+    // If id was passed this is a modify dialog, if new was passed this is a create dialog
+    if (this.data.id !== 'new') {
       this.isModifyDialog = true
       this.getAccount()
     }
@@ -165,5 +169,37 @@ export class AccountDialogComponent implements OnInit {
         this.dialogRef.close(true)
       }, onError)
     }
+  }
+}
+
+@Component({
+  template: '',
+})
+export class AccountDialogEntryComponent implements OnInit {
+  public constructor(
+    public dialog: MatDialog,
+    private router: Router,
+    private route: ActivatedRoute,
+    public domainService: DomainsService,
+    private accountsService: AccountsService,
+  ) {}
+  public ngOnInit(): void {
+    this.route.params.subscribe((params): void => {
+      this.accountDialog(params['id'])
+    })
+  }
+
+  public accountDialog(accountId: string): void {
+    const dialog = this.dialog.open(AccountDialogComponent, {
+      data: {
+        id: accountId,
+      },
+    })
+    dialog.afterClosed().subscribe((result): void => {
+      if (result) {
+        this.accountsService.getAccounts()
+      }
+      this.router.navigateByUrl('/accounts')
+    })
   }
 }

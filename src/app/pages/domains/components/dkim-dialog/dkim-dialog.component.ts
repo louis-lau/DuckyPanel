@@ -205,10 +205,8 @@ export class DkimDialogEntryComponent implements OnInit {
     dialog.afterClosed().subscribe((result): void => {
       if (result) {
         this.domainService.getDomains()
-        this.router.navigateByUrl('/domains')
-      } else {
-        this.router.navigateByUrl('/domains')
       }
+      this.router.navigateByUrl('/domains')
     })
   }
 }

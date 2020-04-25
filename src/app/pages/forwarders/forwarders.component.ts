@@ -1,24 +1,15 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
 import { HttpErrorResponse } from '@angular/common/http'
 import { Component, OnInit, ViewChild } from '@angular/core'
-import {
-  MatDialog,
-  MatDialogConfig,
-  MatDialogRef,
-  MatPaginator,
-  MatSnackBar,
-  MatSort,
-  MatTableDataSource,
-} from '@angular/material'
-import { ActivatedRoute, Router } from '@angular/router'
-import { Forwarder, ForwardersService } from 'ducky-api-client-angular'
-import { Observable, Subscription } from 'rxjs'
+import { MatDialog, MatDialogRef, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material'
+import { Forwarder, ForwardersService as ApiForwardersService } from 'ducky-api-client-angular'
+import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { DialogComponent } from 'src/app/shared/components/dialog/dialog.component'
 import { DialogConfig } from 'src/app/shared/components/dialog/dialog.interfaces'
 import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
 
-import { ForwarderDialogComponent } from './components/forwarder-dialog/forwarder-dialog.component'
+import { ForwardersService } from './forwarders.service'
 
 @Component({
   selector: 'app-forwarders',
@@ -31,14 +22,12 @@ export class ForwardersComponent implements OnInit {
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private errorSnackbarService: ErrorSnackbarService,
-    private readonly forwardersService: ForwardersService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
+    private readonly apiForwardersService: ApiForwardersService,
+    public forwardersService: ForwardersService,
   ) {}
 
   public displayedColumns = ['address', 'actions']
   public dataSource: MatTableDataSource<Forwarder> = new MatTableDataSource()
-  public forwarderSubscription: Subscription
   public isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(map((result): boolean => result.matches))
@@ -55,44 +44,20 @@ export class ForwardersComponent implements OnInit {
   public paginator: MatPaginator
 
   public ngOnInit(): void {
-    this.getForwarders()
-
+    this.dataSource = new MatTableDataSource()
     this.dataSource.paginator = this.paginator
 
-    this.activatedRoute.params.subscribe((params): void => {
-      if (params['id']) {
-        this.forwarderDialog(params['id'])
-      }
+    this.forwardersService.forwarderSubscription.add(() => {
+      this.dataSource.data = this.forwardersService.forwarders
+
+      this.forwardersService.forwardersSubject.subscribe(forwarders => {
+        this.dataSource.data = forwarders
+      })
     })
   }
 
   public applyFilter(filterValue: string): void {
     this.dataSource.filter = filterValue.trim().toLowerCase()
-  }
-
-  public getForwarders(): void {
-    this.forwarderSubscription = this.forwardersService.getForwarders().subscribe(
-      (forwarders): void => {
-        this.dataSource.data = forwarders
-      },
-      error => {
-        this.errorSnackbarService.open(error)
-      },
-    )
-  }
-
-  public forwarderDialog(id?: string): void {
-    const dialogConfig: MatDialogConfig = {}
-    if (id) {
-      dialogConfig.data = { id: id }
-    }
-    const dialog = this.dialog.open(ForwarderDialogComponent, dialogConfig)
-    dialog.afterClosed().subscribe((result): void => {
-      this.router.navigateByUrl('/forwarders/')
-      if (result) {
-        this.getForwarders()
-      }
-    })
   }
 
   public removeConfirmDialog(forwarderId: string, address?: string): void {
@@ -120,13 +85,13 @@ export class ForwardersComponent implements OnInit {
               dialogConfig.data.buttons[0].options.disabled = true
               dialogConfig.data.buttons[1].options.active = true
 
-              this.forwardersService.deleteForwarder(forwarderId).subscribe(
+              this.apiForwardersService.deleteForwarder(forwarderId).subscribe(
                 (): void => {
                   dialogRef.close()
                   this.snackBar.open(`${address || forwarderId} has been removed`, undefined, {
                     panelClass: 'success-snackbar',
                   })
-                  this.getForwarders()
+                  this.forwardersService.getForwarders()
                 },
                 (error: HttpErrorResponse): void => {
                   dialogRef.disableClose = false

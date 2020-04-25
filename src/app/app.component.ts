@@ -1,12 +1,17 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
 import { Component, OnInit, ViewChild } from '@angular/core'
 import { MatSidenav } from '@angular/material'
-import { Router, RoutesRecognized } from '@angular/router'
+import { ActivatedRouteSnapshot, Router, RoutesRecognized } from '@angular/router'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 
 import { NavCategory } from './app.interfaces'
+import { AccountsComponent } from './pages/accounts/accounts.component'
+import { AccountsService } from './pages/accounts/accounts.service'
+import { DomainsComponent } from './pages/domains/domains.component'
 import { DomainsService } from './pages/domains/domains.service'
+import { ForwardersComponent } from './pages/forwarders/forwarders.component'
+import { ForwardersService } from './pages/forwarders/forwarders.service'
 import { ProfileService } from './pages/profile/profile.service'
 
 @Component({
@@ -20,20 +25,12 @@ export class AppComponent implements OnInit {
     private router: Router,
     public profileService: ProfileService,
     public domainsService: DomainsService,
+    public forwardersService: ForwardersService,
+    public accountsService: AccountsService,
   ) {}
 
   public title = 'DuckyPanel'
   public navCategories: NavCategory[] = [
-    {
-      title: 'General',
-      items: [
-        {
-          name: 'Dashboard',
-          icon: 'dashboard',
-          routerLink: '/',
-        },
-      ],
-    },
     {
       title: 'Account management',
       items: [
@@ -69,16 +66,53 @@ export class AppComponent implements OnInit {
   @ViewChild('drawer', { static: true })
   private drawer: MatSidenav
   public isFullscreen: boolean
+  public showRefreshButton = false
+  public currentComponent: typeof ActivatedRouteSnapshot.prototype.component
 
   public ngOnInit(): void {
     this.profileService.getUserInfo()
     this.domainsService.getDomains()
+    this.accountsService.getAccounts()
+    this.forwardersService.getForwarders()
+
     this.router.events.subscribe((event): void => {
       if (event instanceof RoutesRecognized && event.state.root.firstChild) {
-        this.isFullscreen = event.state.root.firstChild.data.isFullscreen ? true : false
-        this.title = event.state.root.firstChild.data.title ? event.state.root.firstChild.data.title : 'DuckyPanel'
+        const firstChild = event.state.root.firstChild
+        this.isFullscreen = firstChild.data.isFullscreen ? true : false
+        this.title = firstChild.data.title ? event.state.root.firstChild.data.title : 'DuckyPanel'
+
+        this.currentComponent = firstChild.component
+
+        switch (this.currentComponent) {
+          case DomainsComponent:
+          case AccountsComponent:
+          case ForwardersComponent:
+            this.showRefreshButton = true
+            break
+
+          default:
+            this.showRefreshButton = false
+        }
       }
     })
+  }
+
+  public refreshCurrentView(): void {
+    switch (this.currentComponent) {
+      case DomainsComponent:
+        this.domainsService.getDomains()
+        break
+
+      case AccountsComponent:
+        this.accountsService.getAccounts()
+        break
+
+      case ForwardersComponent:
+        this.forwardersService.getForwarders()
+        break
+
+      default:
+    }
   }
 
   public isHandset$: Observable<boolean> = this.breakpointObserver

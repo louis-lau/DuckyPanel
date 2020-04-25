@@ -2,7 +2,6 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
 import { HttpErrorResponse } from '@angular/common/http'
 import { Component, OnInit } from '@angular/core'
 import { MatDialog, MatDialogRef, MatSnackBar, MatTableDataSource } from '@angular/material'
-import { Router } from '@angular/router'
 import { Domain, DomainsService as ApiDomainsService } from 'ducky-api-client-angular'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
@@ -10,6 +9,8 @@ import { DialogComponent } from 'src/app/shared/components/dialog/dialog.compone
 import { DialogConfig } from 'src/app/shared/components/dialog/dialog.interfaces'
 import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
 
+import { AccountsService } from '../accounts/accounts.service'
+import { ForwardersService } from '../forwarders/forwarders.service'
 import { AddAliasDialogComponent } from './components/add-alias-dialog/add-alias-dialog.component'
 import { AddDomainDialogComponent } from './components/add-domain-dialog/add-domain-dialog.component'
 import { DomainsService } from './domains.service'
@@ -27,7 +28,8 @@ export class DomainsComponent implements OnInit {
     private errorSnackbarService: ErrorSnackbarService,
     private readonly apiDomainsService: ApiDomainsService,
     public domainsService: DomainsService,
-    private router: Router,
+    private accountsService: AccountsService,
+    private forwardersService: ForwardersService,
   ) {}
 
   public displayedColumns = ['domain', 'actions']
@@ -37,11 +39,13 @@ export class DomainsComponent implements OnInit {
     .pipe(map((result): boolean => result.matches))
 
   public ngOnInit(): void {
+    this.dataSource = new MatTableDataSource()
     this.domainsService.domainsSubscription.add(() => {
-      this.dataSource = new MatTableDataSource(this.domainsService.domainsAndAliases)
-    })
-    this.domainsService.domainsAndAliasesSubject.subscribe(domainsAndAliases => {
-      this.dataSource.data = domainsAndAliases
+      this.dataSource.data = this.domainsService.domainsAndAliases
+
+      this.domainsService.domainsAndAliasesSubject.subscribe(domainsAndAliases => {
+        this.dataSource.data = domainsAndAliases
+      })
     })
   }
 
@@ -93,6 +97,8 @@ export class DomainsComponent implements OnInit {
                   dialogRef.close()
                   this.snackBar.open(`${domain} has been removed`, undefined, { panelClass: 'success-snackbar' })
                   this.domainsService.getDomains()
+                  this.accountsService.getAccounts()
+                  this.forwardersService.getForwarders()
                 },
                 (error: HttpErrorResponse): void => {
                   dialogRef.close()

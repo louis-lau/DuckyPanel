@@ -37,7 +37,10 @@ import { MatProgressButtonsModule } from 'mat-progress-buttons'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { AccountsComponent } from './pages/accounts/accounts.component'
-import { AccountDialogComponent } from './pages/accounts/components/account-dialog/account-dialog.component'
+import {
+  AccountDialogComponent,
+  AccountDialogEntryComponent,
+} from './pages/accounts/components/account-dialog/account-dialog.component'
 import { DnsComponent } from './pages/dns/dns.component'
 import { AddAliasDialogComponent } from './pages/domains/components/add-alias-dialog/add-alias-dialog.component'
 import { AddDomainDialogComponent } from './pages/domains/components/add-domain-dialog/add-domain-dialog.component'
@@ -46,7 +49,10 @@ import {
   DkimDialogEntryComponent,
 } from './pages/domains/components/dkim-dialog/dkim-dialog.component'
 import { DomainsComponent } from './pages/domains/domains.component'
-import { ForwarderDialogComponent } from './pages/forwarders/components/forwarder-dialog/forwarder-dialog.component'
+import {
+  ForwarderDialogComponent,
+  ForwarderDialogEntryComponent,
+} from './pages/forwarders/components/forwarder-dialog/forwarder-dialog.component'
 import { ForwardersComponent } from './pages/forwarders/forwarders.component'
 import { LoginComponent } from './pages/login/login.component'
 import { ProfileComponent } from './pages/profile/profile.component'
@@ -80,12 +86,14 @@ export function apiConfigFactory(): Configuration {
     AccountsComponent,
     FabButtonComponent,
     AccountDialogComponent,
+    AccountDialogEntryComponent,
     AddDomainDialogComponent,
     AddAliasDialogComponent,
     LoginComponent,
     ErrorSnackbarComponent,
     ForwardersComponent,
     ForwarderDialogComponent,
+    ForwarderDialogEntryComponent,
     DkimDialogComponent,
     DkimDialogEntryComponent,
     DnsComponent,

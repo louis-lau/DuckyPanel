@@ -28,7 +28,7 @@
     <ng-container *ngIf="selectedDomain">
       <ng-container *ngIf="dnsCheckSubscription && dnsCheckSubscription.closed; else loading">
         <mat-card>
-          <mat-card-title class="dns-card-title">Valid records for {{ selectedDomain }}</mat-card-title>
+          <mat-card-title class="dns-card-title">Expected records for {{ selectedDomain }}</mat-card-title>
           <h5 class="table-title">MX records</h5>
           <mat-table [dataSource]="correctMxDataSource">
             <ng-container matColumnDef="name">

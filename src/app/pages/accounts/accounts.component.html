@@ -24,7 +24,7 @@
         showFirstLastButtons
       ></mat-paginator>
     </div>
-    <ng-container *ngIf="accountSubscription.closed; else loading">
+    <ng-container *ngIf="accountsService.accountSubscription.closed; else loading">
       <mat-table [dataSource]="dataSource" matSort>
         <ng-container matColumnDef="name">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
@@ -80,4 +80,5 @@
     </ng-container>
   </mat-card>
 </div>
-<app-fab-button (click)="accountDialog()" icon="add"></app-fab-button>
+<router-outlet></router-outlet>
+<app-fab-button [routerLink]="['/accounts', 'new']" icon="add"></app-fab-button>

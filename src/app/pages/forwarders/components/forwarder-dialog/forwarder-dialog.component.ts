@@ -3,8 +3,13 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
 import { HttpErrorResponse } from '@angular/common/http'
 import { Component, Inject, OnInit } from '@angular/core'
 import { FormControl, FormGroup, Validators } from '@angular/forms'
-import { MAT_DIALOG_DATA, MatChipInputEvent, MatDialogRef, MatSnackBar } from '@angular/material'
-import { CreateForwarderDto, ForwarderDetails, ForwardersService } from 'ducky-api-client-angular'
+import { MAT_DIALOG_DATA, MatChipInputEvent, MatDialog, MatDialogRef, MatSnackBar } from '@angular/material'
+import { ActivatedRoute, Router } from '@angular/router'
+import {
+  CreateForwarderDto,
+  ForwarderDetails,
+  ForwardersService as ApiForwardersService,
+} from 'ducky-api-client-angular'
 import { MatProgressButtonOptions } from 'mat-progress-buttons'
 import { Observable, Subscription } from 'rxjs'
 import { map } from 'rxjs/operators'
@@ -13,6 +18,8 @@ import { DomainsService } from 'src/app/pages/domains/domains.service'
 import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
 import { AddressUsernameValidator } from 'src/app/shared/validators/address-username-validator.directive'
 import { forwardingTargetValidator } from 'src/app/shared/validators/forwarding-target-validator.directive'
+
+import { ForwardersService } from '../../forwarders.service'
 
 @Component({
   selector: 'app-forwarder-dialog',
@@ -24,7 +31,7 @@ export class ForwarderDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<AccountDialogComponent>,
     private breakpointObserver: BreakpointObserver,
     public readonly domainsService: DomainsService,
-    private readonly forwardersService: ForwardersService,
+    private readonly apiForwardersService: ApiForwardersService,
     private snackBar: MatSnackBar,
     private errorSnackbarService: ErrorSnackbarService,
     @Inject(MAT_DIALOG_DATA) public data,
@@ -75,7 +82,7 @@ export class ForwarderDialogComponent implements OnInit {
     })
 
     // If id was passed this is a modify dialog and we need to get existing data
-    if (this.data) {
+    if (this.data.id !== 'new') {
       this.isModifyDialog = true
       this.getForwarder()
     }
@@ -117,7 +124,7 @@ export class ForwarderDialogComponent implements OnInit {
   }
 
   public getForwarder(): void {
-    this.forwarderDetailsSubscription = this.forwardersService.getForwarderDetails(this.data.id).subscribe(
+    this.forwarderDetailsSubscription = this.apiForwardersService.getForwarderDetails(this.data.id).subscribe(
       (forwarder): void => {
         this.forwarderDetails = forwarder
         // Split address to name and domain for split input
@@ -176,19 +183,51 @@ export class ForwarderDialogComponent implements OnInit {
     }
 
     if (this.isModifyDialog) {
-      this.forwardersService.updateForwarder(this.data.id, forwarder).subscribe((): void => {
+      this.apiForwardersService.updateForwarder(this.data.id, forwarder).subscribe((): void => {
         this.snackBar.open(`${address} successfully updated`, undefined, {
           panelClass: 'success-snackbar',
         })
         this.dialogRef.close(true)
       }, onError)
     } else {
-      this.forwardersService.createForwarder(forwarder).subscribe((): void => {
+      this.apiForwardersService.createForwarder(forwarder).subscribe((): void => {
         this.snackBar.open(`${address} successfully added`, undefined, {
           panelClass: 'success-snackbar',
         })
         this.dialogRef.close(true)
       }, onError)
     }
+  }
+}
+
+@Component({
+  template: '',
+})
+export class ForwarderDialogEntryComponent implements OnInit {
+  public constructor(
+    public dialog: MatDialog,
+    private router: Router,
+    private route: ActivatedRoute,
+    public domainService: DomainsService,
+    private forwardersService: ForwardersService,
+  ) {}
+  public ngOnInit(): void {
+    this.route.params.subscribe((params): void => {
+      this.forwarderDialog(params['id'])
+    })
+  }
+
+  public forwarderDialog(forwarderId: string): void {
+    const dialog = this.dialog.open(ForwarderDialogComponent, {
+      data: {
+        id: forwarderId,
+      },
+    })
+    dialog.afterClosed().subscribe((result): void => {
+      if (result) {
+        this.forwardersService.getForwarders()
+      }
+      this.router.navigateByUrl('/forwarders')
+    })
   }
 }
