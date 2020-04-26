@@ -1,19 +1,34 @@
-.sidenav-container {
-  height: 100%;
-}
-
-.sidenav {
+mat-sidenav {
   width: 275px;
+  border: none;
 }
 
-.sidenav .mat-toolbar {
-  background: inherit;
-}
-
-.mat-toolbar.mat-primary {
+mat-toolbar {
+  background-color: #fff;
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 5;
+  transition: box-shadow 0.4s;
+}
+
+.mat-drawer-container {
+  background-color: #fff;
+}
+
+.mat-list-item, :host ::ng-deep .mat-list-item .mat-list-item-ripple {
+  border-radius: 0 28px 28px 0;
+}
+
+.profile-link, :host ::ng-deep .profile-link .mat-list-item-ripple {
+  border-radius: 0 35px 0 0;
+}
+
+.active-list-item, .active-list-item:hover, .active-list-item:focus {
+  background-color: rgba(0, 0, 0, 0.089);
+}
+
+:host ::ng-deep .mat-drawer-backdrop {
+  position: fixed;
 }
 
 .content {
@@ -35,7 +50,6 @@
 
 .profile-link.mat-list-item.mat-list-item-with-avatar {
   height: 70px;
-  background-color: white;
   position: absolute;
   bottom: 0;
 }

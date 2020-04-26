@@ -1,13 +1,11 @@
 <!-- Switch to row or column mode depending on mobile or not -->
-<div [fxLayout]="(isHandset$ | async) ? 'column' : 'row'" fxLayoutGap="10px">
-  <mat-card fxFlex="30%" [fxFlexAlign]="(isHandset$ | async) ? null : 'start'">
-    <mat-card-title>Your domains</mat-card-title>
+<div fxLayout="column" fxLayoutGap="10px">
+  <mat-card class="explanation" fxFlex="30%" [fxFlexAlign]="(isHandset$ | async) ? null : 'start'">
+    <mat-card-title>Domains</mat-card-title>
     <mat-card-content>
       <p>
         These are the domains you have added to your account. You have access to any accounts and forwarders associated
         to these domains. Here you can add and delete domains, and manage the DKIM keys for them as well.
-      </p>
-      <p>
         Do note that when you delete a domain, the accounts will be deleted with it.
       </p>
     </mat-card-content>

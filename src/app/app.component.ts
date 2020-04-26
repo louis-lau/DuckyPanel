@@ -1,5 +1,5 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
-import { Component, OnInit, ViewChild } from '@angular/core'
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core'
 import { MatSidenav } from '@angular/material'
 import { ActivatedRouteSnapshot, Router, RoutesRecognized } from '@angular/router'
 import { Observable } from 'rxjs'
@@ -68,6 +68,15 @@ export class AppComponent implements OnInit {
   public isFullscreen: boolean
   public showRefreshButton = false
   public currentComponent: typeof ActivatedRouteSnapshot.prototype.component
+  public elevateToolbar = false
+  public isHandset$: Observable<boolean> = this.breakpointObserver
+    .observe(Breakpoints.Handset)
+    .pipe(map((result): boolean => result.matches))
+
+  @HostListener('window:scroll', ['$event'])
+  setToolbarElevation(): void {
+    this.elevateToolbar = window.pageYOffset !== 0
+  }
 
   public ngOnInit(): void {
     this.profileService.getUserInfo()
@@ -114,10 +123,6 @@ export class AppComponent implements OnInit {
       default:
     }
   }
-
-  public isHandset$: Observable<boolean> = this.breakpointObserver
-    .observe(Breakpoints.Handset)
-    .pipe(map((result): boolean => result.matches))
 
   public closeDrawerConditional(): void {
     this.isHandset$.subscribe((isHandset$): void => {

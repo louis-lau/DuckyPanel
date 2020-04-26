@@ -1,7 +1,7 @@
 <!-- Switch to row or column mode depending on mobile or not -->
-<div [fxLayout]="(isHandset$ | async) ? 'column' : 'row'" fxLayoutGap="10px">
-  <mat-card fxFlex="30%" [fxFlexAlign]="(isHandset$ | async) ? null : 'start'">
-    <mat-card-title>Your forwarders</mat-card-title>
+<div fxLayout="column" fxLayoutGap="10px">
+  <mat-card class="explanation" fxFlex="30%" [fxFlexAlign]="(isHandset$ | async) ? null : 'start'">
+    <mat-card-title>Forwarders</mat-card-title>
     <mat-card-content
       >Here you can manage your forwarders. You can forward to any email address, smtp server, or HTTP server (POST
       request).</mat-card-content

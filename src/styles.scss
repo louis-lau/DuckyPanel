@@ -32,3 +32,22 @@ eco-fab-speed-dial {
     }
   }
 }
+
+mat-card {
+  &.mat-card {
+    border-radius: 8px;
+
+    &:not([class*=mat-elevation-z]) {
+      border: 1px solid #dadce0;
+      box-shadow: none;
+    }
+    
+    &.explanation {
+      border: none;
+      text-align: center;
+      margin: auto;
+      max-width: 960px;
+    }
+  }
+  
+}

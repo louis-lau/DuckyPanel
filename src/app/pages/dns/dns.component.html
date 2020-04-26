@@ -1,9 +1,9 @@
 <!-- Switch to row or column mode depending on mobile or not -->
-<div [fxLayout]="(isHandset$ | async) ? 'column' : 'row'" fxLayoutGap="10px">
+<div fxLayout="column" fxLayoutGap="10px">
   <ng-template #loading>
     <mat-spinner diameter="50"></mat-spinner>
   </ng-template>
-  <mat-card fxFlex="30%" [fxFlexAlign]="(isHandset$ | async) ? null : 'start'">
+  <mat-card class="explanation" fxFlex="30%" [fxFlexAlign]="(isHandset$ | async) ? null : 'start'">
     <mat-card-title>DNS records check</mat-card-title>
     <mat-card-content
       >Select a domain to view the needed records for it. A check will also be performed to see if you've set the

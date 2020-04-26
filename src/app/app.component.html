@@ -1,8 +1,37 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-toolbar
+  [class.mat-elevation-z4]="
+    (elevateToolbar && (isHandset$ | async) && !drawer.opened) || (elevateToolbar && !(isHandset$ | async))
+  "
+  *ngIf="isFullscreen === false"
+  fxLayout="row"
+  fxLayoutAlign="space-between center"
+>
+  <button
+    type="button"
+    aria-label="Toggle sidenav"
+    mat-icon-button
+    (click)="drawer.toggle()"
+    *ngIf="isHandset$ | async"
+  >
+    <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+  </button>
+  <span>DuckyPanel</span>
+  <button
+    *ngIf="showRefreshButton"
+    (click)="refreshCurrentView()"
+    matTooltip="Refresh"
+    matTooltipPosition="below"
+    matTooltipShowDelay="500"
+    mat-icon-button
+  >
+    <mat-icon>refresh</mat-icon>
+  </button>
+</mat-toolbar>
+<mat-sidenav-container>
   <mat-sidenav
     #drawer
-    class="sidenav"
     fixedInViewport
+    [fixedTopGap]="(isHandset$ | async) ? 56 : 64"
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="(isHandset$ | async) === false && isFullscreen === false"
@@ -10,9 +39,7 @@
     <!-- Create all navigation items -->
     <mat-nav-list>
       <div class="nav-top-part">
-        <ng-container *ngFor="let navCategory of navCategories; first as isFirst">
-          <!-- Only add divider if not the first category in the list -->
-          <mat-divider *ngIf="!isFirst"></mat-divider>
+        <ng-container *ngFor="let navCategory of navCategories">
           <h3 mat-subheader>{{ navCategory.title }}</h3>
 
           <ng-container *ngFor="let navItem of navCategory.items">
@@ -21,6 +48,7 @@
               *ngIf="navItem.routerLink; else href"
               (click)="closeDrawerConditional()"
               [routerLink]="navItem.routerLink"
+              routerLinkActive="active-list-item"
             >
               <mat-icon mat-list-icon>{{ navItem.icon }}</mat-icon>
               <h4 mat-line>{{ navItem.name }}</h4>
@@ -35,7 +63,7 @@
           </ng-container>
         </ng-container>
       </div>
-      <a class="profile-link" mat-list-item (click)="closeDrawerConditional()" routerLink="/profile">
+      <a class="profile-link" mat-list-item (click)="closeDrawerConditional()" routerLink="/profile" routerLinkActive="active-list-item">
         <mat-icon mat-list-icon>account_circle</mat-icon>
         <h4 mat-line>{{ profileService.user.username }}</h4>
       </a>
@@ -43,34 +71,6 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <mat-toolbar
-      *ngIf="isFullscreen === false"
-      fxLayout="row"
-      fxLayoutAlign="space-between center"
-      color="primary"
-      [ngStyle]="{ 'z-index': 100 }"
-    >
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async"
-      >
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-      </button>
-      <span>{{ title }}</span>
-      <button
-        *ngIf="showRefreshButton"
-        (click)="refreshCurrentView()"
-        matTooltip="Refresh"
-        matTooltipPosition="below"
-        matTooltipShowDelay="500"
-        mat-icon-button
-      >
-        <mat-icon>refresh</mat-icon>
-      </button>
-    </mat-toolbar>
     <div [class.content]="isFullscreen === false">
       <router-outlet></router-outlet>
       <!-- This is where the router will add a component based on the url -->

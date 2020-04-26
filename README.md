@@ -7,14 +7,14 @@ Duckypanel is a domain admin level control panel for the modern [WildDuck email 
 _Things currently working in DuckyPanel and DuckyAPI._
 * Authentication
 * API keys allow you to easily call DuckyAPI
-* Packages that allow you to set user quotas, currently only for show. Noting happens when going over quota.
+* Packages that allow you to set user quotas, currently only for show. Nothing happens when going over quota.
 * Domain management, including domain aliases
 * Deletes aliased domains, accounts, forwarders and DKIM when deleting a domain
 * Manage DKIM for the domains
-* Domains can not be added to multiple accounts
 * Email account management
 * Forwarder management
 * Only allows seeing/editing of accounts/forwarders on a domain if that domain is added to the account
+* Domains can not be added to multiple accounts
 * Get expected DNS records for a domain, and check the currently published records
 * Sorting and filtering
 
@@ -27,11 +27,12 @@ More to come!
 <summary>Click here for more screenshots</summary>
 
 ![Edit account screenshot](docs/images/screenshot-edit-account.png)
-![Forwarders overview screenshot](docs/images/screenshot-forwarders.png)
-![Edit forwarder screenshot](docs/images/screenshot-edit-forwarder.png)
 ![Domains overview screenshot](docs/images/screenshot-domains.png)
 ![Edit DKIM screenshot](docs/images/screenshot-dkim.png)
+![Forwarders overview screenshot](docs/images/screenshot-forwarders.png)
+![Edit forwarder screenshot](docs/images/screenshot-edit-forwarder.png)
 ![Check domain DNS screenshot](docs/images/screenshot-dnscheck.png)
+![Profile screenshot](docs/images/screenshot-profile.png)
 ![Login screenshot](docs/images/screenshot-login.png)
 ![Mobile screenshot](docs/images/screenshot-mobile.png)
 
