@@ -26,8 +26,6 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
-    "@covalent/core": "^2.1.1",
-    "@covalent/experimental": "git+https://github.com/Teradata/covalent-experimental-nightly.git",
     "@ecodev/fab-speed-dial": "^4.0.0",
     "class-validator": "^0.11.0",
     "ducky-api-client-angular": "1.2.1",

@@ -29,7 +29,6 @@ import {
 import { MatChipsModule } from '@angular/material/chips'
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { TdLoadingMaskModule } from '@covalent/experimental/loading-mask'
 import { EcoFabSpeedDialModule } from '@ecodev/fab-speed-dial'
 import { ApiModule, Configuration, ConfigurationParameters } from 'ducky-api-client-angular'
 import { MatProgressButtonsModule } from 'mat-progress-buttons'
@@ -59,6 +58,7 @@ import { ProfileComponent } from './pages/profile/profile.component'
 import { DialogComponent } from './shared/components/dialog/dialog.component'
 import { ErrorSnackbarComponent } from './shared/components/error-snackbar/error-snackbar.component'
 import { FabButtonComponent } from './shared/components/fab-button/fab-button.component'
+import { TdLoadingMaskComponent } from './shared/components/loading-mask/loading-mask.component'
 
 // TODO: take these values from a config file or envvar
 export function apiConfigFactory(): Configuration {
@@ -98,6 +98,7 @@ export function apiConfigFactory(): Configuration {
     DkimDialogEntryComponent,
     DnsComponent,
     ProfileComponent,
+    TdLoadingMaskComponent,
   ],
   imports: [
     BrowserModule,
@@ -132,7 +133,6 @@ export function apiConfigFactory(): Configuration {
     MatPaginatorModule,
     MatProgressBarModule,
     EcoFabSpeedDialModule,
-    TdLoadingMaskModule,
   ],
   providers: [
     {
