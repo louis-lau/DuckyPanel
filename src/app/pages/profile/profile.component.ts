@@ -1,7 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http'
 import { Component, OnInit } from '@angular/core'
 import { FormControl, FormGroup } from '@angular/forms'
-import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material'
+import { MatDialog, MatDialogRef } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { Router } from '@angular/router'
 import {
   AuthenticationService,
@@ -83,7 +84,7 @@ export class ProfileComponent implements OnInit {
         }
         this.usage.formatted = formatBytes(this.usage.bytes)
       },
-      error => {
+      (error) => {
         this.errorSnackbarService.open(error)
       },
     )

@@ -1,7 +1,11 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
 import { HttpErrorResponse } from '@angular/common/http'
 import { Component, OnInit, ViewChild } from '@angular/core'
-import { MatDialog, MatDialogRef, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material'
+import { MatDialog, MatDialogRef } from '@angular/material/dialog'
+import { MatPaginator } from '@angular/material/paginator'
+import { MatSnackBar } from '@angular/material/snack-bar'
+import { MatSort } from '@angular/material/sort'
+import { MatTableDataSource } from '@angular/material/table'
 import { Forwarder, ForwardersService as ApiForwardersService } from 'ducky-api-client-angular'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
@@ -32,7 +36,7 @@ export class ForwardersComponent implements OnInit {
     .observe(Breakpoints.Handset)
     .pipe(map((result): boolean => result.matches))
 
-  @ViewChild(MatSort, { static: false })
+  @ViewChild(MatSort)
   private set content(sort: MatSort) {
     // Needed because of the ngif wrapper around the table
     if (this.dataSource) {
@@ -50,7 +54,7 @@ export class ForwardersComponent implements OnInit {
     this.forwardersService.forwarderSubscription.add(() => {
       this.dataSource.data = this.forwardersService.forwarders
 
-      this.forwardersService.forwardersSubject.subscribe(forwarders => {
+      this.forwardersService.forwardersSubject.subscribe((forwarders) => {
         this.dataSource.data = forwarders
       })
     })

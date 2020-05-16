@@ -42,7 +42,7 @@ export class DomainsService {
         this.domainsAndAliasesSubject.next(domainsAndAliases)
         this.domainsAndAliasesStrings = domainsAndAliases.map((value): string => value.domain)
       },
-      error => {
+      (error) => {
         this.errorSnackbarService.open(error)
       },
     )

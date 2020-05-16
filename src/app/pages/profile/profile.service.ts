@@ -20,7 +20,7 @@ export class ProfileService {
       (user): void => {
         this.user = user
       },
-      error => {
+      (error) => {
         this.errorSnackbarService.open(error)
       },
     )

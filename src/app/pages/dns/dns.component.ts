@@ -1,7 +1,7 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
 import { Component, OnInit } from '@angular/core'
 import { FormControl, FormGroup } from '@angular/forms'
-import { MatTableDataSource } from '@angular/material'
+import { MatTableDataSource } from '@angular/material/table'
 import {
   DnsCheck,
   DnsCheckError,
@@ -70,7 +70,7 @@ export class DnsComponent implements OnInit {
           })
         }
       },
-      error => {
+      (error) => {
         this.errorSnackbarService.open(error)
       },
     )

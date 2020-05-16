@@ -33,7 +33,7 @@ export class AccountsService {
         this.accountsFormatted = accountsFormatted
         this.accountsFormattedSubject.next(accountsFormatted)
       },
-      error => {
+      (error) => {
         this.errorSnackbarService.open(error)
       },
     )

@@ -1,7 +1,9 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
 import { HttpErrorResponse } from '@angular/common/http'
 import { Component, OnInit } from '@angular/core'
-import { MatDialog, MatDialogRef, MatSnackBar, MatTableDataSource } from '@angular/material'
+import { MatDialog, MatDialogRef } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
+import { MatTableDataSource } from '@angular/material/table'
 import { Domain, DomainsService as ApiDomainsService } from 'ducky-api-client-angular'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
@@ -43,7 +45,7 @@ export class DomainsComponent implements OnInit {
     this.domainsService.domainsSubscription.add(() => {
       this.dataSource.data = this.domainsService.domainsAndAliases
 
-      this.domainsService.domainsAndAliasesSubject.subscribe(domainsAndAliases => {
+      this.domainsService.domainsAndAliasesSubject.subscribe((domainsAndAliases) => {
         this.dataSource.data = domainsAndAliases
       })
     })

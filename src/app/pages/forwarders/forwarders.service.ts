@@ -22,7 +22,7 @@ export class ForwardersService {
         this.forwarders = forwarders
         this.forwardersSubject.next(forwarders)
       },
-      error => {
+      (error) => {
         this.errorSnackbarService.open(error)
       },
     )

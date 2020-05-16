@@ -1,6 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http'
 import { Component, OnInit, ViewChild } from '@angular/core'
-import { MatDialog, MatDialogRef, MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material'
+import { MatDialog, MatDialogRef } from '@angular/material/dialog'
+import { MatPaginator } from '@angular/material/paginator'
+import { MatSnackBar } from '@angular/material/snack-bar'
+import { MatSort } from '@angular/material/sort'
+import { MatTableDataSource } from '@angular/material/table'
 import { EmailAccountsService } from 'ducky-api-client-angular'
 import { DialogComponent } from 'src/app/shared/components/dialog/dialog.component'
 import { DialogConfig } from 'src/app/shared/components/dialog/dialog.interfaces'
@@ -26,7 +30,7 @@ export class AccountsComponent implements OnInit {
   public displayedColumns = ['address', 'name', 'quotaUsedFormatted', 'quotaAllowedFormatted', 'actions']
   public dataSource: MatTableDataSource<AccountListItemFormatted> = new MatTableDataSource()
 
-  @ViewChild(MatSort, { static: false })
+  @ViewChild(MatSort)
   private set content(sort: MatSort) {
     // Needed because of the ngif wrapper around the table
     if (this.dataSource) {
@@ -55,7 +59,7 @@ export class AccountsComponent implements OnInit {
     this.accountsService.accountSubscription.add(() => {
       this.dataSource.data = this.accountsService.accountsFormatted
 
-      this.accountsService.accountsFormattedSubject.subscribe(accountsFormatted => {
+      this.accountsService.accountsFormattedSubject.subscribe((accountsFormatted) => {
         this.dataSource.data = accountsFormatted
       })
     })
