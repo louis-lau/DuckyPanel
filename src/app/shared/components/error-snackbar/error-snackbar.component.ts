@@ -25,7 +25,7 @@ export class ErrorSnackbarComponent implements OnInit {
 
   public ngOnInit(): void {
     if (this.data instanceof HttpErrorResponse) {
-      if (this.data.error.error === 'Unauthorized') {
+      if (this.data.error.error === 'UnauthorizedError') {
         this.message = 'Session expired, please login.'
         this.router.navigateByUrl('/login')
       } else if (this.data.error.error === 'ValidationError') {
