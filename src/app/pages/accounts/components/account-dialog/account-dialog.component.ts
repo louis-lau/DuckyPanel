@@ -49,9 +49,9 @@ export class AccountDialogComponent implements OnInit {
     domain: new FormControl(null),
     password: new FormControl(null, Validators.minLength(8)),
     quota: new FormControl(null, Validators.min(0)),
-    sendLimit: new FormControl(null, [Validators.min(1), Validators.max(300)]),
+    sendLimit: new FormControl(null, [Validators.min(1)]),
     receiveLimit: new FormControl(null, Validators.min(0)),
-    forwardLimit: new FormControl(null, [Validators.min(1), Validators.max(200)]),
+    forwardLimit: new FormControl(null, [Validators.min(1)]),
   })
 
   public saveButtonConfig: MatProgressButtonOptions = {
