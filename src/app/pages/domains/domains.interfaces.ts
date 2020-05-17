@@ -1,4 +1,4 @@
-import { Domain, DomainAlias } from 'ducky-api-client-angular'
+import { Domain, DomainAlias } from 'duckyapi-angular'
 
 export interface AliasWithParentInfo extends DomainAlias {
   aliasOf?: string

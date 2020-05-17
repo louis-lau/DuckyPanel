@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { AccountListItem, EmailAccountsService } from 'ducky-api-client-angular'
+import { AccountListItem, EmailAccountsService } from 'duckyapi-angular'
 import { Subject, Subscription } from 'rxjs'
 import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
 import { formatBytes } from 'src/app/shared/functions/formatBytes.function'

@@ -27,7 +27,7 @@ import { MatTooltipModule } from '@angular/material/tooltip'
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { EcoFabSpeedDialModule } from '@ecodev/fab-speed-dial'
-import { ApiModule, Configuration, ConfigurationParameters } from 'ducky-api-client-angular'
+import { ApiModule, Configuration, ConfigurationParameters } from 'duckyapi-angular'
 import { MatProgressButtonsModule } from 'mat-progress-buttons'
 
 import { AppRoutingModule } from './app-routing.module'

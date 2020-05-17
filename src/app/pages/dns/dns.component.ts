@@ -2,12 +2,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
 import { Component, OnInit } from '@angular/core'
 import { FormControl, FormGroup } from '@angular/forms'
 import { MatTableDataSource } from '@angular/material/table'
-import {
-  DnsCheck,
-  DnsCheckError,
-  DnsCheckMxRecord,
-  DomainsService as ApiDomainsService,
-} from 'ducky-api-client-angular'
+import { DnsCheck, DnsCheckError, DnsCheckMxRecord, DomainsService as ApiDomainsService } from 'duckyapi-angular'
 import { Observable, Subscription } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'

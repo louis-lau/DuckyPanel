@@ -3,7 +3,7 @@ import { Component, Inject, OnInit } from '@angular/core'
 import { FormControl, Validators } from '@angular/forms'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
 import { MatSnackBar } from '@angular/material/snack-bar'
-import { DomainsService } from 'ducky-api-client-angular'
+import { DomainsService } from 'duckyapi-angular'
 import { MatProgressButtonOptions } from 'mat-progress-buttons'
 import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
 

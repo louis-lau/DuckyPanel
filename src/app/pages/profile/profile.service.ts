@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { ProfileService as ApiProfileService, User } from 'ducky-api-client-angular'
+import { ProfileService as ApiProfileService, User } from 'duckyapi-angular'
 import { Subscription } from 'rxjs'
 import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
 

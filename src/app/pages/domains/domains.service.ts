@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { Domain, DomainsService as ApiDomainsService } from 'ducky-api-client-angular'
+import { Domain, DomainsService as ApiDomainsService } from 'duckyapi-angular'
 import { Subject, Subscription } from 'rxjs'
 import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
 

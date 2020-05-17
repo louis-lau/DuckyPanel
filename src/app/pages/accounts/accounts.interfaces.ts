@@ -1,4 +1,4 @@
-import { AccountListItem } from 'ducky-api-client-angular'
+import { AccountListItem } from 'duckyapi-angular'
 
 export interface AccountListItemFormatted extends AccountListItem {
   quotaAllowedFormatted: string

@@ -4,11 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms'
 import { MatDialog, MatDialogRef } from '@angular/material/dialog'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { Router } from '@angular/router'
-import {
-  AuthenticationService,
-  EmailAccountsService,
-  ProfileService as ApiProfileService,
-} from 'ducky-api-client-angular'
+import { AuthenticationService, EmailAccountsService, ProfileService as ApiProfileService } from 'duckyapi-angular'
 import { MatProgressButtonOptions } from 'mat-progress-buttons'
 import { Subscription } from 'rxjs'
 import { DialogComponent } from 'src/app/shared/components/dialog/dialog.component'

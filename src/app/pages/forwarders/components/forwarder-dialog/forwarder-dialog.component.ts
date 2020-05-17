@@ -7,11 +7,7 @@ import { MatChipInputEvent } from '@angular/material/chips'
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { ActivatedRoute, Router } from '@angular/router'
-import {
-  CreateForwarderDto,
-  ForwarderDetails,
-  ForwardersService as ApiForwardersService,
-} from 'ducky-api-client-angular'
+import { CreateForwarderDto, ForwarderDetails, ForwardersService as ApiForwardersService } from 'duckyapi-angular'
 import { MatProgressButtonOptions } from 'mat-progress-buttons'
 import { Observable, Subscription } from 'rxjs'
 import { map } from 'rxjs/operators'

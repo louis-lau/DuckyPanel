@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { Forwarder, ForwardersService as ApiForwardersService } from 'ducky-api-client-angular'
+import { Forwarder, ForwardersService as ApiForwardersService } from 'duckyapi-angular'
 import { Subject, Subscription } from 'rxjs'
 import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
 
