@@ -34,7 +34,7 @@
       else loader
     "
   >
-  <!-- <ng-container *ngIf="false; else loader"> -->
+    <!-- <ng-container *ngIf="false; else loader"> -->
     <form [formGroup]="accountForm" id="accountForm" (ngSubmit)="updateAccount()" fxLayout="column" fxLayoutGap="10px">
       <mat-form-field appearance="fill">
         <mat-label>Name</mat-label>
@@ -123,12 +123,11 @@
           <mat-label>Send limit</mat-label>
           <input matInput type="number" formControlName="sendLimit" />
           <mat-hint *ngIf="isModifyDialog">Current usage: {{ accountDetails.limits.send.used }}</mat-hint>
-          <mat-error
-            *ngIf="
-              accountForm.controls['sendLimit'].hasError('min') || accountForm.controls['sendLimit'].hasError('max')
-            "
-          >
-            Limit must be between 1-300
+          <mat-error *ngIf="accountForm.controls['sendLimit'].hasError('min')">
+            Send limit must be above 0
+          </mat-error>
+          <mat-error *ngIf="accountForm.controls['sendLimit'].hasError('max')">
+            Send limit must be below {{ profileService.user.maxSend }}
           </mat-error>
         </mat-form-field>
 
@@ -137,7 +136,10 @@
           <input matInput type="number" formControlName="receiveLimit" />
           <mat-hint *ngIf="isModifyDialog">Current usage: {{ accountDetails.limits.receive.used }}</mat-hint>
           <mat-error *ngIf="accountForm.controls['receiveLimit'].hasError('min')">
-            Limit must be above 0
+            Receive limit must be above 0
+          </mat-error>
+          <mat-error *ngIf="accountForm.controls['receiveLimit'].hasError('max')">
+            Receive limit must be below {{ profileService.user.maxReceive }}
           </mat-error>
         </mat-form-field>
 
@@ -145,13 +147,11 @@
           <mat-label>Forward limit</mat-label>
           <input matInput type="number" formControlName="forwardLimit" />
           <mat-hint *ngIf="isModifyDialog">Current usage: {{ accountDetails.limits.forward.used }}</mat-hint>
-          <mat-error
-            *ngIf="
-              accountForm.controls['forwardLimit'].hasError('min') ||
-              accountForm.controls['forwardLimit'].hasError('max')
-            "
-          >
-            Limit must be between 1-200
+          <mat-error *ngIf="accountForm.controls['forwardLimit'].hasError('min')">
+            Forward limit must be above 0
+          </mat-error>
+          <mat-error *ngIf="accountForm.controls['forwardLimit'].hasError('max')">
+            Forward limit must be below {{ profileService.user.maxForward }}
           </mat-error>
         </mat-form-field>
       </div>

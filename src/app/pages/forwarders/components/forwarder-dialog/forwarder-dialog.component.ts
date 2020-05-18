@@ -13,6 +13,7 @@ import { Observable, Subscription } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { AccountDialogComponent } from 'src/app/pages/accounts/components/account-dialog/account-dialog.component'
 import { DomainsService } from 'src/app/pages/domains/domains.service'
+import { ProfileService } from 'src/app/pages/profile/profile.service'
 import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
 import { AddressUsernameValidator } from 'src/app/shared/validators/address-username-validator.directive'
 import { forwardingTargetValidator } from 'src/app/shared/validators/forwarding-target-validator.directive'
@@ -33,6 +34,7 @@ export class ForwarderDialogComponent implements OnInit {
     private snackBar: MatSnackBar,
     private errorSnackbarService: ErrorSnackbarService,
     @Inject(MAT_DIALOG_DATA) public data,
+    public profileService: ProfileService,
   ) {}
   public isModifyDialog: boolean
   public forwarderDetails: ForwarderDetails
@@ -50,7 +52,12 @@ export class ForwarderDialogComponent implements OnInit {
     addressUser: new FormControl(null, AddressUsernameValidator()),
     domain: new FormControl(null),
     newTarget: new FormControl(null, forwardingTargetValidator()),
-    forwardLimit: new FormControl(null, [Validators.min(1), Validators.max(200)]),
+    forwardLimit: new FormControl(null, [
+      Validators.min(0),
+      Validators.max(
+        this.profileService.user.maxForward !== 0 ? this.profileService.user.maxForward : Number.MAX_VALUE,
+      ),
+    ]),
   })
 
   public saveButtonConfig: MatProgressButtonOptions = {

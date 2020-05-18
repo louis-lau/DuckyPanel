@@ -62,7 +62,7 @@ export class ProfileComponent implements OnInit {
       // Only set username and quota if the userinfo request has finished
       this.loginDetailsForm.controls['username'].setValue(this.profileService.user.username)
       this.quota.bytes = this.profileService.user.quota
-      this.quota.formatted = formatBytes(this.quota.bytes)
+      this.quota.formatted = this.quota.bytes !== 0 ? formatBytes(this.quota.bytes) : '∞ GiB'
     })
     this.loginDetailsForm.valueChanges.subscribe((): void => {
       this.loginDetailsButtonConfig.disabled = this.loginDetailsForm.invalid

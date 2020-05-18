@@ -10,6 +10,7 @@ import { MatProgressButtonOptions } from 'mat-progress-buttons'
 import { Observable, Subscription } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { DomainsService } from 'src/app/pages/domains/domains.service'
+import { ProfileService } from 'src/app/pages/profile/profile.service'
 import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/error-snackbar.service'
 import { AddressUsernameValidator } from 'src/app/shared/validators/address-username-validator.directive'
 
@@ -30,6 +31,7 @@ export class AccountDialogComponent implements OnInit {
     private errorSnackbarService: ErrorSnackbarService,
     @Inject(MAT_DIALOG_DATA)
     public data,
+    public profileService: ProfileService,
   ) {}
 
   public isModifyDialog: boolean
@@ -49,9 +51,22 @@ export class AccountDialogComponent implements OnInit {
     domain: new FormControl(null),
     password: new FormControl(null, Validators.minLength(8)),
     quota: new FormControl(null, Validators.min(0)),
-    sendLimit: new FormControl(null, [Validators.min(1)]),
-    receiveLimit: new FormControl(null, Validators.min(0)),
-    forwardLimit: new FormControl(null, [Validators.min(1)]),
+    sendLimit: new FormControl(null, [
+      Validators.min(0),
+      Validators.max(this.profileService.user.maxSend !== 0 ? this.profileService.user.maxSend : Number.MAX_VALUE),
+    ]),
+    receiveLimit: new FormControl(null, [
+      Validators.min(0),
+      Validators.max(
+        this.profileService.user.maxReceive !== 0 ? this.profileService.user.maxReceive : Number.MAX_VALUE,
+      ),
+    ]),
+    forwardLimit: new FormControl(null, [
+      Validators.min(0),
+      Validators.max(
+        this.profileService.user.maxForward !== 0 ? this.profileService.user.maxForward : Number.MAX_VALUE,
+      ),
+    ]),
   })
 
   public saveButtonConfig: MatProgressButtonOptions = {
