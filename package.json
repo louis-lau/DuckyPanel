@@ -28,7 +28,7 @@
     "@angular/router": "~9.1.7",
     "@ecodev/fab-speed-dial": "^5.0.3",
     "class-validator": "^0.12.2",
-    "duckyapi-angular": "0.0.11",
+    "duckyapi-angular": "0.0.12",
     "mat-progress-buttons": "^9.1.1",
     "rxjs": "~6.5.5",
     "tslib": "^1.10.0",

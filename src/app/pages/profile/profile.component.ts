@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core'
 import { FormControl, FormGroup } from '@angular/forms'
 import { MatDialog, MatDialogRef } from '@angular/material/dialog'
 import { MatSnackBar } from '@angular/material/snack-bar'
-import { Router } from '@angular/router'
 import { AuthenticationService, EmailAccountsService, ProfileService as ApiProfileService } from 'duckyapi-angular'
 import { MatProgressButtonOptions } from 'mat-progress-buttons'
 import { Subscription } from 'rxjs'
@@ -29,7 +28,6 @@ export class ProfileComponent implements OnInit {
     private emailAccountsService: EmailAccountsService,
     private snackBar: MatSnackBar,
     private errorSnackbarService: ErrorSnackbarService,
-    private router: Router,
     public dialog: MatDialog,
   ) {}
   public usage = {
@@ -110,15 +108,6 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  public logout(): void {
-    localStorage.removeItem('access_token')
-    delete this.authenticationService.configuration.accessToken
-    this.snackBar.open('Logged out successfully', undefined, {
-      panelClass: 'success-snackbar',
-    })
-    this.router.navigateByUrl('/login')
-  }
-
   public logoutAllDialog(): void {
     const dialogConfig: DialogConfig = {
       data: {
@@ -147,7 +136,7 @@ export class ProfileComponent implements OnInit {
               this.authenticationService.revokeAllAccessTokens().subscribe(
                 (): void => {
                   dialogRef.close()
-                  this.logout()
+                  this.profileService.logout()
                 },
                 (error: HttpErrorResponse): void => {
                   dialogRef.disableClose = false
