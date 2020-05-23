@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --prod",
+    "build:dev": "ng build",
     "test": "ng test",
     "lint": "npm-run-all --silent --print-label lint:tsc lint:eslint",
     "lint:fix": "npm-run-all --silent --print-label lint:tsc lint:eslintfix",

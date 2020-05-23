@@ -1,6 +1,6 @@
 import { LayoutModule } from '@angular/cdk/layout'
 import { HttpClientModule } from '@angular/common/http'
-import { NgModule } from '@angular/core'
+import { APP_INITIALIZER, NgModule } from '@angular/core'
 import { FlexLayoutModule } from '@angular/flex-layout'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { MatButtonModule } from '@angular/material/button'
@@ -27,11 +27,13 @@ import { MatTooltipModule } from '@angular/material/tooltip'
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { EcoFabSpeedDialModule } from '@ecodev/fab-speed-dial'
-import { ApiModule, Configuration, ConfigurationParameters } from 'duckyapi-angular'
+import { ApiModule, Configuration as ApiConfiguration } from 'duckyapi-angular'
 import { MatProgressButtonsModule } from 'mat-progress-buttons'
+import { Config } from 'protractor'
 
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
+import { ConfigService } from './config.service'
 import { AccountsComponent } from './pages/accounts/accounts.component'
 import {
   AccountDialogComponent,
@@ -57,15 +59,6 @@ import { ErrorSnackbarComponent } from './shared/components/error-snackbar/error
 import { FabButtonComponent } from './shared/components/fab-button/fab-button.component'
 import { TdLoadingMaskComponent } from './shared/components/loading-mask/loading-mask.component'
 
-// TODO: take these values from a config file or envvar
-export function apiConfigFactory(): Configuration {
-  const accessToken = localStorage.getItem('access_token')
-  const params: ConfigurationParameters = {
-    basePath: 'http://localhost:3000',
-    accessToken: accessToken,
-  }
-  return new Configuration(params)
-}
 @NgModule({
   entryComponents: [
     DialogComponent,
@@ -123,7 +116,7 @@ export function apiConfigFactory(): Configuration {
     MatSortModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
-    ApiModule.forRoot(apiConfigFactory),
+    ApiModule,
     MatProgressButtonsModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
@@ -135,6 +128,24 @@ export function apiConfigFactory(): Configuration {
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
       useValue: { duration: 5000 },
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (configService: ConfigService) => {
+        return (): Config => configService.loadConfig()
+      },
+      deps: [ConfigService],
+      multi: true,
+    },
+    {
+      provide: ApiConfiguration,
+      useFactory: (configService: ConfigService): ApiConfiguration =>
+        new ApiConfiguration({
+          basePath: configService.config.apiUrl,
+          accessToken: localStorage.getItem('access_token'),
+        }),
+      deps: [ConfigService],
+      multi: false,
     },
   ],
   bootstrap: [AppComponent],

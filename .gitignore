@@ -1,5 +1,9 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+# Config files
+/src/config/*
+!/src/config/example.json
+
 # compiled output
 /dist
 /tmp

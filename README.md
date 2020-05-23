@@ -1,7 +1,7 @@
 __NOTE:__ This project is still a work in progress. You can already check it out if you're curious, but I can't guarantee it will work out for you.
 # DuckyPanel
 
-Duckypanel is a domain admin level control panel for the modern [WildDuck email server](https://wildduck.email/). DuckyPanel is _just_ an Angular frontend project. It uses the [DuckyAPI REST API](https://github.com/louis-lau/DuckyAPI) as the backend. Later on there will be a way to set the DuckyAPI url in a config file, right now you can just edit it in `src/app/app.module.ts`.
+Duckypanel is a domain admin level control panel for the modern [WildDuck email server](https://wildduck.email/). DuckyPanel is _just_ an Angular frontend project. It uses the [DuckyAPI REST API](https://github.com/louis-lau/DuckyAPI) as the backend.
 
 ## Current features
 _Things currently working in DuckyPanel and DuckyAPI._
@@ -49,13 +49,15 @@ $ git clone https://github.com/louis-lau/DuckyPanel
 $ npm install
 ```
 
+## Configuration
+Copy [src/config/example.json](src/config/example.json) to `src/config/production.json` or `src/config/development.json` depending on your environment. Then edit `apiUrl` to be your **publically** accessible url of [DuckyAPI](https://github.com/louis-lau/DuckyAPI), so DuckyPanel knows where to reach it.
+
 ## Build
+Run `npm run build` for a production build. The build artifacts will be stored in the `dist/` directory.
 
-Run `npm run ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-After building you can serve DuckyPanel with any webserver you're comfortable with. Make sure you set it up to rewrite urls to Angular's index.html, you can find multiple examples for this online. DuckyPanel won't function by itself, it needs [DuckyAPI](https://github.com/louis-lau/DuckyAPI) as listed in the dependencies. Don't forget to change the url to DuckyAPI in `src/app/app.module.ts`
+After building you can serve the build artifacts with any webserver you're comfortable with. You will need to configure the server to fallback to `index.html` for the routing to work properly. [Here](https://angular.io/guide/deployment#fallback-configuration-examples) are some configuration examples for the most popular web servers. 
 
 ## Development server
 
-Run `npm run ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `npm run ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files. Do **not** use this in production.
 
