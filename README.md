@@ -38,26 +38,32 @@ More to come!
 
 </details>
 
-## Dependencies
+## Option 1: Serve DuckyPanel from DuckyApi
+Very easy to get started with. See the instructions [here](https://github.com/louis-lau/DuckyAPI/blob/master/README.md#integrated-duckypanel).
+
+## Option 2: Serve DuckyPanel seperately from DuckyApi
+Recommended if you want to scale and distribute the applications differently. As an example you could host DuckyPanel on a fast CDN.
+
+#### Dependencies
 * Node.js
 * [DuckyAPI](https://github.com/louis-lau/DuckyAPI)
 * A web server (if in production)
 
-## Installation
+#### Installation
 ```bash
 $ git clone https://github.com/louis-lau/DuckyPanel
 $ npm install
 ```
 
-## Configuration
+#### Configuration
 Copy [src/config/example.json](src/config/example.json) to `src/config/production.json` or `src/config/development.json` depending on your environment. Then edit `apiUrl` to be your **publically** accessible url of [DuckyAPI](https://github.com/louis-lau/DuckyAPI), so DuckyPanel knows where to reach it.
 
-## Build
+#### Build
 Run `npm run build` for a production build. The build artifacts will be stored in the `dist/` directory.
 
 After building you can serve the build artifacts with any webserver you're comfortable with. You will need to configure the server to fallback to `index.html` for the routing to work properly. [Here](https://angular.io/guide/deployment#fallback-configuration-examples) are some configuration examples for the most popular web servers. 
 
 ## Development server
 
-Run `npm run ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files. Do **not** use this in production.
+Follow the above instructions for installation and configuration, then run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files. Do **not** use this in production.
 
