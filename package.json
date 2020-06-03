@@ -14,7 +14,8 @@
     "lint:eslintfix": "eslint --fix --color --max-warnings 0 ./ --ext ts",
     "e2e": "ng e2e",
     "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "prepare": "npm run snyk-protect",
+    "build-for-publish": "npm run build && shx echo '{\"name\": \"duckypanel\",\"version\": \"'$npm_package_version'\"}' > dist/package.json && shx echo 'DuckyPanel/config/*\n!DuckyPanel/config/example.json' > dist/.npmignore"
   },
   "private": true,
   "dependencies": {
@@ -34,9 +35,9 @@
     "duckyapi-angular": "0.0.12",
     "mat-progress-buttons": "^9.1.1",
     "rxjs": "~6.5.5",
+    "snyk": "^1.323.2",
     "tslib": "^1.10.0",
-    "zone.js": "~0.10.2",
-    "snyk": "^1.323.2"
+    "zone.js": "~0.10.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.901.7",
@@ -63,6 +64,7 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.0.5",
     "protractor": "~7.0.0",
+    "shx": "^0.3.2",
     "ts-node": "~8.10.1",
     "tslint": "^6.1.2",
     "typescript": "^3.8.3"
