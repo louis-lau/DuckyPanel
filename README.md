@@ -38,32 +38,37 @@ More to come!
 
 </details>
 
+## Dependencies
+* [DuckyAPI](https://github.com/louis-lau/DuckyAPI)
+* A web server (if in production)
+* Node.js (if in development)
+
 ## Option 1: Serve DuckyPanel from DuckyApi
 Very easy to get started with. See the instructions [here](https://github.com/louis-lau/DuckyAPI/blob/master/README.md#integrated-duckypanel).
 
 ## Option 2: Serve DuckyPanel seperately from DuckyApi
 Recommended if you want to scale and distribute the applications differently. As an example you could host DuckyPanel on a fast CDN.
 
-#### Dependencies
-* Node.js
-* [DuckyAPI](https://github.com/louis-lau/DuckyAPI)
-* A web server (if in production)
+#### Get it
+Get the latest release [here](https://github.com/louis-lau/DuckyPanel/releases) and unzip it.
 
-#### Installation
+#### Configure it
+Copy [config/example.json](src/config/example.json) to `config/production.json`. Then edit `apiUrl` to be your **publically** accessible url of [DuckyAPI](https://github.com/louis-lau/DuckyAPI), so DuckyPanel knows where to reach it.
+
+#### Serve it
+Now you can serve DuckyPanel with any webserver you're comfortable with. You will need to configure the server to fall back to `index.html` for the routing to work properly. [Here](https://angular.io/guide/deployment#fallback-configuration-examples) are some configuration examples for the most popular web servers. 
+
+## Development
+
+#### Install it
 ```bash
 $ git clone https://github.com/louis-lau/DuckyPanel
 $ npm install
 ```
 
-#### Configuration
-Copy [src/config/example.json](src/config/example.json) to `src/config/production.json` or `src/config/development.json` depending on your environment. Then edit `apiUrl` to be your **publically** accessible url of [DuckyAPI](https://github.com/louis-lau/DuckyAPI), so DuckyPanel knows where to reach it.
+#### Configure it
+Copy [src/config/example.json](src/config/example.json) to `src/config/development.json`. Then edit `apiUrl` to be your DuckyApi url.
 
-#### Build
-Run `npm run build` for a production build. The build artifacts will be stored in the `dist/` directory.
-
-After building you can serve the build artifacts with any webserver you're comfortable with. You will need to configure the server to fallback to `index.html` for the routing to work properly. [Here](https://angular.io/guide/deployment#fallback-configuration-examples) are some configuration examples for the most popular web servers. 
-
-## Development server
-
-Follow the above instructions for installation and configuration, then run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files. Do **not** use this in production.
+#### Start hacking!
+Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files. Do **not** use this in production.
 
