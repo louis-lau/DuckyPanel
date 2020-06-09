@@ -35,6 +35,7 @@ import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { ConfigService } from './config.service'
 import { AccountsComponent } from './pages/accounts/accounts.component'
+import { AccountAliasDialogComponent } from './pages/accounts/components/account-alias-dialog/account-alias-dialog.component'
 import {
   AccountDialogComponent,
   AccountDialogEntryComponent,
@@ -65,6 +66,7 @@ import { TdLoadingMaskComponent } from './shared/components/loading-mask/loading
     AccountDialogComponent,
     AddDomainDialogComponent,
     AddAliasDialogComponent,
+    AccountAliasDialogComponent,
     ErrorSnackbarComponent,
     ForwarderDialogComponent,
     DkimDialogComponent,
@@ -79,6 +81,7 @@ import { TdLoadingMaskComponent } from './shared/components/loading-mask/loading
     AccountDialogEntryComponent,
     AddDomainDialogComponent,
     AddAliasDialogComponent,
+    AccountAliasDialogComponent,
     LoginComponent,
     ErrorSnackbarComponent,
     ForwardersComponent,

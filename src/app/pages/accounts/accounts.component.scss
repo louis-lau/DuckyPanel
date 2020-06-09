@@ -1,6 +1,10 @@
 // Align actions column to the right
 .mat-column-actions {
-  flex: 0 0 80px;
+  flex: 0 0 120px;
+}
+
+.delete-alias-button {
+  margin-left: 80px;
 }
 
 // Align actions column center

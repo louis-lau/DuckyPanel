@@ -12,6 +12,7 @@ import { ErrorSnackbarService } from 'src/app/shared/components/error-snackbar/e
 
 import { AccountListItemFormatted } from './accounts.interfaces'
 import { AccountsService } from './accounts.service'
+import { AccountAliasDialogComponent } from './components/account-alias-dialog/account-alias-dialog.component'
 
 @Component({
   selector: 'app-accounts',
@@ -44,6 +45,12 @@ export class AccountsComponent implements OnInit {
   public ngOnInit(): void {
     this.dataSource = new MatTableDataSource()
     this.dataSource.sortingDataAccessor = (item, property): string | number => {
+      // Sort an alias by the same properties as it's parent, essentially grouping them together
+      if (item.aliasOf) {
+        const parentAccount = this.dataSource.data.find((account) => account.id === item.aliasOf)
+        return parentAccount[property]
+      }
+
       // Sort the number of bytes instead of the formatted string
       switch (property) {
         case 'quotaUsedFormatted':
@@ -98,6 +105,63 @@ export class AccountsComponent implements OnInit {
                 (): void => {
                   dialogRef.close()
                   this.snackBar.open(`${address || accountId} has been removed`, undefined, {
+                    panelClass: 'success-snackbar',
+                  })
+                  this.accountsService.getAccounts()
+                },
+                (error: HttpErrorResponse): void => {
+                  dialogRef.disableClose = false
+                  dialogConfig.data.buttons[0].options.disabled = false
+                  dialogConfig.data.buttons[1].options.active = false
+                  this.errorSnackbarService.open(error)
+                },
+              )
+            },
+          },
+        ],
+      },
+    }
+    this.dialog.open(DialogComponent, dialogConfig)
+  }
+
+  public addAliasDialog(accountId: string): void {
+    const dialog = this.dialog.open(AccountAliasDialogComponent, { data: accountId })
+    dialog.afterClosed().subscribe((result): void => {
+      if (result) {
+        this.accountsService.getAccounts()
+      }
+    })
+  }
+
+  public removeAliasConfirmDialog(aliasId: string, accountId: string, address?: string): void {
+    const dialogConfig: DialogConfig = {
+      data: {
+        title: `Remove ${address || aliasId}`,
+        text: 'Are you sure? Any account data will remain as this is just an alias.',
+        buttons: [
+          {
+            options: {
+              active: false,
+              text: 'NO',
+            },
+          },
+          {
+            options: {
+              active: false,
+              text: 'YES',
+              buttonColor: 'warn',
+              spinnerSize: 18,
+              mode: 'indeterminate',
+            },
+            callback: (dialogRef: MatDialogRef<DialogComponent>): void => {
+              dialogRef.disableClose = true
+              dialogConfig.data.buttons[0].options.disabled = true
+              dialogConfig.data.buttons[1].options.active = true
+
+              this.apiAccountsService.deleteAccountAlias(accountId, aliasId).subscribe(
+                (): void => {
+                  dialogRef.close()
+                  this.snackBar.open(`${address || aliasId} has been removed`, undefined, {
                     panelClass: 'success-snackbar',
                   })
                   this.accountsService.getAccounts()

@@ -26,14 +26,16 @@
     </div>
     <ng-container *ngIf="accountsService.accountSubscription.closed; else loading">
       <mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="address">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Address </mat-header-cell>
+          <mat-cell *matCellDef="let row" data-label="address">
+            <mat-icon *ngIf="row.aliasOf">subdirectory_arrow_right</mat-icon> {{ row.address }}
+          </mat-cell>
+        </ng-container>
+
         <ng-container matColumnDef="name">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
           <mat-cell *matCellDef="let row" data-label="name"> {{ row.name }} </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="address">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> Address </mat-header-cell>
-          <mat-cell *matCellDef="let row" data-label="address"> {{ row.address }} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="quotaUsedFormatted">
@@ -51,26 +53,49 @@
         <ng-container matColumnDef="actions">
           <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
           <mat-cell *matCellDef="let row" data-label="actions">
-            <button
-              [routerLink]="['/accounts', row.id]"
-              matTooltip="Modify account"
-              matTooltipPosition="left"
-              matTooltipShowDelay="500"
-              mat-icon-button
-              aria-label="Modify account"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button
-              (click)="removeConfirmDialog(row.id, row.address)"
-              matTooltip="Remove this account"
-              matTooltipPosition="left"
-              matTooltipShowDelay="500"
-              mat-icon-button
-              aria-label="Remove this account"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
+            <ng-container *ngIf="!row.aliasOf; else deleteAlias">
+              <button
+                (click)="addAliasDialog(row.id)"
+                matTooltip="Add alias to this acount"
+                matTooltipPosition="left"
+                matTooltipShowDelay="500"
+                mat-icon-button
+              >
+                <mat-icon>link</mat-icon>
+              </button>
+              <button
+                [routerLink]="['/accounts', row.id]"
+                matTooltip="Modify account"
+                matTooltipPosition="left"
+                matTooltipShowDelay="500"
+                mat-icon-button
+                aria-label="Modify account"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                (click)="removeConfirmDialog(row.id, row.address)"
+                matTooltip="Remove this account"
+                matTooltipPosition="left"
+                matTooltipShowDelay="500"
+                mat-icon-button
+                aria-label="Remove this account"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </ng-container>
+            <ng-template #deleteAlias>
+              <button
+                (click)="removeAliasConfirmDialog(row.id, row.aliasOf, row.address)"
+                class="delete-alias-button"
+                matTooltip="Remove this alias"
+                matTooltipPosition="left"
+                matTooltipShowDelay="500"
+                mat-icon-button
+              >
+                <mat-icon>link_off</mat-icon>
+              </button>
+            </ng-template>
           </mat-cell>
         </ng-container>
 

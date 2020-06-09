@@ -1,0 +1,40 @@
+<form [formGroup]="aliasForm" id="aliasForm" (ngSubmit)="addAlias()" fxLayout="column" fxLayoutGap="10px">
+  <mat-form-field appearance="fill">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" />
+  </mat-form-field>
+
+  <div [fxLayout]="(isHandset$ | async) ? 'column' : 'row'" class="row-container" fxLayoutGap="10px">
+    <mat-form-field appearance="fill" [class.user-input-right]="!(isHandset$ | async)">
+      <mat-label>User</mat-label>
+      <input matInput formControlName="addressUser" required />
+      <mat-error *ngIf="aliasForm.controls['addressUser'].hasError('required')">
+        User is required
+      </mat-error>
+      <mat-error *ngIf="aliasForm.controls['addressUser'].hasError('AddressUsername')">
+        Invalid email address format
+      </mat-error>
+    </mat-form-field>
+
+    <div *ngIf="!(isHandset$ | async)" class="at-symbol" fxLayout="column" fxLayoutAlign="center">
+      @
+    </div>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Domain</mat-label>
+      <span *ngIf="isHandset$ | async" matPrefix>@</span>
+      <mat-select formControlName="domain" required>
+        <ng-container *ngFor="let domain of domainsService.domainsStrings; let i = index">
+          <mat-option [value]="domain">{{ domain }}</mat-option>
+        </ng-container>
+      </mat-select>
+      <mat-error *ngIf="aliasForm.controls['domain'].hasError('required')">
+        Domain is required
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end">
+    <mat-spinner-button (btnClick)="dialogRef.close()" [options]="cancelButtonConfig"></mat-spinner-button>
+    <mat-spinner-button [options]="addButtonConfig"></mat-spinner-button>
+  </div>
+</form>

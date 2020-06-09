@@ -30,8 +30,26 @@ export class AccountsService {
           accountFormatted.quotaUsedFormatted = formatBytes(accountFormatted.quota.used)
         }
 
-        this.accountsFormatted = accountsFormatted
-        this.accountsFormattedSubject.next(accountsFormatted)
+        const accountsAndAliases: AccountListItemFormatted[] = []
+
+        for (const account of accountsFormatted) {
+          accountsAndAliases.push(account)
+          if (account.aliases.length > 0) {
+            for (const alias of account.aliases) {
+              accountsAndAliases.push({
+                ...account,
+                ...alias,
+                aliasOf: account.id,
+                aliases: [],
+                quotaAllowedFormatted: undefined,
+                quotaUsedFormatted: undefined,
+              })
+            }
+          }
+        }
+
+        this.accountsFormatted = accountsAndAliases
+        this.accountsFormattedSubject.next(accountsAndAliases)
       },
       (error) => {
         this.errorSnackbarService.open(error)
