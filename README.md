@@ -11,7 +11,7 @@ _Things currently working in DuckyPanel and DuckyAPI._
 * Domain management, including domain aliases
 * Deletes aliased domains, accounts, forwarders and DKIM when deleting a domain
 * Manage DKIM for the domains
-* Email account management
+* Email account management, including account aliases
 * Forwarder management
 * Only allows seeing/editing of accounts/forwarders on a domain if that domain is added to the account
 * Domains can not be added to multiple accounts
