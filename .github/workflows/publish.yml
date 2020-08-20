@@ -11,10 +11,19 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Set env
+        run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF#refs/*/}
       - name: Set up Node.js
         uses: actions/setup-node@v2-beta
         with:
           node-version: '12'
+      - name: Use npm cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - name: Install dependencies
         run: npm install
       - name: Build
@@ -39,7 +48,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: ./duckypanel.zip
-          asset_name: duckypanel-${{ github.ref }}.zip
+          asset_name: duckypanel-${{ RELEASE_VERSION }}.zip
           asset_content_type: application/zip
       - name: Publish to npm
         uses: JS-DevTools/npm-publish@v1
