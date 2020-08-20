@@ -16,7 +16,7 @@
     "e2e": "ng e2e",
     "snyk-protect": "snyk protect",
     "prepare": "npm run snyk-protect",
-    "build-for-publish": "npm run build && shx echo '{\"name\": \"duckypanel\",\"version\": \"'$npm_package_version'\"}' > dist/package.json && shx echo 'DuckyPanel/config/*\n!DuckyPanel/config/example.json' > dist/.npmignore"
+    "build-for-publish": "npm run build && shx echo '{\"name\": \"duckypanel\",\"version\": \"'$npm_package_version'\"}' > dist/package.json"
   },
   "private": true,
   "dependencies": {
